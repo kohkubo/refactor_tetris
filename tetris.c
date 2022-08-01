@@ -92,9 +92,11 @@ t_mino_shape copy_mino_shape(t_mino_shape mino_shape)
 	t_mino_shape new_mino_shape;
 	new_mino_shape.width = mino_shape.width;
 	new_mino_shape.shape = (char **)malloc(sizeof(char *) * mino_shape.width);
-	for (size_t i = 0; i < mino_shape.width; i++) {
+	for (size_t i = 0; i < mino_shape.width; i++)
+	{
 		new_mino_shape.shape[i] = (char *)malloc(sizeof(char) * mino_shape.width);
-		for (size_t j = 0; j < mino_shape.width; j++) {
+		for (size_t j = 0; j < mino_shape.width; j++)
+		{
 			new_mino_shape.shape[i][j] = mino_shape.shape[i][j];
 		}
 	}
@@ -110,7 +112,8 @@ t_mino copy_mino(t_mino mino)
 
 void free_mino(t_mino mino)
 {
-	for (size_t i = 0; i < mino.mino_shape.width; i++) {
+	for (size_t i = 0; i < mino.mino_shape.width; i++)
+	{
 		free(mino.mino_shape.shape[i]);
 	}
 	free(mino.mino_shape.shape);
@@ -119,10 +122,14 @@ void free_mino(t_mino mino)
 bool FunctionCP(t_mino mino)
 {
 	char **shape = mino.mino_shape.shape;
-	for (size_t i = 0; i < mino.mino_shape.width; i++) {
-		for (size_t j = 0; j < mino.mino_shape.width; j++) {
-			if ((mino.col + j < 0 || mino.col + j >= COL || mino.row + i >= ROW)) {
-				if (shape[i][j]) {
+	for (size_t i = 0; i < mino.mino_shape.width; i++)
+	{
+		for (size_t j = 0; j < mino.mino_shape.width; j++)
+		{
+			if ((mino.col + j < 0 || mino.col + j >= COL || mino.row + i >= ROW))
+			{
+				if (shape[i][j])
+				{
 					return false;
 				}
 			}
@@ -146,6 +153,13 @@ void rotate_right(t_mino mino)
 	free_mino(temp);
 }
 
+static void print_header()
+{
+	for (size_t i = 0; i < COL / 2; i++)
+		printw(" ");
+	printw("42 Tetris\n");
+}
+
 void print_field()
 {
 	char Buffer[ROW][COL] = {0};
@@ -158,9 +172,7 @@ void print_field()
 		}
 	}
 	clear();
-	for (size_t i = 0; i < COL - 9; i++)
-		printw(" ");
-	printw("42 Tetris\n");
+	print_header();
 	for (size_t i = 0; i < ROW; i++)
 	{
 		for (size_t j = 0; j < COL; j++)
@@ -205,8 +217,10 @@ void init_game()
 void end_game()
 {
 	endwin();
-	for (size_t i = 0; i < ROW; i++) {
-		for (size_t j = 0; j < COL; j++) {
+	for (size_t i = 0; i < ROW; i++)
+	{
+		for (size_t j = 0; j < COL; j++)
+		{
 			printf("%c ", g_field[i][j] ? '#' : '.');
 		}
 		printf("\n");
@@ -215,30 +229,41 @@ void end_game()
 	printf("\nScore: %d\n", g_final);
 }
 
+void update_field()
+{
+	for (size_t i = 0; i < g_current.mino_shape.width; i++)
+	{
+		for (size_t j = 0; j < g_current.mino_shape.width; j++)
+		{
+			if (g_current.mino_shape.shape[i][j])
+			{
+				g_field[g_current.row + i][g_current.col + j] = g_current.mino_shape.shape[i][j];
+			}
+		}
+	}
+}
+
 int main()
 {
 	init_game();
 	print_field();
-	while (g_game_on) {
+	while (g_game_on)
+	{
 		int c = getch();
-		if (c != ERR) {
+		if (c != ERR)
+		{
 			t_mino temp = copy_mino(g_current);
-			switch (c) {
+			switch (c)
+			{
 			case 's':
 				temp.row++; // move down
-				if (FunctionCP(temp)) {
+				if (FunctionCP(temp))
+				{
 					g_current.row++;
-				} else {
-					for (size_t i = 0; i < g_current.mino_shape.width; i++)
-					{
-						for (size_t j = 0; j < g_current.mino_shape.width; j++)
-						{
-							if (g_current.mino_shape.shape[i][j])
-							{
-								g_field[g_current.row + i][g_current.col + j] = g_current.mino_shape.shape[i][j];
-							}
-						}
-					}
+				}
+				else
+				{
+					update_field();
 					int count = 0;
 					for (size_t n = 0; n < ROW; n++)
 					{
