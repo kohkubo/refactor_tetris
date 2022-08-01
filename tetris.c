@@ -6,112 +6,139 @@
 
 #define R 20
 #define C 15
-#define T 1
-#define F 0
+#define true 1
+#define false 0
 
 char g_table[R][C] = {0};
 int g_final = 0;
-char g_game_on = T;
+bool g_game_on = true;
 suseconds_t g_timer = 400000;
 int g_decrease = 1000;
 
 typedef struct
 {
-	char **array;
+	char **shape;
 	int width;
 	int row;
 	int col;
 } t_mino;
 t_mino g_current;
 
+// clang-format off
 const t_mino g_minos[] = {
-	{(char *[]){(char[]){0, 1, 1},
-				(char[]){1, 1, 0},
-				(char[]){0, 0, 0}},
-	 .width = 3, .row = 0, .col = 0},
-	{(char *[]){(char[]){1, 1, 0},
-				(char[]){0, 1, 1},
-				(char[]){0, 0, 0}},
-	 .width = 3, .row = 0, .col = 0},
-	{(char *[]){(char[]){0, 1, 0},
-				(char[]){1, 1, 1},
-				(char[]){0, 0, 0}},
-	 .width = 3, .row = 0, .col = 0},
-	{(char *[]){(char[]){0, 0, 1},
-				(char[]){1, 1, 1},
-				(char[]){0, 0, 0}},
-	 .width = 3, .row = 0, .col = 0},
-	{(char *[]){(char[]){1, 0, 0},
-				(char[]){1, 1, 1},
-				(char[]){0, 0, 0}},
-	 .width = 3, .row = 0, .col = 0},
-	{(char *[]){(char[]){1, 1},
-				(char[]){1, 1}},
-	 .width = 2, .row = 0, .col = 0},
-	{(char *[]){(char[]){0, 0, 0, 0},
-				(char[]){1, 1, 1, 1},
-				(char[]){0, 0, 0, 0},
-				(char[]){0, 0, 0, 0}},
-	 .width = 4, .row = 0, .col = 0}};
+	{
+		.shape = (char *[]){
+			(char[]){0, 1, 1},
+			(char[]){1, 1, 0},
+			(char[]){0, 0, 0}
+		},
+		.width = 3, .row = 0, .col = 0
+	},
+	{
+		.shape = (char *[]){
+			(char[]){1, 1, 0},
+			(char[]){0, 1, 1},
+			(char[]){0, 0, 0}
+		},
+		.width = 3, .row = 0, .col = 0},
+	{
+		.shape = (char *[]){
+			(char[]){0, 1, 0},
+			(char[]){1, 1, 1},
+			(char[]){0, 0, 0}
+		},
+		.width = 3, .row = 0, .col = 0
+	},
+	{
+		.shape = (char *[]){
+			(char[]){0, 0, 1},
+			(char[]){1, 1, 1},
+			(char[]){0, 0, 0}
+		},
+		.width = 3, .row = 0, .col = 0
+	},
+	{
+		.shape = (char *[]){
+			(char[]){1, 0, 0},
+			(char[]){1, 1, 1},
+			(char[]){0, 0, 0}
+		},
+	 	.width = 3, .row = 0, .col = 0
+	},
+	{
+		.shape = (char *[]){
+			(char[]){1, 1},
+			(char[]){1, 1}
+		},
+		.width = 2, .row = 0, .col = 0
+	},
+	{
+		.shape = (char *[]){
+			(char[]){0, 0, 0, 0},
+			(char[]){1, 1, 1, 1},
+			(char[]){0, 0, 0, 0},
+			(char[]){0, 0, 0, 0}
+		},
+		.width = 4, .row = 0, .col = 0}
+	};
+// clang-format on
 
-t_mino FunctionCS(t_mino mino)
+t_mino copy_mino(t_mino mino)
 {
 	t_mino new_shape = mino;
-	new_shape.array = (char **)malloc(new_shape.width * sizeof(char *));
-	for (int i = 0; i < new_shape.width; i++)
+	new_shape.shape = (char **)malloc(new_shape.width * sizeof(char *));
+	for (size_t i = 0; i < new_shape.width; i++)
 	{
-		new_shape.array[i] = (char *)malloc(new_shape.width * sizeof(char));
-		for (int j = 0; j < new_shape.width; j++)
+		new_shape.shape[i] = (char *)malloc(new_shape.width * sizeof(char));
+		for (size_t j = 0; j < new_shape.width; j++)
 		{
-			new_shape.array[i][j] = mino.array[i][j];
+			new_shape.shape[i][j] = mino.shape[i][j];
 		}
 	}
 	return new_shape;
 }
 
-void FunctionDS(t_mino mino)
+void free_mino(t_mino mino)
 {
-	int i;
-	for (i = 0; i < mino.width; i++)
+	for (size_t i = 0; i < mino.width; i++)
 	{
-		free(mino.array[i]);
+		free(mino.shape[i]);
 	}
-	free(mino.array);
+	free(mino.shape);
 }
 
-int FunctionCP(t_mino mino)
+bool FunctionCP(t_mino mino)
 {
-	char **array = mino.array;
-	int i, j;
-	for (i = 0; i < mino.width; i++)
+	char **shape = mino.shape;
+	for (int i = 0; i < mino.width; i++)
 	{
-		for (j = 0; j < mino.width; j++)
+		for (int j = 0; j < mino.width; j++)
 		{
 			if ((mino.col + j < 0 || mino.col + j >= C || mino.row + i >= R))
 			{
-				if (array[i][j])
-					return F;
+				if (shape[i][j])
+					return false;
 			}
-			else if (g_table[mino.row + i][mino.col + j] && array[i][j])
-				return F;
+			else if (g_table[mino.row + i][mino.col + j] && shape[i][j])
+				return false;
 		}
 	}
-	return T;
+	return true;
 }
 
 void FunctionRS(t_mino mino)
 {
-	t_mino temp = FunctionCS(mino);
+	t_mino temp = copy_mino(mino);
 	int i, j, k, width;
 	width = mino.width;
 	for (i = 0; i < width; i++)
 	{
 		for (j = 0, k = width - 1; j < width; j++, k--)
 		{
-			mino.array[i][j] = temp.array[k][i];
+			mino.shape[i][j] = temp.shape[k][i];
 		}
 	}
-	FunctionDS(temp);
+	free_mino(temp);
 }
 
 void FunctionPT()
@@ -122,8 +149,8 @@ void FunctionPT()
 	{
 		for (j = 0; j < g_current.width; j++)
 		{
-			if (g_current.array[i][j])
-				Buffer[g_current.row + i][g_current.col + j] = g_current.array[i][j];
+			if (g_current.shape[i][j])
+				Buffer[g_current.row + i][g_current.col + j] = g_current.shape[i][j];
 		}
 	}
 	clear();
@@ -143,15 +170,9 @@ void FunctionPT()
 
 struct timeval g_before_now;
 struct timeval g_now;
-int hasToUpdate()
+bool hasToUpdate()
 {
 	return ((suseconds_t)(g_now.tv_sec * 1000000 + g_now.tv_usec) - ((suseconds_t)g_before_now.tv_sec * 1000000 + g_before_now.tv_usec)) > g_timer;
-}
-
-void set_timeout(int time)
-{
-	time = 1;
-	timeout(1);
 }
 
 int main()
@@ -161,22 +182,22 @@ int main()
 	int c;
 	initscr();
 	gettimeofday(&g_before_now, NULL);
-	set_timeout(1);
-	t_mino new_shape = FunctionCS(g_minos[rand() % 7]);
+	timeout(1);
+	t_mino new_shape = copy_mino(g_minos[rand() % 7]);
 	new_shape.col = rand() % (C - new_shape.width + 1);
 	new_shape.row = 0;
-	FunctionDS(g_current);
+	free_mino(g_current);
 	g_current = new_shape;
 	if (!FunctionCP(g_current))
 	{
-		g_game_on = F;
+		g_game_on = false;
 	}
 	FunctionPT();
 	while (g_game_on)
 	{
 		if ((c = getch()) != ERR)
 		{
-			t_mino temp = FunctionCS(g_current);
+			t_mino temp = copy_mino(g_current);
 			switch (c)
 			{
 			case 's':
@@ -190,8 +211,8 @@ int main()
 					{
 						for (j = 0; j < g_current.width; j++)
 						{
-							if (g_current.array[i][j])
-								g_table[g_current.row + i][g_current.col + j] = g_current.array[i][j];
+							if (g_current.shape[i][j])
+								g_table[g_current.row + i][g_current.col + j] = g_current.shape[i][j];
 						}
 					}
 					int n, m, sum, count = 0;
@@ -215,14 +236,14 @@ int main()
 						}
 					}
 					g_final += 100 * count;
-					t_mino new_shape = FunctionCS(g_minos[rand() % 7]);
+					t_mino new_shape = copy_mino(g_minos[rand() % 7]);
 					new_shape.col = rand() % (C - new_shape.width + 1);
 					new_shape.row = 0;
-					FunctionDS(g_current);
+					free_mino(g_current);
 					g_current = new_shape;
 					if (!FunctionCP(g_current))
 					{
-						g_game_on = F;
+						g_game_on = false;
 					}
 				}
 				break;
@@ -242,13 +263,13 @@ int main()
 					FunctionRS(g_current);
 				break;
 			}
-			FunctionDS(temp);
+			free_mino(temp);
 			FunctionPT();
 		}
 		gettimeofday(&g_now, NULL);
 		if (hasToUpdate())
 		{
-			t_mino temp = FunctionCS(g_current);
+			t_mino temp = copy_mino(g_current);
 			switch ('s')
 			{
 			case 's':
@@ -262,8 +283,8 @@ int main()
 					{
 						for (j = 0; j < g_current.width; j++)
 						{
-							if (g_current.array[i][j])
-								g_table[g_current.row + i][g_current.col + j] = g_current.array[i][j];
+							if (g_current.shape[i][j])
+								g_table[g_current.row + i][g_current.col + j] = g_current.shape[i][j];
 						}
 					}
 					int n, m, sum, count = 0;
@@ -286,14 +307,14 @@ int main()
 							g_timer -= g_decrease--;
 						}
 					}
-					t_mino new_shape = FunctionCS(g_minos[rand() % 7]);
+					t_mino new_shape = copy_mino(g_minos[rand() % 7]);
 					new_shape.col = rand() % (C - new_shape.width + 1);
 					new_shape.row = 0;
-					FunctionDS(g_current);
+					free_mino(g_current);
 					g_current = new_shape;
 					if (!FunctionCP(g_current))
 					{
-						g_game_on = F;
+						g_game_on = false;
 					}
 				}
 				break;
@@ -313,12 +334,12 @@ int main()
 					FunctionRS(g_current);
 				break;
 			}
-			FunctionDS(temp);
+			free_mino(temp);
 			FunctionPT();
 			gettimeofday(&g_before_now, NULL);
 		}
 	}
-	FunctionDS(g_current);
+	free_mino(g_current);
 	endwin();
 	int i, j;
 	for (i = 0; i < R; i++)
