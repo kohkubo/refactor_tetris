@@ -10,7 +10,7 @@
 
 typedef uint8_t t_field[ROW][COL];
 t_field g_field = {0};
-int g_final = 0;
+int g_score = 0;
 bool g_game_on = true;
 suseconds_t g_timer = 400000;
 int g_decrease = 1000;
@@ -190,7 +190,7 @@ void print_field()
 		}
 		printw("\n");
 	}
-	printw("\nScore: %d\n", g_final);
+	printw("\nScore: %d\n", g_score);
 }
 
 struct timeval g_before_now;
@@ -212,7 +212,7 @@ t_mino generate_random_mino()
 void init_game()
 {
 	srand(time(0));
-	g_final = 0;
+	g_score = 0;
 	initscr();
 	gettimeofday(&g_before_now, NULL);
 	timeout(1);
@@ -235,7 +235,7 @@ void end_game()
 		printf("\n");
 	}
 	printf("\nGame over!\n");
-	printf("\nScore: %d\n", g_final);
+	printf("\nScore: %d\n", g_score);
 }
 
 int main()
@@ -285,7 +285,7 @@ int main()
 							g_timer -= g_decrease--;
 						}
 					}
-					g_final += 100 * count;
+					g_score += 100 * count;
 					t_mino new_shape = generate_random_mino();
 					free_mino(g_current);
 					g_current = new_shape;
