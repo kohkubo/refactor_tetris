@@ -17,20 +17,25 @@ typedef struct
 {
 	char **shape;
 	size_t width;
+} t_mino_shape;
+
+typedef struct
+{
+	t_mino_shape mino_shape;
 	int row;
 	int col;
 } t_mino;
 t_mino g_current;
 
 // clang-format off
-const t_mino g_minos[] = {
+const t_mino_shape g_mino_shapes[] = {
 	{
 		.shape = (char *[]){
 			(char[]){0, 1, 1},
 			(char[]){1, 1, 0},
 			(char[]){0, 0, 0}
 		},
-		.width = 3, .row = 0, .col = 0
+		.width = 3
 	},
 	{
 		.shape = (char *[]){
@@ -38,14 +43,14 @@ const t_mino g_minos[] = {
 			(char[]){0, 1, 1},
 			(char[]){0, 0, 0}
 		},
-		.width = 3, .row = 0, .col = 0},
+		.width = 3},
 	{
 		.shape = (char *[]){
 			(char[]){0, 1, 0},
 			(char[]){1, 1, 1},
 			(char[]){0, 0, 0}
 		},
-		.width = 3, .row = 0, .col = 0
+		.width = 3
 	},
 	{
 		.shape = (char *[]){
@@ -53,7 +58,7 @@ const t_mino g_minos[] = {
 			(char[]){1, 1, 1},
 			(char[]){0, 0, 0}
 		},
-		.width = 3, .row = 0, .col = 0
+		.width = 3
 	},
 	{
 		.shape = (char *[]){
@@ -61,14 +66,14 @@ const t_mino g_minos[] = {
 			(char[]){1, 1, 1},
 			(char[]){0, 0, 0}
 		},
-	 	.width = 3, .row = 0, .col = 0
+	 	.width = 3
 	},
 	{
 		.shape = (char *[]){
 			(char[]){1, 1},
 			(char[]){1, 1}
 		},
-		.width = 2, .row = 0, .col = 0
+		.width = 2
 	},
 	{
 		.shape = (char *[]){
@@ -77,41 +82,53 @@ const t_mino g_minos[] = {
 			(char[]){0, 0, 0, 0},
 			(char[]){0, 0, 0, 0}
 		},
-		.width = 4, .row = 0, .col = 0}
+		.width = 4
+	}
 	};
 // clang-format on
+
+t_mino_shape copy_mino_shape(t_mino_shape mino_shape)
+{
+	t_mino_shape new_mino_shape;
+	new_mino_shape.width = mino_shape.width;
+	new_mino_shape.shape = (char **)malloc(sizeof(char *) * mino_shape.width);
+	for (size_t i = 0; i < mino_shape.width; i++)
+	{
+		new_mino_shape.shape[i] = (char *)malloc(sizeof(char) * mino_shape.width);
+		for (size_t j = 0; j < mino_shape.width; j++) {
+			new_mino_shape.shape[i][j] = mino_shape.shape[i][j];
+		}
+	}
+	return new_mino_shape;
+}
 
 t_mino copy_mino(t_mino mino)
 {
 	t_mino new_shape = mino;
-	new_shape.shape = (char **)malloc(new_shape.width * sizeof(char *));
-	for (size_t i = 0; i < new_shape.width; i++)
-	{
-		new_shape.shape[i] = (char *)malloc(new_shape.width * sizeof(char));
-		for (size_t j = 0; j < new_shape.width; j++)
-		{
-			new_shape.shape[i][j] = mino.shape[i][j];
-		}
-	}
+	new_shape.mino_shape = copy_mino_shape(mino.mino_shape);
 	return new_shape;
 }
 
 void free_mino(t_mino mino)
 {
-	for (size_t i = 0; i < mino.width; i++)
+	for (size_t i = 0; i < mino.mino_shape.width; i++)
 	{
-		free(mino.shape[i]);
+		free(mino.mino_shape.shape[i]);
 	}
-	free(mino.shape);
+	free(mino.mino_shape.shape);
 }
 
 bool FunctionCP(t_mino mino)
 {
-	char **shape = mino.shape;
-	for (size_t i = 0; i < mino.width; i++) {
-		for (size_t j = 0; j < mino.width; j++){
-			if ((mino.col + j < 0 || mino.col + j >= COL || mino.row + i >= ROW)) {
-				if (shape[i][j]) {
+	char **shape = mino.mino_shape.shape;
+	for (size_t i = 0; i < mino.mino_shape.width; i++)
+	{
+		for (size_t j = 0; j < mino.mino_shape.width; j++)
+		{
+			if ((mino.col + j < 0 || mino.col + j >= COL || mino.row + i >= ROW))
+			{
+				if (shape[i][j])
+				{
 					return false;
 				}
 			}
@@ -125,11 +142,11 @@ bool FunctionCP(t_mino mino)
 void rotate_right(t_mino mino)
 {
 	t_mino temp = copy_mino(mino);
-	for (size_t i = 0; i < mino.width; i++)
+	for (size_t i = 0; i < mino.mino_shape.width; i++)
 	{
-		for (size_t j = 0, k = mino.width - 1; j < mino.width; j++, k--)
+		for (size_t j = 0, k = mino.mino_shape.width - 1; j < mino.mino_shape.width; j++, k--)
 		{
-			mino.shape[i][j] = temp.shape[k][i];
+			mino.mino_shape.shape[i][j] = temp.mino_shape.shape[k][i];
 		}
 	}
 	free_mino(temp);
@@ -138,12 +155,12 @@ void rotate_right(t_mino mino)
 void print_field()
 {
 	char Buffer[ROW][COL] = {0};
-	for (size_t i = 0; i < g_current.width; i++)
+	for (size_t i = 0; i < g_current.mino_shape.width; i++)
 	{
-		for (size_t j = 0; j < g_current.width; j++)
+		for (size_t j = 0; j < g_current.mino_shape.width; j++)
 		{
-			if (g_current.shape[i][j])
-				Buffer[g_current.row + i][g_current.col + j] = g_current.shape[i][j];
+			if (g_current.mino_shape.shape[i][j])
+				Buffer[g_current.row + i][g_current.col + j] = g_current.mino_shape.shape[i][j];
 		}
 	}
 	clear();
@@ -170,8 +187,9 @@ bool hasToUpdate()
 
 t_mino generate_random_mino()
 {
-	t_mino new_mino = copy_mino(g_minos[rand() % 7]);
-	new_mino.col = rand() % (COL - new_mino.width + 1);
+	t_mino new_mino;
+	new_mino.mino_shape = copy_mino_shape(g_mino_shapes[rand() % sizeof(g_mino_shapes) / sizeof(t_mino_shape)]);
+	new_mino.col = rand() % (COL - new_mino.mino_shape.width + 1);
 	new_mino.row = 0;
 	return new_mino;
 }
@@ -183,9 +201,7 @@ void init_game()
 	initscr();
 	gettimeofday(&g_before_now, NULL);
 	timeout(1);
-	g_current = copy_mino(g_minos[rand() % 7]);
-	g_current.col = rand() % (COL - g_current.width + 1);
-	g_current.row = 0;
+	g_current = generate_random_mino();
 	if (!FunctionCP(g_current))
 	{
 		g_game_on = false;
@@ -227,13 +243,13 @@ int main()
 				}
 				else
 				{
-					for (size_t i = 0; i < g_current.width; i++)
+					for (size_t i = 0; i < g_current.mino_shape.width; i++)
 					{
-						for (size_t j = 0; j < g_current.width; j++)
+						for (size_t j = 0; j < g_current.mino_shape.width; j++)
 						{
-							if (g_current.shape[i][j])
+							if (g_current.mino_shape.shape[i][j])
 							{
-								g_field[g_current.row + i][g_current.col + j] = g_current.shape[i][j];
+								g_field[g_current.row + i][g_current.col + j] = g_current.mino_shape.shape[i][j];
 							}
 						}
 					}
@@ -264,9 +280,7 @@ int main()
 						}
 					}
 					g_final += 100 * count;
-					t_mino new_shape = copy_mino(g_minos[rand() % 7]);
-					new_shape.col = rand() % (COL - new_shape.width + 1);
-					new_shape.row = 0;
+					t_mino new_shape = generate_random_mino();
 					free_mino(g_current);
 					g_current = new_shape;
 					if (!FunctionCP(g_current))
@@ -308,12 +322,12 @@ int main()
 				}
 				else
 				{
-					for (size_t i = 0; i < g_current.width; i++)
+					for (size_t i = 0; i < g_current.mino_shape.width; i++)
 					{
-						for (size_t j = 0; j < g_current.width; j++)
+						for (size_t j = 0; j < g_current.mino_shape.width; j++)
 						{
-							if (g_current.shape[i][j])
-								g_field[g_current.row + i][g_current.col + j] = g_current.shape[i][j];
+							if (g_current.mino_shape.shape[i][j])
+								g_field[g_current.row + i][g_current.col + j] = g_current.mino_shape.shape[i][j];
 						}
 					}
 					int sum, count = 0;
@@ -336,9 +350,7 @@ int main()
 							g_timer -= g_decrease--;
 						}
 					}
-					t_mino new_shape = copy_mino(g_minos[rand() % 7]);
-					new_shape.col = rand() % (COL - new_shape.width + 1);
-					new_shape.row = 0;
+					t_mino new_shape = generate_random_mino();
 					free_mino(g_current);
 					g_current = new_shape;
 					if (!FunctionCP(g_current))
