@@ -177,7 +177,7 @@ void print_field()
 	{
 		for (size_t j = 0; j < COL; j++)
 		{
-			printw("%c ", (g_field[i][j] + Buffer[i][j]) ? '#' : '.');
+			printw("%c ", g_field[i][j] || Buffer[i][j] ? '#' : '.');
 		}
 		printw("\n");
 	}
