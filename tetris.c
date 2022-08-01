@@ -18,37 +18,58 @@ int g_decrease = 1000;
 typedef struct
 {
 	char **array;
-	int width, row, col;
-} Struct;
-Struct g_current;
+	int width;
+	int row;
+	int col;
+} t_mino;
+t_mino g_current;
 
-const Struct g_structs_array[7] = {
-	{(char *[]){(char[]){0, 1, 1}, (char[]){1, 1, 0}, (char[]){0, 0, 0}}, 3},
-	{(char *[]){(char[]){1, 1, 0}, (char[]){0, 1, 1}, (char[]){0, 0, 0}}, 3},
-	{(char *[]){(char[]){0, 1, 0}, (char[]){1, 1, 1}, (char[]){0, 0, 0}}, 3},
-	{(char *[]){(char[]){0, 0, 1}, (char[]){1, 1, 1}, (char[]){0, 0, 0}}, 3},
-	{(char *[]){(char[]){1, 0, 0}, (char[]){1, 1, 1}, (char[]){0, 0, 0}}, 3},
-	{(char *[]){(char[]){1, 1}, (char[]){1, 1}}, 2},
-	{(char *[]){(char[]){0, 0, 0, 0}, (char[]){1, 1, 1, 1}, (char[]){0, 0, 0, 0}, (char[]){0, 0, 0, 0}}, 4}};
+const t_mino g_minos[] = {
+	{(char *[]){(char[]){0, 1, 1},
+				(char[]){1, 1, 0},
+				(char[]){0, 0, 0}},
+	 3, 0, 0},
+	{(char *[]){(char[]){1, 1, 0},
+				(char[]){0, 1, 1},
+				(char[]){0, 0, 0}},
+	 3, 0, 0},
+	{(char *[]){(char[]){0, 1, 0},
+				(char[]){1, 1, 1},
+				(char[]){0, 0, 0}},
+	 3, 0, 0},
+	{(char *[]){(char[]){0, 0, 1},
+				(char[]){1, 1, 1},
+				(char[]){0, 0, 0}},
+	 3, 0, 0},
+	{(char *[]){(char[]){1, 0, 0},
+				(char[]){1, 1, 1},
+				(char[]){0, 0, 0}},
+	 3, 0, 0},
+	{(char *[]){(char[]){1, 1},
+				(char[]){1, 1}},
+	 2, 0, 0},
+	{(char *[]){(char[]){0, 0, 0, 0},
+				(char[]){1, 1, 1, 1},
+				(char[]){0, 0, 0, 0},
+				(char[]){0, 0, 0, 0}},
+	 4, 0, 0}};
 
-Struct FunctionCS(Struct shape)
+t_mino FunctionCS(t_mino shape)
 {
-	Struct new_shape = shape;
-	char **copyshape = shape.array;
+	t_mino new_shape = shape;
 	new_shape.array = (char **)malloc(new_shape.width * sizeof(char *));
-	int i, j;
-	for (i = 0; i < new_shape.width; i++)
+	for (int i = 0; i < new_shape.width; i++)
 	{
 		new_shape.array[i] = (char *)malloc(new_shape.width * sizeof(char));
-		for (j = 0; j < new_shape.width; j++)
+		for (int j = 0; j < new_shape.width; j++)
 		{
-			new_shape.array[i][j] = copyshape[i][j];
+			new_shape.array[i][j] = shape.array[i][j];
 		}
 	}
 	return new_shape;
 }
 
-void FunctionDS(Struct shape)
+void FunctionDS(t_mino shape)
 {
 	int i;
 	for (i = 0; i < shape.width; i++)
@@ -58,7 +79,7 @@ void FunctionDS(Struct shape)
 	free(shape.array);
 }
 
-int FunctionCP(Struct shape)
+int FunctionCP(t_mino shape)
 {
 	char **array = shape.array;
 	int i, j;
@@ -78,9 +99,9 @@ int FunctionCP(Struct shape)
 	return T;
 }
 
-void FunctionRS(Struct shape)
+void FunctionRS(t_mino shape)
 {
-	Struct temp = FunctionCS(shape);
+	t_mino temp = FunctionCS(shape);
 	int i, j, k, width;
 	width = shape.width;
 	for (i = 0; i < width; i++)
@@ -141,7 +162,7 @@ int main()
 	initscr();
 	gettimeofday(&g_before_now, NULL);
 	set_timeout(1);
-	Struct new_shape = FunctionCS(g_structs_array[rand() % 7]);
+	t_mino new_shape = FunctionCS(g_minos[rand() % 7]);
 	new_shape.col = rand() % (C - new_shape.width + 1);
 	new_shape.row = 0;
 	FunctionDS(g_current);
@@ -155,7 +176,7 @@ int main()
 	{
 		if ((c = getch()) != ERR)
 		{
-			Struct temp = FunctionCS(g_current);
+			t_mino temp = FunctionCS(g_current);
 			switch (c)
 			{
 			case 's':
@@ -194,7 +215,7 @@ int main()
 						}
 					}
 					g_final += 100 * count;
-					Struct new_shape = FunctionCS(g_structs_array[rand() % 7]);
+					t_mino new_shape = FunctionCS(g_minos[rand() % 7]);
 					new_shape.col = rand() % (C - new_shape.width + 1);
 					new_shape.row = 0;
 					FunctionDS(g_current);
@@ -227,7 +248,7 @@ int main()
 		gettimeofday(&g_now, NULL);
 		if (hasToUpdate())
 		{
-			Struct temp = FunctionCS(g_current);
+			t_mino temp = FunctionCS(g_current);
 			switch ('s')
 			{
 			case 's':
@@ -265,7 +286,7 @@ int main()
 							g_timer -= g_decrease--;
 						}
 					}
-					Struct new_shape = FunctionCS(g_structs_array[rand() % 7]);
+					t_mino new_shape = FunctionCS(g_minos[rand() % 7]);
 					new_shape.col = rand() % (C - new_shape.width + 1);
 					new_shape.row = 0;
 					FunctionDS(g_current);
