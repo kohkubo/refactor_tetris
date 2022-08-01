@@ -92,8 +92,7 @@ t_mino_shape copy_mino_shape(t_mino_shape mino_shape)
 	t_mino_shape new_mino_shape;
 	new_mino_shape.width = mino_shape.width;
 	new_mino_shape.shape = (char **)malloc(sizeof(char *) * mino_shape.width);
-	for (size_t i = 0; i < mino_shape.width; i++)
-	{
+	for (size_t i = 0; i < mino_shape.width; i++) {
 		new_mino_shape.shape[i] = (char *)malloc(sizeof(char) * mino_shape.width);
 		for (size_t j = 0; j < mino_shape.width; j++) {
 			new_mino_shape.shape[i][j] = mino_shape.shape[i][j];
@@ -111,8 +110,7 @@ t_mino copy_mino(t_mino mino)
 
 void free_mino(t_mino mino)
 {
-	for (size_t i = 0; i < mino.mino_shape.width; i++)
-	{
+	for (size_t i = 0; i < mino.mino_shape.width; i++) {
 		free(mino.mino_shape.shape[i]);
 	}
 	free(mino.mino_shape.shape);
@@ -121,14 +119,10 @@ void free_mino(t_mino mino)
 bool FunctionCP(t_mino mino)
 {
 	char **shape = mino.mino_shape.shape;
-	for (size_t i = 0; i < mino.mino_shape.width; i++)
-	{
-		for (size_t j = 0; j < mino.mino_shape.width; j++)
-		{
-			if ((mino.col + j < 0 || mino.col + j >= COL || mino.row + i >= ROW))
-			{
-				if (shape[i][j])
-				{
+	for (size_t i = 0; i < mino.mino_shape.width; i++) {
+		for (size_t j = 0; j < mino.mino_shape.width; j++) {
+			if ((mino.col + j < 0 || mino.col + j >= COL || mino.row + i >= ROW)) {
+				if (shape[i][j]) {
 					return false;
 				}
 			}
@@ -212,10 +206,8 @@ void init_game()
 void end_game()
 {
 	endwin();
-	for (size_t i = 0; i < ROW; i++)
-	{
-		for (size_t j = 0; j < COL; j++)
-		{
+	for (size_t i = 0; i < ROW; i++) {
+		for (size_t j = 0; j < COL; j++) {
 			printf("%c ", g_field[i][j] ? '#' : '.');
 		}
 		printf("\n");
@@ -227,22 +219,16 @@ void end_game()
 int main()
 {
 	init_game();
-	while (g_game_on)
-	{
+	while (g_game_on) {
 		int c = getch();
-		if (c != ERR)
-		{
+		if (c != ERR) {
 			t_mino temp = copy_mino(g_current);
-			switch (c)
-			{
+			switch (c) {
 			case 's':
 				temp.row++; // move down
-				if (FunctionCP(temp))
-				{
+				if (FunctionCP(temp)) {
 					g_current.row++;
-				}
-				else
-				{
+				} else {
 					for (size_t i = 0; i < g_current.mino_shape.width; i++)
 					{
 						for (size_t j = 0; j < g_current.mino_shape.width; j++)
