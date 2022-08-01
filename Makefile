@@ -1,2 +1,2 @@
 tetris: tetris.c
-	gcc tetris.c -lncurses -o tetris
+	gcc -Wall -Werror -Wextra tetris.c -lncurses -o tetris -g -fsanitize=address -fsanitize=undefined
