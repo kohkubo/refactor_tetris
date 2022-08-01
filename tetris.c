@@ -28,87 +28,87 @@ const t_mino g_minos[] = {
 	{(char *[]){(char[]){0, 1, 1},
 				(char[]){1, 1, 0},
 				(char[]){0, 0, 0}},
-	 3, 0, 0},
+	 .width = 3, .row = 0, .col = 0},
 	{(char *[]){(char[]){1, 1, 0},
 				(char[]){0, 1, 1},
 				(char[]){0, 0, 0}},
-	 3, 0, 0},
+	 .width = 3, .row = 0, .col = 0},
 	{(char *[]){(char[]){0, 1, 0},
 				(char[]){1, 1, 1},
 				(char[]){0, 0, 0}},
-	 3, 0, 0},
+	 .width = 3, .row = 0, .col = 0},
 	{(char *[]){(char[]){0, 0, 1},
 				(char[]){1, 1, 1},
 				(char[]){0, 0, 0}},
-	 3, 0, 0},
+	 .width = 3, .row = 0, .col = 0},
 	{(char *[]){(char[]){1, 0, 0},
 				(char[]){1, 1, 1},
 				(char[]){0, 0, 0}},
-	 3, 0, 0},
+	 .width = 3, .row = 0, .col = 0},
 	{(char *[]){(char[]){1, 1},
 				(char[]){1, 1}},
-	 2, 0, 0},
+	 .width = 2, .row = 0, .col = 0},
 	{(char *[]){(char[]){0, 0, 0, 0},
 				(char[]){1, 1, 1, 1},
 				(char[]){0, 0, 0, 0},
 				(char[]){0, 0, 0, 0}},
-	 4, 0, 0}};
+	 .width = 4, .row = 0, .col = 0}};
 
-t_mino FunctionCS(t_mino shape)
+t_mino FunctionCS(t_mino mino)
 {
-	t_mino new_shape = shape;
+	t_mino new_shape = mino;
 	new_shape.array = (char **)malloc(new_shape.width * sizeof(char *));
 	for (int i = 0; i < new_shape.width; i++)
 	{
 		new_shape.array[i] = (char *)malloc(new_shape.width * sizeof(char));
 		for (int j = 0; j < new_shape.width; j++)
 		{
-			new_shape.array[i][j] = shape.array[i][j];
+			new_shape.array[i][j] = mino.array[i][j];
 		}
 	}
 	return new_shape;
 }
 
-void FunctionDS(t_mino shape)
+void FunctionDS(t_mino mino)
 {
 	int i;
-	for (i = 0; i < shape.width; i++)
+	for (i = 0; i < mino.width; i++)
 	{
-		free(shape.array[i]);
+		free(mino.array[i]);
 	}
-	free(shape.array);
+	free(mino.array);
 }
 
-int FunctionCP(t_mino shape)
+int FunctionCP(t_mino mino)
 {
-	char **array = shape.array;
+	char **array = mino.array;
 	int i, j;
-	for (i = 0; i < shape.width; i++)
+	for (i = 0; i < mino.width; i++)
 	{
-		for (j = 0; j < shape.width; j++)
+		for (j = 0; j < mino.width; j++)
 		{
-			if ((shape.col + j < 0 || shape.col + j >= C || shape.row + i >= R))
+			if ((mino.col + j < 0 || mino.col + j >= C || mino.row + i >= R))
 			{
 				if (array[i][j])
 					return F;
 			}
-			else if (g_table[shape.row + i][shape.col + j] && array[i][j])
+			else if (g_table[mino.row + i][mino.col + j] && array[i][j])
 				return F;
 		}
 	}
 	return T;
 }
 
-void FunctionRS(t_mino shape)
+void FunctionRS(t_mino mino)
 {
-	t_mino temp = FunctionCS(shape);
+	t_mino temp = FunctionCS(mino);
 	int i, j, k, width;
-	width = shape.width;
+	width = mino.width;
 	for (i = 0; i < width; i++)
 	{
 		for (j = 0, k = width - 1; j < width; j++, k--)
 		{
-			shape.array[i][j] = temp.array[k][i];
+			mino.array[i][j] = temp.array[k][i];
 		}
 	}
 	FunctionDS(temp);
