@@ -3,11 +3,13 @@
 #include <time.h>
 #include <sys/time.h>
 #include <ncurses.h>
+#include <stdint.h>
 
 #define ROW 20
 #define COL 15
 
-char g_field[ROW][COL] = {0};
+typedef uint8_t t_field[ROW][COL];
+t_field g_field = {0};
 int g_final = 0;
 bool g_game_on = true;
 suseconds_t g_timer = 400000;
@@ -153,6 +155,20 @@ void rotate_right(t_mino mino)
 	free_mino(temp);
 }
 
+void update_field(t_field field)
+{
+	for (size_t i = 0; i < g_current.mino_shape.width; i++)
+	{
+		for (size_t j = 0; j < g_current.mino_shape.width; j++)
+		{
+			if (g_current.mino_shape.shape[i][j])
+			{
+				field[g_current.row + i][g_current.col + j] = g_current.mino_shape.shape[i][j];
+			}
+		}
+	}
+}
+
 static void print_header()
 {
 	for (size_t i = 0; i < COL / 2; i++)
@@ -162,22 +178,15 @@ static void print_header()
 
 void print_field()
 {
-	char Buffer[ROW][COL] = {0};
-	for (size_t i = 0; i < g_current.mino_shape.width; i++)
-	{
-		for (size_t j = 0; j < g_current.mino_shape.width; j++)
-		{
-			if (g_current.mino_shape.shape[i][j])
-				Buffer[g_current.row + i][g_current.col + j] = g_current.mino_shape.shape[i][j];
-		}
-	}
+	t_field current_field = {};
+	update_field(current_field);
 	clear();
 	print_header();
 	for (size_t i = 0; i < ROW; i++)
 	{
 		for (size_t j = 0; j < COL; j++)
 		{
-			printw("%c ", g_field[i][j] || Buffer[i][j] ? '#' : '.');
+			printw("%c ", g_field[i][j] || current_field[i][j] ? '#' : '.');
 		}
 		printw("\n");
 	}
@@ -229,20 +238,6 @@ void end_game()
 	printf("\nScore: %d\n", g_final);
 }
 
-void update_field()
-{
-	for (size_t i = 0; i < g_current.mino_shape.width; i++)
-	{
-		for (size_t j = 0; j < g_current.mino_shape.width; j++)
-		{
-			if (g_current.mino_shape.shape[i][j])
-			{
-				g_field[g_current.row + i][g_current.col + j] = g_current.mino_shape.shape[i][j];
-			}
-		}
-	}
-}
-
 int main()
 {
 	init_game();
@@ -263,7 +258,7 @@ int main()
 				}
 				else
 				{
-					update_field();
+					update_field(g_field);
 					int count = 0;
 					for (size_t n = 0; n < ROW; n++)
 					{
