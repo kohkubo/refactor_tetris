@@ -4,6 +4,7 @@
 #include <sys/time.h>
 #include <ncurses.h>
 #include <stdint.h>
+#include <limits.h>
 
 #define ROW 20
 #define COL 15
@@ -238,10 +239,13 @@ void end_game()
 	printf("\nScore: %d\n", g_score);
 }
 
+typedef void (*t_keyhook_func)(t_mino *);
+
 int main()
 {
 	init_game();
 	print_field();
+	t_keyhook_func keyhook_func[UCHAR_MAX];
 	while (g_game_on)
 	{
 		int c = getch();
@@ -251,49 +255,9 @@ int main()
 			switch (c)
 			{
 			case 's':
-				temp.row++; // move down
+				temp.row++;
 				if (FunctionCP(temp))
-				{
 					g_current.row++;
-				}
-				else
-				{
-					update_field(g_field);
-					int count = 0;
-					for (size_t n = 0; n < ROW; n++)
-					{
-						int sum = 0;
-						for (size_t m = 0; m < COL; m++)
-						{
-							sum += g_field[n][m];
-						}
-						if (sum == COL)
-						{
-							count++;
-							int l, k;
-							for (k = n; k >= 1; k--)
-							{
-								for (l = 0; l < COL; l++)
-								{
-									g_field[k][l] = g_field[k - 1][l];
-								}
-							}
-							for (l = 0; l < COL; l++)
-							{
-								g_field[k][l] = 0;
-							}
-							g_timer -= g_decrease--;
-						}
-					}
-					g_score += 100 * count;
-					t_mino new_shape = generate_random_mino();
-					free_mino(g_current);
-					g_current = new_shape;
-					if (!FunctionCP(g_current))
-					{
-						g_game_on = false;
-					}
-				}
 				break;
 			case 'd':
 				temp.col++;
@@ -356,6 +320,7 @@ int main()
 							g_timer -= g_decrease--;
 						}
 					}
+					g_score += 100 * count;
 					t_mino new_shape = generate_random_mino();
 					free_mino(g_current);
 					g_current = new_shape;
