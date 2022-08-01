@@ -19,6 +19,12 @@ int g_decrease = 1000;
 
 typedef struct
 {
+	int row;
+	int col;
+} t_point;
+
+typedef struct
+{
 	char **shape;
 	size_t width;
 } t_mino_shape;
@@ -26,8 +32,7 @@ typedef struct
 typedef struct
 {
 	t_mino_shape mino_shape;
-	int row;
-	int col;
+	t_point pos;
 } t_mino;
 t_mino g_current;
 
@@ -130,14 +135,14 @@ bool can_place_in_field(t_mino mino)
 	{
 		for (size_t j = 0; j < mino.mino_shape.width; j++)
 		{
-			if ((mino.col + j < 0 || mino.col + j >= COL || mino.row + i >= ROW))
+			if ((mino.pos.col + j < 0 || mino.pos.col + j >= COL || mino.pos.row + i >= ROW))
 			{
 				if (shape[i][j])
 				{
 					return false;
 				}
 			}
-			else if (g_field[mino.row + i][mino.col + j] && shape[i][j])
+			else if (g_field[mino.pos.row + i][mino.pos.col + j] && shape[i][j])
 				return false;
 		}
 	}
@@ -165,7 +170,7 @@ void update_field(t_field field)
 		{
 			if (g_current.mino_shape.shape[i][j])
 			{
-				field[g_current.row + i][g_current.col + j] = g_current.mino_shape.shape[i][j];
+				field[g_current.pos.row + i][g_current.pos.col + j] = g_current.mino_shape.shape[i][j];
 			}
 		}
 	}
@@ -206,8 +211,8 @@ t_mino generate_random_mino()
 {
 	t_mino new_mino;
 	new_mino.mino_shape = copy_mino_shape(g_mino_shapes[rand() % sizeof(g_mino_shapes) / sizeof(t_mino_shape)]);
-	new_mino.col = rand() % (COL - new_mino.mino_shape.width + 1);
-	new_mino.row = 0;
+	new_mino.pos.col = rand() % (COL - new_mino.mino_shape.width + 1);
+	new_mino.pos.row = 0;
 	return new_mino;
 }
 
@@ -256,19 +261,19 @@ int main()
 			switch (c)
 			{
 			case 's':
-				temp.row++;
+				temp.pos.row++;
 				if (can_place_in_field(temp))
-					g_current.row++;
+					g_current.pos.row++;
 				break;
 			case 'd':
-				temp.col++;
+				temp.pos.col++;
 				if (can_place_in_field(temp))
-					g_current.col++;
+					g_current.pos.col++;
 				break;
 			case 'a':
-				temp.col--;
+				temp.pos.col--;
 				if (can_place_in_field(temp))
-					g_current.col--;
+					g_current.pos.col--;
 				break;
 			case 'w':
 				rotate_right(temp);
@@ -286,10 +291,10 @@ int main()
 			switch ('s')
 			{
 			case 's':
-				temp.row++;
+				temp.pos.row++;
 				if (can_place_in_field(temp))
 				{
-					g_current.row++;
+					g_current.pos.row++;
 				}
 				else
 				{
@@ -298,7 +303,7 @@ int main()
 						for (size_t j = 0; j < g_current.mino_shape.width; j++)
 						{
 							if (g_current.mino_shape.shape[i][j])
-								g_field[g_current.row + i][g_current.col + j] = g_current.mino_shape.shape[i][j];
+								g_field[g_current.pos.row + i][g_current.pos.col + j] = g_current.mino_shape.shape[i][j];
 						}
 					}
 					int sum, count = 0;
