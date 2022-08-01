@@ -10,6 +10,7 @@
 #define COL 15
 
 typedef uint8_t t_field[ROW][COL];
+
 t_field g_field = {0};
 int g_score = 0;
 bool g_game_on = true;
@@ -122,7 +123,7 @@ void free_mino(t_mino mino)
 	free(mino.mino_shape.shape);
 }
 
-bool FunctionCP(t_mino mino)
+bool can_place_in_field(t_mino mino)
 {
 	char **shape = mino.mino_shape.shape;
 	for (size_t i = 0; i < mino.mino_shape.width; i++)
@@ -218,7 +219,7 @@ void init_game()
 	gettimeofday(&g_before_now, NULL);
 	timeout(1);
 	g_current = generate_random_mino();
-	if (!FunctionCP(g_current))
+	if (!can_place_in_field(g_current))
 	{
 		g_game_on = false;
 	}
@@ -245,7 +246,7 @@ int main()
 {
 	init_game();
 	print_field();
-	t_keyhook_func keyhook_func[UCHAR_MAX];
+	// t_keyhook_func keyhook_func[UCHAR_MAX];
 	while (g_game_on)
 	{
 		int c = getch();
@@ -256,22 +257,22 @@ int main()
 			{
 			case 's':
 				temp.row++;
-				if (FunctionCP(temp))
+				if (can_place_in_field(temp))
 					g_current.row++;
 				break;
 			case 'd':
 				temp.col++;
-				if (FunctionCP(temp))
+				if (can_place_in_field(temp))
 					g_current.col++;
 				break;
 			case 'a':
 				temp.col--;
-				if (FunctionCP(temp))
+				if (can_place_in_field(temp))
 					g_current.col--;
 				break;
 			case 'w':
 				rotate_right(temp);
-				if (FunctionCP(temp))
+				if (can_place_in_field(temp))
 					rotate_right(g_current);
 				break;
 			}
@@ -286,7 +287,7 @@ int main()
 			{
 			case 's':
 				temp.row++;
-				if (FunctionCP(temp))
+				if (can_place_in_field(temp))
 				{
 					g_current.row++;
 				}
@@ -324,7 +325,7 @@ int main()
 					t_mino new_shape = generate_random_mino();
 					free_mino(g_current);
 					g_current = new_shape;
-					if (!FunctionCP(g_current))
+					if (!can_place_in_field(g_current))
 					{
 						g_game_on = false;
 					}
