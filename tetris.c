@@ -200,7 +200,6 @@ void init_game()
 	{
 		g_game_on = false;
 	}
-	print_field();
 }
 
 void end_game()
@@ -219,6 +218,7 @@ void end_game()
 int main()
 {
 	init_game();
+	print_field();
 	while (g_game_on) {
 		int c = getch();
 		if (c != ERR) {
