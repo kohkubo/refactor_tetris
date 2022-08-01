@@ -5,13 +5,14 @@
 #include <ncurses.h>
 #include <stdint.h>
 #include <limits.h>
+#include <assert.h>
 
 #define ROW 20
 #define COL 15
 
 typedef uint8_t t_field[ROW][COL];
 
-t_field g_field = {0};
+t_field g_field = {};
 int g_score = 0;
 bool g_game_on = true;
 suseconds_t g_timer = 400000;
@@ -128,21 +129,21 @@ void free_mino(t_mino mino)
 	free(mino.mino_shape.shape);
 }
 
-bool can_place_in_field(t_mino mino)
+bool can_place_in_field(t_mino mino, t_point dest)
 {
 	char **shape = mino.mino_shape.shape;
 	for (size_t i = 0; i < mino.mino_shape.width; i++)
 	{
 		for (size_t j = 0; j < mino.mino_shape.width; j++)
 		{
-			if ((mino.pos.col + j < 0 || mino.pos.col + j >= COL || mino.pos.row + i >= ROW))
+			if ((dest.col + j < 0 || dest.col + j >= COL || dest.row + i >= ROW))
 			{
 				if (shape[i][j])
 				{
 					return false;
 				}
 			}
-			else if (g_field[mino.pos.row + i][mino.pos.col + j] && shape[i][j])
+			else if (g_field[dest.row + i][dest.col + j] && shape[i][j])
 				return false;
 		}
 	}
@@ -200,13 +201,6 @@ void print_field()
 	printw("\nScore: %d\n", g_score);
 }
 
-struct timeval g_before_now;
-struct timeval g_now;
-bool hasToUpdate()
-{
-	return ((suseconds_t)(g_now.tv_sec * 1000000 + g_now.tv_usec) - ((suseconds_t)g_before_now.tv_sec * 1000000 + g_before_now.tv_usec)) > g_timer;
-}
-
 t_mino generate_random_mino()
 {
 	t_mino new_mino;
@@ -216,19 +210,51 @@ t_mino generate_random_mino()
 	return new_mino;
 }
 
-void init_game()
+t_point down(t_point pos)
 {
-	srand(time(0));
-	g_score = 0;
-	initscr();
-	gettimeofday(&g_before_now, NULL);
-	timeout(1);
-	g_current = generate_random_mino();
-	if (!can_place_in_field(g_current))
-	{
-		g_game_on = false;
-	}
+	return (t_point){pos.row + 1, pos.col};
 }
+
+t_point left(t_point pos)
+{
+	return (t_point){pos.row, pos.col - 1};
+}
+
+t_point right(t_point pos)
+{
+	return (t_point){pos.row, pos.col + 1};
+}
+
+void key_action_down()
+{
+	if (can_place_in_field(g_current, down(g_current.pos)))
+		g_current.pos = down(g_current.pos);
+}
+
+void key_action_left()
+{
+	if (can_place_in_field(g_current, left(g_current.pos)))
+		g_current.pos = left(g_current.pos);
+}
+
+void key_action_right()
+{
+	if (can_place_in_field(g_current, right(g_current.pos)))
+		g_current.pos = right(g_current.pos);
+}
+
+void key_action_rotate()
+{
+	t_mino temp = copy_mino(g_current);
+	rotate_right(temp);
+	if (can_place_in_field(temp, temp.pos))
+		rotate_right(g_current);
+	free_mino(temp);
+}
+
+typedef void (*t_keyhook_func)(t_mino *);
+
+t_keyhook_func g_keyhooks[UCHAR_MAX] = {};
 
 void end_game()
 {
@@ -245,99 +271,85 @@ void end_game()
 	printf("\nScore: %d\n", g_score);
 }
 
-typedef void (*t_keyhook_func)(t_mino *);
+struct timeval g_before_now;
+struct timeval g_now;
+bool hasToUpdate()
+{
+	return ((suseconds_t)(g_now.tv_sec * 1000000 + g_now.tv_usec) - ((suseconds_t)g_before_now.tv_sec * 1000000 + g_before_now.tv_usec)) > g_timer;
+}
+
+void init_game()
+{
+	srand(time(0));
+	g_score = 0;
+	initscr();
+	gettimeofday(&g_before_now, NULL);
+	timeout(1);
+	g_current = generate_random_mino();
+	// assert(can_place_in_field(g_current, g_current.pos));
+	g_keyhooks['s'] = key_action_down;
+	g_keyhooks['a'] = key_action_left;
+	g_keyhooks['d'] = key_action_right;
+	g_keyhooks['w'] = key_action_rotate;
+}
 
 int main()
 {
 	init_game();
 	print_field();
-	// t_keyhook_func keyhook_func[UCHAR_MAX];
 	while (g_game_on)
 	{
 		int c = getch();
-		if (c != ERR)
+		if (c != ERR && g_keyhooks[c])
 		{
-			t_mino temp = copy_mino(g_current);
-			switch (c)
-			{
-			case 's':
-				temp.pos.row++;
-				if (can_place_in_field(temp))
-					g_current.pos.row++;
-				break;
-			case 'd':
-				temp.pos.col++;
-				if (can_place_in_field(temp))
-					g_current.pos.col++;
-				break;
-			case 'a':
-				temp.pos.col--;
-				if (can_place_in_field(temp))
-					g_current.pos.col--;
-				break;
-			case 'w':
-				rotate_right(temp);
-				if (can_place_in_field(temp))
-					rotate_right(g_current);
-				break;
-			}
-			free_mino(temp);
+			g_keyhooks[c](&g_current);
 			print_field();
 		}
 		gettimeofday(&g_now, NULL);
 		if (hasToUpdate())
 		{
-			t_mino temp = copy_mino(g_current);
-			switch ('s')
+			if (can_place_in_field(g_current, down(g_current.pos)))
 			{
-			case 's':
-				temp.pos.row++;
-				if (can_place_in_field(temp))
-				{
-					g_current.pos.row++;
-				}
-				else
-				{
-					for (size_t i = 0; i < g_current.mino_shape.width; i++)
-					{
-						for (size_t j = 0; j < g_current.mino_shape.width; j++)
-						{
-							if (g_current.mino_shape.shape[i][j])
-								g_field[g_current.pos.row + i][g_current.pos.col + j] = g_current.mino_shape.shape[i][j];
-						}
-					}
-					int sum, count = 0;
-					for (size_t n = 0; n < ROW; n++)
-					{
-						sum = 0;
-						for (size_t m = 0; m < COL; m++)
-						{
-							sum += g_field[n][m];
-						}
-						if (sum == COL)
-						{
-							count++;
-							int l, k;
-							for (k = n; k >= 1; k--)
-								for (l = 0; l < COL; l++)
-									g_field[k][l] = g_field[k - 1][l];
-							for (l = 0; l < COL; l++)
-								g_field[k][l] = 0;
-							g_timer -= g_decrease--;
-						}
-					}
-					g_score += 100 * count;
-					t_mino new_shape = generate_random_mino();
-					free_mino(g_current);
-					g_current = new_shape;
-					if (!can_place_in_field(g_current))
-					{
-						g_game_on = false;
-					}
-				}
-				break;
+				g_current.pos = down(g_current.pos);
 			}
-			free_mino(temp);
+			else
+			{
+				update_field(g_field);
+				size_t sum, count = 0;
+				for (size_t n = 0; n < ROW; n++)
+				{
+					sum = 0;
+					for (size_t m = 0; m < COL; m++)
+					{
+						sum += g_field[n][m];
+					}
+					if (sum == COL)
+					{
+						count++;
+						size_t k;
+						for (k = n; k >= 1; k--)
+						{
+							for (size_t l = 0; l < COL; l++)
+							{
+								g_field[k][l] = g_field[k - 1][l];
+							}
+						}
+						for (size_t l = 0; l < COL; l++)
+						{
+							g_field[k][l] = 0;
+						}
+						g_timer -= g_decrease--;
+					}
+				}
+				g_score += 100 * count;
+				t_mino new_shape = generate_random_mino();
+				free_mino(g_current);
+				g_current = new_shape;
+				if (!can_place_in_field(g_current, g_current.pos))
+				{
+					g_game_on = false;
+				}
+			}
 			print_field();
 			gettimeofday(&g_before_now, NULL);
 		}
