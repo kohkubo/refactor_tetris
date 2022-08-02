@@ -85,14 +85,15 @@ void handle_key_input(t_game *game, t_mino *mino)
 void run_tetris(t_game *game)
 {
 	t_mino mino = generate_random_mino();
+	update_screen(game, &mino);
 	while (game->game_on)
 	{
-		update_screen(game, &mino);
 		handle_key_input(game, &mino);
 		if (!is_update_time(game->turn_time_nanosec))
 		{
 			continue;
 		}
+		update_screen(game, &mino);
 		bool is_reached_bottom = try_move_down(game, &mino) == false;
 		if (is_reached_bottom)
 		{
