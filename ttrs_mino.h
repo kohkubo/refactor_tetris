@@ -12,9 +12,11 @@ typedef struct
 	int col;
 } t_point;
 
+typedef char t_shape[SHAPE_HEIGHT_MAX][SHAPE_WIDTH_MAX];
+
 typedef struct
 {
-	char shape[SHAPE_HEIGHT_MAX][SHAPE_WIDTH_MAX];
+	t_shape shape;
 	int width;
 } t_mino_type;
 

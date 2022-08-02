@@ -11,6 +11,7 @@ static int64_t get_nsec(const struct timespec *ts)
 bool is_time_to_fall(t_tetris_time *time)
 {
 	struct timespec now;
+
 	clock_gettime(CLOCK_MONOTONIC, &now);
 	int64_t now_nsec = get_nsec(&now);
 	int64_t prev_nsec = get_nsec(&time->prev_fall_time);

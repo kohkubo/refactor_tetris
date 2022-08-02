@@ -1,8 +1,8 @@
 #include "ttrs_mino.h"
 #include "tetris.h"
 
-#include <string.h>
 #include <stdlib.h>
+#include <string.h>
 
 // clang-format off
 const t_mino_type g_mino_types[] = {
@@ -59,12 +59,12 @@ const t_mino_type g_mino_types[] = {
 
 void rotate_right(t_mino_type *mino_type)
 {
-	t_mino_type temp_shape = *mino_type;
-	for (int i = 0; i < mino_type->width; i++)
-	{
-		for (int j = 0, k = mino_type->width - 1; j < mino_type->width; j++, k--)
-		{
-			mino_type->shape[i][j] = temp_shape.shape[k][i];
+	t_shape original_shape;
+
+	memcpy(mino_type->shape, original_shape, sizeof(t_shape));
+	for (int row = 0; row < mino_type->width; row++) {
+		for (int col = 0, back_col = mino_type->width - 1; col < mino_type->width; col++, back_col--) {
+			mino_type->shape[row][col] = original_shape[back_col][row];
 		}
 	}
 }

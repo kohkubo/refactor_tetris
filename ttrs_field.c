@@ -27,6 +27,7 @@ bool can_place_in_field(const t_field_ptr field_ptr,
 void place_mino_on_field(t_field_ptr current_field, t_mino *mino)
 {
 	t_point pos = mino->pos;
+
 	for (int i = 0; i < mino->mino_type.width; i++) {
 		for (int j = 0; j < mino->mino_type.width; j++) {
 			if (mino->mino_type.shape[i][j]) {
@@ -47,6 +48,7 @@ static void erase_filled_line(t_field_ptr field_ptr, int row)
 static bool is_filled_line(t_field_line_ptr line)
 {
 	int filled_cell = 0;
+
 	for (int i = 0; i < FIELD_COL; i++) {
 		filled_cell += line[i];
 	}
@@ -56,6 +58,7 @@ static bool is_filled_line(t_field_line_ptr line)
 int erase_filled_lines(t_field_ptr field_ptr)
 {
 	int count = 0;
+
 	for (int i = 0; i < FIELD_ROW; i++) {
 		if (is_filled_line(field_ptr[i])) {
 			count++;
