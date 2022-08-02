@@ -9,15 +9,15 @@
 
 static void print_header()
 {
-	for (size_t i = 0; i < FIELD_COL / 2; i++)
+	for (int i = 0; i < FIELD_COL / 2; i++)
 		printw(" ");
 	printw(GAME_TITLE);
 }
 
 void print_field(const t_field_ptr field_ptr, t_print_func print_func)
 {
-	for (size_t i = 0; i < FIELD_ROW; i++) {
-		for (size_t j = 0; j < FIELD_COL; j++) {
+	for (int i = 0; i < FIELD_ROW; i++) {
+		for (int j = 0; j < FIELD_COL; j++) {
 			char texture = field_ptr[i][j] ? BLOCK_TEXTURE : EMPTY_TEXTURE;
 			print_func("%c ", texture);
 		}

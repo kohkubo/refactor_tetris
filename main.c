@@ -62,11 +62,10 @@ static void start_tetris(t_tetris *tetris)
 			bool is_reached_ground = try_move_down(tetris, &mino) == false;
 			if (is_reached_ground) {
 				place_mino_on_field(tetris->field_ptr, &mino);
-				size_t num_of_erased = erase_filled_lines(tetris->field_ptr);
+				int num_of_erased = erase_filled_lines(tetris->field_ptr);
 				update_fall_speed(&tetris->time, num_of_erased);
 				mino = generate_random_mino();
-				tetris->is_alive =
-					can_place_in_field(tetris->field_ptr, &mino.mino_type, mino.pos);
+				tetris->is_alive = can_place_in_field(tetris->field_ptr, &mino.mino_type, mino.pos);
 				tetris->score += SCORE_UNIT * num_of_erased;
 			}
 			update_screen(tetris, &mino);

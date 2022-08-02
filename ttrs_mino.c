@@ -60,9 +60,9 @@ const t_mino_type g_mino_types[] = {
 void rotate_right(t_mino_type *mino_type)
 {
 	t_mino_type temp_shape = *mino_type;
-	for (size_t i = 0; i < mino_type->width; i++)
+	for (int i = 0; i < mino_type->width; i++)
 	{
-		for (size_t j = 0, k = mino_type->width - 1; j < mino_type->width; j++, k--)
+		for (int j = 0, k = mino_type->width - 1; j < mino_type->width; j++, k--)
 		{
 			mino_type->shape[i][j] = temp_shape.shape[k][i];
 		}

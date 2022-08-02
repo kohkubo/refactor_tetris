@@ -18,6 +18,6 @@ typedef struct
 } t_tetris_time;
 
 bool is_time_to_fall(t_tetris_time *time);
-void update_fall_speed(t_tetris_time *time, size_t count);
+void update_fall_speed(t_tetris_time *time, int count);
 
 #endif /* TTRS_TIME_HPP */

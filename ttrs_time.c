@@ -18,12 +18,12 @@ bool is_time_to_fall(t_tetris_time *time)
 	return elapsed_time > time->interval;
 }
 
-void update_fall_speed(t_tetris_time *time, size_t count)
+void update_fall_speed(t_tetris_time *time, int count)
 {
 	if (time->interval < INTERVAL_TIME_MIN) {
 		return;
 	}
-	for (size_t i = 0; i < count; i++) {
+	for (int i = 0; i < count; i++) {
 		time->interval -= time->decrease_time;
 		if (time->decrease_time > DECREASE_UNIT_TIME)
 			time->decrease_time -= DECREASE_UNIT_TIME;

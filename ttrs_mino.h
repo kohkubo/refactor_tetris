@@ -15,7 +15,7 @@ typedef struct
 typedef struct
 {
 	char shape[SHAPE_HEIGHT_MAX][SHAPE_WIDTH_MAX];
-	size_t width;
+	int width;
 } t_mino_type;
 
 typedef struct
