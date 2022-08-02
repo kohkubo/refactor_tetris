@@ -84,15 +84,14 @@ static void run_tetris(t_game *game)
 				size_t count = erase_filled_lines(game->field_ptr);
 
 				game->score += 100 * count;
-				game->turn_time_nanosec -= turn_time_decrease(count);
+				game->interval_nanosec -= turn_time_decrease(count);
 				mino = generate_random_mino();
-				game->game_on = can_place_in_field(game->field_ptr, &mino->mino_type, mino->pos);
+				game->game_on = can_place_in_field(game->field_ptr, &mino.mino_type, mino.pos);
 			}
-			update_screen(game, mino);
+			update_screen(game, &mino);
 			clock_gettime(CLOCK_MONOTONIC, &g_time_spec);
 		}
 	}
-	free_mino(&mino);
 }
 
 static void run_game()

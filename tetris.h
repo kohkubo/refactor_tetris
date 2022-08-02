@@ -63,7 +63,7 @@ bool try_move_rotate(t_game *game, t_mino *mino);
 
 long turn_time_decrease(size_t count);
 bool is_update_time(long turn_time_nanosec);
-t_mino *generate_random_mino();
+t_mino generate_random_mino();
 
 void rotate_right(t_mino_type *mino_type);
 

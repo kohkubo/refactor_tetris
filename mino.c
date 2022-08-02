@@ -73,11 +73,12 @@ void rotate_right(t_mino_type *mino_type)
 	}
 }
 
-t_mino *generate_random_mino()
+t_mino generate_random_mino()
 {
-	t_mino *mino = (t_mino *)malloc(sizeof(t_mino));
-	mino->mino_type = g_mino_types[rand() % (sizeof(g_mino_types) / sizeof(t_mino_type))];
-	mino->pos.col = rand() % (FIELD_COL - mino->mino_type.width + 1);
-	mino->pos.row = 0;
+	t_mino mino;
+
+	mino.mino_type = g_mino_types[rand() % (sizeof(g_mino_types) / sizeof(t_mino_type))];
+	mino.pos.col = rand() % (FIELD_COL - mino.mino_type.width + 1);
+	mino.pos.row = 0;
 	return mino;
 }
