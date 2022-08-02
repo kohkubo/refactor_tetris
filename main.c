@@ -52,6 +52,23 @@ static t_tetris create_tetris()
 	return tetris;
 }
 
+static void update_score(t_tetris *tetris, int num_of_erased)
+{
+	tetris->score += SCORE_UNIT * num_of_erased;
+}
+
+static void update_is_alive(t_tetris *tetris, const t_mino *mino)
+{
+	tetris->is_alive = can_place_in_field(tetris->field_ptr, &mino->mino_type, mino->pos);
+}
+
+static void update_game_status(t_tetris *tetris, const t_mino *mino, int num_of_erased)
+{
+	update_is_alive(tetris, mino);
+	update_fall_speed(&tetris->time, num_of_erased);
+	update_score(tetris, num_of_erased);
+}
+
 static void start_tetris(t_tetris *tetris)
 {
 	t_mino mino = generate_random_mino();
@@ -59,14 +76,12 @@ static void start_tetris(t_tetris *tetris)
 	while (tetris->is_alive) {
 		handle_key_input(tetris, &mino);
 		if (is_time_to_fall(&tetris->time)) {
-			bool is_reached_ground = try_move_down(tetris, &mino) == false;
+			bool is_reached_ground = !try_move_down(tetris, &mino);
 			if (is_reached_ground) {
 				place_mino_on_field(tetris->field_ptr, &mino);
 				int num_of_erased = erase_filled_lines(tetris->field_ptr);
-				update_fall_speed(&tetris->time, num_of_erased);
 				mino = generate_random_mino();
-				tetris->is_alive = can_place_in_field(tetris->field_ptr, &mino.mino_type, mino.pos);
-				tetris->score += SCORE_UNIT * num_of_erased;
+				update_game_status(tetris, &mino, num_of_erased);
 			}
 			update_screen(tetris, &mino);
 			clock_gettime(CLOCK_MONOTONIC, &tetris->time.prev_fall_time);
