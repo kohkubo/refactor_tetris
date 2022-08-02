@@ -1,7 +1,7 @@
 NAME := tetris
 
 CC := gcc
-CFLAGS := -Wall -Werror -Wextra -MMD -MP -g -fsanitize=address -fsanitize=undefined
+CFLAGS := -Wall -Werror -Wextra -MMD -MP -O2
 
 SRCDIR := .
 OBJDIR := ./obj
@@ -27,5 +27,8 @@ fclean: clean
 	rm -f $(NAME)
 
 re: fclean all
+
+debug: CFLAGS +=  -g -fsanitize=address -fsanitize=undefined
+debug: re
 
 .PHONY: FORCE
