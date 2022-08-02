@@ -11,7 +11,7 @@ static int64_t get_nsec(const struct timespec *ts)
 	return ts->tv_sec * 1000000000 + ts->tv_nsec;
 }
 
-bool has_to_update(long turn_time_nanosec)
+bool is_update_time(long turn_time_nanosec)
 {
 	struct timespec now;
 	clock_gettime(CLOCK_MONOTONIC, &now);

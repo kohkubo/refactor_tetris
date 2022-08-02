@@ -89,7 +89,7 @@ void run_tetris(t_game *game)
 	{
 		update_screen(game, &mino);
 		handle_key_input(game, &mino);
-		if (!has_to_update(game->turn_time_nanosec))
+		if (!is_update_time(game->turn_time_nanosec))
 		{
 			continue;
 		}

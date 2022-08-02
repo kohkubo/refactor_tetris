@@ -58,7 +58,7 @@ bool try_move_left(t_game *game, t_mino *mino);
 bool try_move_right(t_game *game, t_mino *mino);
 bool try_move_rotate(t_game *game, t_mino *mino);
 long turn_time_decrease(size_t count);
-bool has_to_update(long turn_time_nanosec);
+bool is_update_time(long turn_time_nanosec);
 size_t handle_filled_lines();
 void run_tetris();
 void run_game();
