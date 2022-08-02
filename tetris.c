@@ -6,6 +6,7 @@
 #include <stdint.h>
 #include <limits.h>
 #include <assert.h>
+#include <string.h>
 
 #define ROW 20
 #define COL 15
@@ -105,10 +106,7 @@ t_mino_shape copy_mino_shape(t_mino_shape mino_shape)
 	for (size_t i = 0; i < mino_shape.width; i++)
 	{
 		new_mino_shape.shape[i] = (char *)malloc(sizeof(char) * mino_shape.width);
-		for (size_t j = 0; j < mino_shape.width; j++)
-		{
-			new_mino_shape.shape[i][j] = mino_shape.shape[i][j];
-		}
+		memcpy(new_mino_shape.shape[i], mino_shape.shape[i], mino_shape.width);
 	}
 	return new_mino_shape;
 }
