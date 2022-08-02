@@ -81,11 +81,9 @@ static void run_tetris(t_game *game)
 			if (is_reached_ground)
 			{
 				place_mino_on_field(game->field_ptr, &mino);
-
-				size_t count = erase_filled_lines(game->field_ptr);
-
-				game->score += 100 * count;
-				game->interval_nanosec -= turn_time_decrease(count);
+				size_t num_of_erased = erase_filled_lines(game->field_ptr);
+				game->score += 100 * num_of_erased;
+				game->interval_nanosec -= turn_time_decrease(num_of_erased);
 				mino = generate_random_mino();
 				game->game_on = can_place_in_field(game->field_ptr, &mino.mino_type, mino.pos);
 			}
