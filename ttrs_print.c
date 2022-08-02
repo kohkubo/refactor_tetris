@@ -34,9 +34,9 @@ static void print_body(const t_field field, t_mino *mino)
 	print_field(current_field, printw);
 }
 
-void print_score(int score)
+void print_score(int score, t_print_func print_func)
 {
-	printw("\nScore: %d\n", score);
+	print_func("\nScore: %d\n", score);
 }
 
 void update_screen(const t_tetris *tetris, t_mino *mino)
@@ -44,5 +44,5 @@ void update_screen(const t_tetris *tetris, t_mino *mino)
 	clear();
 	print_header();
 	print_body(tetris->field, mino);
-	print_score(tetris->score);
+	print_score(tetris->score, printw);
 }

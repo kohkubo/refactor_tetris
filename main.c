@@ -1,8 +1,8 @@
 #include <limits.h>
 #include <ncurses.h>
 #include <stdio.h>
-#include <time.h>
 #include <stdlib.h>
+#include <time.h>
 
 #include "tetris.h"
 #include "ttrs_field.h"
@@ -29,7 +29,7 @@ static void end_tetris(const t_tetris *tetris)
 {
 	print_field(tetris->field, printf);
 	puts(GAME_OVER);
-	print_score(tetris->score);
+	print_score(tetris->score, printf);
 }
 
 static void assign_keyhook_funcp()
