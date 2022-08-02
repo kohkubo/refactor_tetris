@@ -6,6 +6,8 @@ DEPS := $(SRCS:.c=.d)
 CFLAGS := -Wall -Werror -Wextra -MMD -MP -g -fsanitize=address -fsanitize=undefined
 CC := gcc
 
+all : $(NAME)
+
 -include $(DEPS)
 
 $(NAME): $(OBJS)

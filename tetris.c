@@ -79,13 +79,13 @@ void handle_key_input(t_game *game, t_mino *mino)
 	if (c != ERR && g_keyhooks[c])
 	{
 		g_keyhooks[c](game, mino);
+		update_screen(game, mino);
 	}
 }
 
 void run_tetris(t_game *game)
 {
 	t_mino mino = generate_random_mino();
-	update_screen(game, &mino);
 	while (game->game_on)
 	{
 		handle_key_input(game, &mino);
@@ -93,12 +93,12 @@ void run_tetris(t_game *game)
 		{
 			continue;
 		}
-		update_screen(game, &mino);
 		bool is_reached_bottom = try_move_down(game, &mino) == false;
 		if (is_reached_bottom)
 		{
 			reach_bottom(game, &mino);
 		}
+		update_screen(game, &mino);
 		clock_gettime(CLOCK_MONOTONIC, &g_time_spec);
 	}
 	free_mino(mino);
