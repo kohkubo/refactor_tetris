@@ -14,8 +14,6 @@
 struct timespec g_time_spec;
 t_keyhook_func g_keyhooks[UCHAR_MAX] = {};
 
-int fd;
-
 static void end_game(const t_game *game)
 {
 	for (size_t i = 0; i < FIELD_ROW; i++)
