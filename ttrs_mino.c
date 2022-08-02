@@ -1,6 +1,8 @@
+#include "ttrs_mino.h"
 #include "tetris.h"
 
 #include <string.h>
+#include <stdlib.h>
 
 // clang-format off
 const t_mino_type g_mino_types[] = {
@@ -55,12 +57,6 @@ const t_mino_type g_mino_types[] = {
 };
 // clang-format on
 
-void free_mino(t_mino **mino)
-{
-	free(*mino);
-	*mino = NULL;
-}
-
 void rotate_right(t_mino_type *mino_type)
 {
 	t_mino_type temp_shape = *mino_type;
@@ -73,11 +69,13 @@ void rotate_right(t_mino_type *mino_type)
 	}
 }
 
+#define ARRAY_SIZE(X) (sizeof(X) / sizeof(X[0]))
+
 t_mino generate_random_mino()
 {
 	t_mino mino;
 
-	mino.mino_type = g_mino_types[rand() % (sizeof(g_mino_types) / sizeof(t_mino_type))];
+	mino.mino_type = g_mino_types[rand() % ARRAY_SIZE(g_mino_types)];
 	mino.pos.col = rand() % (FIELD_COL - mino.mino_type.width + 1);
 	mino.pos.row = 0;
 	return mino;

@@ -1,0 +1,14 @@
+{
+  BasedOnStyle: LLVM,
+  UseTab: Always,
+  IndentWidth: 4,
+  TabWidth: 4,
+  BreakBeforeBraces: Linux,
+  AllowShortFunctionsOnASingleLine: Empty,
+  IndentCaseLabels: false,
+  NamespaceIndentation: All,
+  BreakConstructorInitializers: BeforeColon,
+  AlwaysBreakTemplateDeclarations: Yes,
+  SpacesInAngles: Leave,
+  ColumnLimit: 0,
+}
