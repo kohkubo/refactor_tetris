@@ -18,11 +18,11 @@ int fd;
 
 static void end_game(const t_game *game)
 {
-	for (size_t i = 0; i < ROW; i++)
+	for (size_t i = 0; i < FIELD_ROW; i++)
 	{
-		for (size_t j = 0; j < COL; j++)
+		for (size_t j = 0; j < FIELD_COL; j++)
 		{
-			printf("%c ", game->field[i][j] ? '#' : '.');
+			printf("%c ", game->field_ptr[i][j] ? '#' : '.');
 		}
 		putchar('\n');
 	}
@@ -50,27 +50,12 @@ static void init_all()
 static t_game create_game()
 {
 	t_game game = {
-		.field = {},
+		.field_ptr = {},
 		.score = 0,
 		.game_on = true,
 		.turn_time_nanosec = INIT_TURN_TIME,
 	};
 	return game;
-}
-
-void reach_bottom(t_game *game, t_mino *mino)
-{
-	update_field(game->field, mino);
-
-	size_t count = handle_filled_lines(&game->field);
-
-	game->score += 100 * count;
-	game->turn_time_nanosec -= turn_time_decrease(count);
-
-	free_mino(*mino);
-	*mino = generate_random_mino();
-
-	game->game_on = can_place_in_field(game->field, &mino->mino_shape, mino->pos);
 }
 
 void handle_key_input(t_game *game, t_mino *mino)
@@ -83,28 +68,40 @@ void handle_key_input(t_game *game, t_mino *mino)
 	}
 }
 
-void run_tetris(t_game *game)
+static void run_tetris(t_game *game)
 {
-	t_mino mino = generate_random_mino();
+	t_mino *mino = NULL;
 	while (game->game_on)
 	{
-		handle_key_input(game, &mino);
+		if (!mino)
+		{
+			mino = generate_random_mino();
+			game->game_on = can_place_in_field(game->field_ptr, &mino->mino_type, mino->pos);
+		}
+		handle_key_input(game, mino);
 		if (!is_update_time(game->turn_time_nanosec))
 		{
 			continue;
 		}
-		bool is_reached_bottom = try_move_down(game, &mino) == false;
-		if (is_reached_bottom)
+		bool is_reached_ground = try_move_down(game, mino) == false;
+		update_screen(game, mino);
+		if (is_reached_ground)
 		{
-			reach_bottom(game, &mino);
+			update_field(game->field_ptr, mino);
+
+			size_t count = erase_filled_lines(game->field_ptr);
+
+			game->score += 100 * count;
+			game->turn_time_nanosec -= turn_time_decrease(count);
+			update_screen(game, mino);
+			free_mino(&mino);
 		}
-		update_screen(game, &mino);
 		clock_gettime(CLOCK_MONOTONIC, &g_time_spec);
 	}
-	free_mino(mino);
+	free_mino(&mino);
 }
 
-void run_game()
+static void run_game()
 {
 	t_game game = create_game();
 	run_tetris(&game);
