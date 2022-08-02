@@ -62,7 +62,7 @@ bool try_move_right(t_game *game, t_mino *mino);
 bool try_move_rotate(t_game *game, t_mino *mino);
 
 long turn_time_decrease(size_t count);
-bool is_time_to_fall_free(long interval_nanosec);
+bool is_time_to_fall(long interval_nanosec);
 t_mino generate_random_mino();
 
 void rotate_right(t_mino_type *mino_type);
