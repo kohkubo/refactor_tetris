@@ -32,30 +32,35 @@
 typedef uint8_t t_field_ptr[FIELD_ROW][FIELD_COL];
 typedef uint8_t t_field_line_ptr[FIELD_ROW];
 
-typedef struct {
+typedef struct
+{
   int row;
   int col;
 } t_point;
 
-typedef struct {
+typedef struct
+{
   char shape[SHAPE_HEIGHT_MAX][SHAPE_WIDTH_MAX];
   size_t width;
 } t_mino_type;
 
-typedef struct {
+typedef struct
+{
   t_mino_type mino_type;
   t_point pos;
 } t_mino;
 
-typedef struct {
+typedef struct
+{
   long interval;
   struct timespec prev_fall_time;
   long decrease_time;
 } t_tetris_time;
 
-typedef struct {
+typedef struct
+{
   t_field_ptr field_ptr;
-  int score;
+  int64_t score;
   bool is_alive;
   t_tetris_time time;
 } t_tetris;
