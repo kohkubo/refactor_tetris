@@ -1,7 +1,7 @@
-#include "ttrs_time.h"
-
 #include <sys/time.h>
 #include <time.h>
+
+#include "ttrs_time.h"
 
 static int64_t get_nsec(const struct timespec *ts)
 {

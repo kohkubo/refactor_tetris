@@ -1,3 +1,8 @@
+#include <limits.h>
+#include <ncurses.h>
+#include <stdio.h>
+#include <time.h>
+
 #include "tetris.h"
 #include "ttrs_field.h"
 #include "ttrs_keyhook.h"
@@ -5,11 +10,6 @@
 #include "ttrs_print.h"
 #include "ttrs_texture.h"
 #include "ttrs_time.h"
-
-#include <limits.h>
-#include <ncurses.h>
-#include <stdio.h>
-#include <time.h>
 
 #include "ttrs_print.h"
 

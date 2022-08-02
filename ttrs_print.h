@@ -2,6 +2,7 @@
 #define TTRS_PRINT_HPP
 
 #include "tetris.h"
+
 typedef int (*t_print_func)(const char *, ...);
 
 void print_field(const t_field field, t_print_func print_func);

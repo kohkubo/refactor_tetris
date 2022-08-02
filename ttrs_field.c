@@ -1,6 +1,6 @@
-#include "ttrs_field.h"
-
 #include <string.h>
+
+#include "ttrs_field.h"
 
 static bool is_in_field(const t_point *dest, int row, int col)
 {

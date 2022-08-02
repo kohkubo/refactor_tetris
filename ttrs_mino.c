@@ -1,8 +1,8 @@
-#include "ttrs_mino.h"
-#include "tetris.h"
-
 #include <stdlib.h>
 #include <string.h>
+
+#include "ttrs_mino.h"
+#include "tetris.h"
 
 // clang-format off
 const t_mino_type g_mino_types[] = {
