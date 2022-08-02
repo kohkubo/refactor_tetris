@@ -16,7 +16,7 @@ static void print_body(t_game *game, t_mino *mino)
 {
 	t_field_ptr current_field = {};
 
-	update_field(current_field, mino);
+	place_mino_on_field(current_field, mino);
 	for (size_t i = 0; i < FIELD_ROW; i++)
 	{
 		for (size_t j = 0; j < FIELD_COL; j++)

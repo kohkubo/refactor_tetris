@@ -48,7 +48,7 @@ typedef bool (*t_keyhook_func)(t_game *, t_mino *);
 
 void free_mino(t_mino **mino);
 
-void update_field(t_field_ptr current_field, t_mino *mino);
+void place_mino_on_field(t_field_ptr current_field, t_mino *mino);
 
 void update_screen(t_game *game, t_mino *mino);
 bool can_place_in_field(t_field_ptr field_ptr, const t_mino_type *mino_type, const t_point dest);

@@ -26,7 +26,7 @@ bool can_place_in_field(t_field_ptr field_ptr, const t_mino_type *mino_type, con
 	return true;
 }
 
-void update_field(t_field_ptr current_field, t_mino *mino)
+void place_mino_on_field(t_field_ptr current_field, t_mino *mino)
 {
 	t_point pos = mino->pos;
 	for (size_t i = 0; i < mino->mino_type.width; i++)

@@ -80,7 +80,7 @@ static void run_tetris(t_game *game)
 			bool is_reached_ground = try_move_down(game, &mino) == false;
 			if (is_reached_ground)
 			{
-				update_field(game->field_ptr, &mino);
+				place_mino_on_field(game->field_ptr, &mino);
 
 				size_t count = erase_filled_lines(game->field_ptr);
 
