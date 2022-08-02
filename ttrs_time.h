@@ -9,6 +9,7 @@
 #define INIT_INTERVAL_TIME 400000000
 #define DECREASE_UNIT_TIME 1000
 #define INTERVAL_TIME_MIN 1000
+#define SEC_TO_NSEC(sec) (sec * 1000000000)
 
 typedef struct
 {

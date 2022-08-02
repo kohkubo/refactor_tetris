@@ -5,7 +5,7 @@
 
 static int64_t get_nsec(const struct timespec *ts)
 {
-	return ts->tv_sec * 1000000000 + ts->tv_nsec;
+	return SEC_TO_NSEC(ts->tv_sec) + ts->tv_nsec;
 }
 
 bool is_time_to_fall(t_tetris_time *time)
