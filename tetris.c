@@ -86,10 +86,10 @@ static void run_tetris(t_game *game)
 
 				game->score += 100 * count;
 				game->turn_time_nanosec -= turn_time_decrease(count);
-				update_screen(game, mino);
 				free_mino(&mino);
 				mino = generate_random_mino();
 				game->game_on = can_place_in_field(game->field_ptr, &mino->mino_type, mino->pos);
+				update_screen(game, mino);
 			}
 			clock_gettime(CLOCK_MONOTONIC, &g_time_spec);
 		}
