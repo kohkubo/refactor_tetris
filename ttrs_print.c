@@ -14,22 +14,22 @@ static void print_header()
 	printw(GAME_TITLE);
 }
 
-void print_field(const t_field_ptr field_ptr, t_print_func print_func)
+void print_field(const t_field field, t_print_func print_func)
 {
 	for (int i = 0; i < FIELD_ROW; i++) {
 		for (int j = 0; j < FIELD_COL; j++) {
-			char texture = field_ptr[i][j] ? BLOCK_TEXTURE : EMPTY_TEXTURE;
+			char texture = field[i][j] ? BLOCK_TEXTURE : EMPTY_TEXTURE;
 			print_func("%c ", texture);
 		}
 		print_func("\n");
 	}
 }
 
-static void print_body(const t_field_ptr field_ptr, t_mino *mino)
+static void print_body(const t_field field, t_mino *mino)
 {
-	t_field_ptr field;
+	t_field field;
 
-	memcpy(field, field_ptr, sizeof(t_field_ptr));
+	memcpy(field, field, sizeof(t_field));
 	place_mino_on_field(field, mino);
 	print_field(field, printw);
 }
@@ -43,6 +43,6 @@ void update_screen(const t_tetris *tetris, t_mino *mino)
 {
 	clear();
 	print_header();
-	print_body(tetris->field_ptr, mino);
+	print_body(tetris->field, mino);
 	print_score(tetris->score);
 }

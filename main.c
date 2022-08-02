@@ -26,7 +26,7 @@ t_keyhook_func g_keyhooks[UCHAR_MAX] = {};
 
 static void end_tetris(const t_tetris *tetris)
 {
-	print_field(tetris->field_ptr, printf);
+	print_field(tetris->field, printf);
 	puts(GAME_OVER);
 	print_score(tetris->score);
 }
@@ -42,7 +42,7 @@ static void assign_keyhook_funcp()
 static t_tetris create_tetris()
 {
 	t_tetris tetris = {
-		.field_ptr = {},
+		.field = {},
 		.score = 0,
 		.is_alive = true,
 	};
@@ -59,7 +59,7 @@ static void update_score(t_tetris *tetris, int num_of_erased)
 
 static void update_is_alive(t_tetris *tetris, const t_mino *mino)
 {
-	tetris->is_alive = can_place_in_field(tetris->field_ptr, &mino->mino_type, mino->pos);
+	tetris->is_alive = can_place_in_field(tetris->field, &mino->mino_type, mino->pos);
 }
 
 static void update_game_status(t_tetris *tetris, const t_mino *mino, int num_of_erased)
@@ -78,8 +78,8 @@ static void start_tetris(t_tetris *tetris)
 		if (is_time_to_fall(&tetris->time)) {
 			bool is_reached_ground = !try_move_down(tetris, &mino);
 			if (is_reached_ground) {
-				place_mino_on_field(tetris->field_ptr, &mino);
-				int num_of_erased = erase_filled_lines(tetris->field_ptr);
+				place_mino_on_field(tetris->field, &mino);
+				int num_of_erased = erase_filled_lines(tetris->field);
 				mino = generate_random_mino();
 				update_game_status(tetris, &mino, num_of_erased);
 			}
