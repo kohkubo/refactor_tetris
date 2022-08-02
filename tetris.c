@@ -134,13 +134,15 @@ bool can_place_in_field(t_mino mino, t_point dest)
 	{
 		for (int j = 0; j < (int)mino.mino_shape.width; j++)
 		{
-			if (!shape[i][j]) {
-				continue ;
+			if (!shape[i][j])
+			{
+				continue;
 			}
 			if (dest.col + j < 0 ||
 				dest.col + j >= COL ||
 				dest.row + i >= ROW ||
-				g_field[dest.row + i][dest.col + j]) {
+				g_field[dest.row + i][dest.col + j])
+			{
 				return false;
 			}
 		}
@@ -297,27 +299,43 @@ void init_game()
 	g_keyhooks['w'] = key_action_rotate;
 }
 
-void handle_filled_lines()
+static void erase_filled_line(int row)
+{
+	for (size_t i = row; i > 0; i--)
+	{
+		memcpy(g_field[i], g_field[i - 1], COL);
+	}
+	memset(g_field[0], 0, COL);
+}
+
+static bool is_filled_line(int row)
+{
+	size_t filled_cell = 0;
+	for (size_t i = 0; i < COL; i++)
+	{
+		filled_cell += g_field[row][i];
+	}
+	return filled_cell == COL;
+}
+
+static void update_turn_time()
+{
+	g_timer -= g_decrease--;
+}
+
+size_t handle_filled_lines()
 {
 	size_t count = 0;
-	for (size_t n = 0; n < ROW; n++)
+	for (size_t i = 0; i < ROW; i++)
 	{
-		size_t sum = 0;
-		for (size_t m = 0; m < COL; m++)
-		{
-			sum += g_field[n][m];
-		}
-		if (sum == COL)
+		if (is_filled_line(i))
 		{
 			count++;
-			for (size_t k = n; k > 0; k--)	{
-				memcpy(g_field[k], g_field[k - 1], COL);
-			}
-			memset(g_field[0], 0, COL);
-			g_timer -= g_decrease--;
+			erase_filled_line(i);
+			update_turn_time();
 		}
 	}
-	g_score += 100 * count;
+	return count;
 }
 
 int main()
@@ -342,7 +360,8 @@ int main()
 			else
 			{
 				update_field(g_field);
-				handle_filled_lines();
+				size_t count = handle_filled_lines();
+				g_score += 100 * count;
 				free_mino(g_current);
 				g_current = generate_random_mino();
 				if (!can_place_in_field(g_current, g_current.pos))
