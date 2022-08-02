@@ -130,19 +130,19 @@ void free_mino(t_mino mino)
 bool can_place_in_field(t_mino mino, t_point dest)
 {
 	char **shape = mino.mino_shape.shape;
-	for (size_t i = 0; i < mino.mino_shape.width; i++)
+	for (int i = 0; i < (int)mino.mino_shape.width; i++)
 	{
-		for (size_t j = 0; j < mino.mino_shape.width; j++)
+		for (int j = 0; j < (int)mino.mino_shape.width; j++)
 		{
-			if ((dest.col + j < 0 || dest.col + j >= COL || dest.row + i >= ROW))
-			{
-				if (shape[i][j])
-				{
-					return false;
-				}
+			if (!shape[i][j]) {
+				continue ;
 			}
-			else if (g_field[dest.row + i][dest.col + j] && shape[i][j])
+			if (dest.col + j < 0 ||
+				dest.col + j >= COL ||
+				dest.row + i >= ROW ||
+				g_field[dest.row + i][dest.col + j]) {
 				return false;
+			}
 		}
 	}
 	return true;
