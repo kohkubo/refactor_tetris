@@ -216,49 +216,66 @@ t_mino generate_random_mino()
 	return new_mino;
 }
 
-t_point down(t_point pos)
+static t_point down(t_point pos)
 {
 	return (t_point){pos.row + 1, pos.col};
 }
 
-t_point left(t_point pos)
+static t_point left(t_point pos)
 {
 	return (t_point){pos.row, pos.col - 1};
 }
 
-t_point right(t_point pos)
+static t_point right(t_point pos)
 {
 	return (t_point){pos.row, pos.col + 1};
 }
 
-void key_action_down()
+bool move_down()
 {
 	if (can_place_in_field(g_current, down(g_current.pos)))
+	{
 		g_current.pos = down(g_current.pos);
+		return true;
+	}
+	return false;
 }
 
-void key_action_left()
+bool move_left()
 {
 	if (can_place_in_field(g_current, left(g_current.pos)))
+	{
 		g_current.pos = left(g_current.pos);
+		return true;
+	}
+	return false;
 }
 
-void key_action_right()
+bool move_right()
 {
 	if (can_place_in_field(g_current, right(g_current.pos)))
+	{
 		g_current.pos = right(g_current.pos);
+		return true;
+	}
+	return false;
 }
 
-void key_action_rotate()
+bool move_rotate()
 {
 	t_mino temp = copy_mino(g_current);
 	rotate_right(temp);
 	if (can_place_in_field(temp, temp.pos))
+	{
 		rotate_right(g_current);
+		free_mino(temp);
+		return true;
+	}
 	free_mino(temp);
+	return false;
 }
 
-typedef void (*t_keyhook_func)(t_mino *);
+typedef bool (*t_keyhook_func)(t_mino *);
 
 t_keyhook_func g_keyhooks[UCHAR_MAX] = {};
 
@@ -293,10 +310,10 @@ void init_game()
 	timeout(1);
 	g_current = generate_random_mino();
 	// assert(can_place_in_field(g_current, g_current.pos));
-	g_keyhooks['s'] = key_action_down;
-	g_keyhooks['a'] = key_action_left;
-	g_keyhooks['d'] = key_action_right;
-	g_keyhooks['w'] = key_action_rotate;
+	g_keyhooks['s'] = move_down;
+	g_keyhooks['a'] = move_left;
+	g_keyhooks['d'] = move_right;
+	g_keyhooks['w'] = move_rotate;
 }
 
 static void erase_filled_line(int row)
@@ -353,11 +370,7 @@ int main()
 		gettimeofday(&g_now, NULL);
 		if (hasToUpdate())
 		{
-			if (can_place_in_field(g_current, down(g_current.pos)))
-			{
-				g_current.pos = down(g_current.pos);
-			}
-			else
+			if (!move_down())
 			{
 				update_field(g_field);
 				size_t count = handle_filled_lines();
