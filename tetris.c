@@ -40,7 +40,7 @@ static void assign_keyhook_funcp()
 
 static void init_all()
 {
-	srand(time(0));
+	srand(time(NULL));
 	assign_keyhook_funcp();
 	initscr();
 	timeout(1);
@@ -70,33 +70,29 @@ void handle_key_input(t_game *game, t_mino *mino)
 
 static void run_tetris(t_game *game)
 {
-	t_mino *mino = NULL;
+	t_mino *mino = generate_random_mino();
 	while (game->game_on)
 	{
-		if (!mino)
-		{
-			mino = generate_random_mino();
-			game->game_on = can_place_in_field(game->field_ptr, &mino->mino_type, mino->pos);
-		}
 		handle_key_input(game, mino);
-		if (!is_update_time(game->turn_time_nanosec))
+		if (is_update_time(game->turn_time_nanosec))
 		{
-			continue;
-		}
-		bool is_reached_ground = try_move_down(game, mino) == false;
-		update_screen(game, mino);
-		if (is_reached_ground)
-		{
-			update_field(game->field_ptr, mino);
-
-			size_t count = erase_filled_lines(game->field_ptr);
-
-			game->score += 100 * count;
-			game->turn_time_nanosec -= turn_time_decrease(count);
+			bool is_reached_ground = try_move_down(game, mino) == false;
 			update_screen(game, mino);
-			free_mino(&mino);
+			if (is_reached_ground)
+			{
+				update_field(game->field_ptr, mino);
+
+				size_t count = erase_filled_lines(game->field_ptr);
+
+				game->score += 100 * count;
+				game->turn_time_nanosec -= turn_time_decrease(count);
+				update_screen(game, mino);
+				free_mino(&mino);
+				mino = generate_random_mino();
+				game->game_on = can_place_in_field(game->field_ptr, &mino->mino_type, mino->pos);
+			}
+			clock_gettime(CLOCK_MONOTONIC, &g_time_spec);
 		}
-		clock_gettime(CLOCK_MONOTONIC, &g_time_spec);
 	}
 	free_mino(&mino);
 }
