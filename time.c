@@ -6,7 +6,7 @@
 extern long g_turn_time_nanosec;
 extern struct timespec g_time_spec;
 
-int64_t get_nsec(const struct timespec *ts)
+static int64_t get_nsec(const struct timespec *ts)
 {
 	return ts->tv_sec * 1000000000 + ts->tv_nsec;
 }

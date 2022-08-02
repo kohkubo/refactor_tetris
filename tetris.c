@@ -27,7 +27,7 @@ static void end_game(const t_game *game)
 		putchar('\n');
 	}
 	puts("\nGame over!");
-	print_score();
+	print_score(game->score);
 }
 
 static void assign_keyhook_funcp()
@@ -73,7 +73,7 @@ void reach_bottom(t_game *game, t_mino *mino)
 	game->game_on = can_place_in_field(game->field, &mino->mino_shape, mino->pos);
 }
 
-static void handle_key_input(t_game *game, t_mino *mino)
+void handle_key_input(t_game *game, t_mino *mino)
 {
 	int c = getch();
 	if (c != ERR && g_keyhooks[c])

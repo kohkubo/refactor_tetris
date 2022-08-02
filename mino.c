@@ -95,11 +95,7 @@ void free_mino_shape(t_mino_shape *mino_shape)
 
 void free_mino(t_mino mino)
 {
-	for (size_t i = 0; i < mino.mino_shape.width; i++)
-	{
-		free(mino.mino_shape.shape[i]);
-	}
-	free(mino.mino_shape.shape);
+	free_mino_shape(&mino.mino_shape);
 }
 
 void rotate_right(t_mino_shape *mino_shape)

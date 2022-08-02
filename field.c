@@ -2,7 +2,7 @@
 
 #include <string.h>
 
-bool is_in_field(const t_point *dest, int row, int col)
+static bool is_in_field(const t_point *dest, int row, int col)
 {
 	return (dest->col + col >= 0 && dest->col + col < COL && dest->row + row < ROW);
 }
