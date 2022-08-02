@@ -53,7 +53,7 @@ static t_game create_game()
 		.field_ptr = {},
 		.score = 0,
 		.game_on = true,
-		.turn_time_nanosec = INIT_TURN_TIME,
+		.interval_nanosec = INIT_TURN_TIME,
 	};
 	return game;
 }
@@ -71,10 +71,11 @@ void handle_key_input(t_game *game, t_mino *mino)
 static void run_tetris(t_game *game)
 {
 	t_mino mino = generate_random_mino();
+
 	while (game->game_on)
 	{
 		handle_key_input(game, &mino);
-		if (is_update_time(game->turn_time_nanosec))
+		if (is_update_time(game->interval_nanosec))
 		{
 			bool is_reached_ground = try_move_down(game, &mino) == false;
 			if (is_reached_ground)
