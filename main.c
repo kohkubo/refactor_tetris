@@ -2,6 +2,7 @@
 #include <ncurses.h>
 #include <stdio.h>
 #include <time.h>
+#include <stdlib.h>
 
 #include "tetris.h"
 #include "ttrs_field.h"

@@ -27,11 +27,11 @@ void print_field(const t_field field, t_print_func print_func)
 
 static void print_body(const t_field field, t_mino *mino)
 {
-	t_field field;
+	t_field current_field;
 
-	memcpy(field, field, sizeof(t_field));
-	place_mino_on_field(field, mino);
-	print_field(field, printw);
+	memcpy(current_field, field, sizeof(t_field));
+	place_mino_on_field(current_field, mino);
+	print_field(current_field, printw);
 }
 
 void print_score(int score)
