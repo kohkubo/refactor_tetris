@@ -1,4 +1,4 @@
-tetris: tetris.c
+tetris: FORCE
 	gcc -Wall -Werror -Wextra \
 	action.c \
 	field.c \
@@ -8,3 +8,5 @@ tetris: tetris.c
 	time.c \
 	-lncurses -o tetris \
 	-g -fsanitize=address -fsanitize=undefined
+
+.PHONY: FORCE

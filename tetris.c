@@ -11,91 +11,108 @@
 #include <assert.h>
 #include <string.h>
 
-t_field g_field = {};
-int g_score = 0;
-bool g_game_on = true;
-long g_turn_time_nanosec = INIT_TURN_TIME;
 struct timespec g_time_spec;
-t_mino g_current;
 t_keyhook_func g_keyhooks[UCHAR_MAX] = {};
 
-static void end_game()
+int fd;
+
+static void end_game(const t_game *game)
 {
 	for (size_t i = 0; i < ROW; i++)
 	{
 		for (size_t j = 0; j < COL; j++)
 		{
-			printf("%c ", g_field[i][j] ? '#' : '.');
+			printf("%c ", game->field[i][j] ? '#' : '.');
 		}
-		printf("\n");
+		putchar('\n');
 	}
-	printf("\nGame over!\n");
+	puts("\nGame over!");
 	print_score();
 }
 
-static void init_game()
+static void assign_keyhook_funcp()
 {
-	g_score = 0;
-	clock_gettime(CLOCK_MONOTONIC, &g_time_spec);
-	g_current = generate_random_mino();
-	// assert(can_place_in_field(g_current, g_current.pos));
 	g_keyhooks['s'] = try_move_down;
 	g_keyhooks['a'] = try_move_left;
 	g_keyhooks['d'] = try_move_right;
 	g_keyhooks['w'] = try_move_rotate;
 }
 
-void reach_bottom()
+static void init_all()
 {
-	update_field(g_field);
-	size_t count = handle_filled_lines();
-	g_score += 100 * count;
-	update_turn_time(count);
-	free_mino(g_current);
-	g_current = generate_random_mino();
-	if (!can_place_in_field(g_current, g_current.pos))
+	srand(time(0));
+	assign_keyhook_funcp();
+	initscr();
+	timeout(1);
+	clock_gettime(CLOCK_MONOTONIC, &g_time_spec);
+}
+
+static t_game create_game()
+{
+	t_game game = {
+		.field = {},
+		.score = 0,
+		.game_on = true,
+		.turn_time_nanosec = INIT_TURN_TIME,
+	};
+	return game;
+}
+
+void reach_bottom(t_game *game, t_mino *mino)
+{
+	update_field(game->field, mino);
+
+	size_t count = handle_filled_lines(&game->field);
+
+	game->score += 100 * count;
+	game->turn_time_nanosec -= turn_time_decrease(count);
+
+	free_mino(*mino);
+	*mino = generate_random_mino();
+
+	game->game_on = can_place_in_field(game->field, &mino->mino_shape, mino->pos);
+}
+
+static void handle_key_input(t_game *game, t_mino *mino)
+{
+	int c = getch();
+	if (c != ERR && g_keyhooks[c])
 	{
-		g_game_on = false;
+		g_keyhooks[c](game, mino);
 	}
 }
 
-void run_tetris()
+void run_tetris(t_game *game)
 {
-	while (g_game_on)
+	t_mino mino = generate_random_mino();
+	while (game->game_on)
 	{
-		int c = getch();
-		if (c != ERR && g_keyhooks[c])
+		update_screen(game, &mino);
+		handle_key_input(game, &mino);
+		if (!has_to_update(game->turn_time_nanosec))
 		{
-			g_keyhooks[c](&g_current);
-			update_screen();
+			continue;
 		}
-		if (has_to_update())
+		bool is_reached_bottom = try_move_down(game, &mino) == false;
+		if (is_reached_bottom)
 		{
-			bool is_moved = try_move_down();
-			if (!is_moved)
-			{
-				reach_bottom();
-			}
-			update_screen();
-			clock_gettime(CLOCK_MONOTONIC, &g_time_spec);
+			reach_bottom(game, &mino);
 		}
+		clock_gettime(CLOCK_MONOTONIC, &g_time_spec);
 	}
-	free_mino(g_current);
+	free_mino(mino);
 }
 
 void run_game()
 {
-	init_game();
-	update_screen();
-	run_tetris();
-	end_game();
+	t_game game = create_game();
+	run_tetris(&game);
+	end_game(&game);
 }
 
 int main()
 {
-	timeout(1);
-	srand(time(0));
-	initscr();
+	init_all();
 	run_game();
 	endwin();
 }

@@ -1,8 +1,5 @@
 #include "tetris.h"
 
-extern t_field g_field;
-extern t_mino g_current;
-
 static t_point down(t_point pos)
 {
 	return (t_point){pos.row + 1, pos.col};
@@ -18,43 +15,43 @@ static t_point right(t_point pos)
 	return (t_point){pos.row, pos.col + 1};
 }
 
-bool try_move_down()
+bool try_move_down(t_game *game, t_mino *mino)
 {
-	if (can_place_in_field(g_current, down(g_current.pos)))
+	if (can_place_in_field(game->field, &mino->mino_shape, down(mino->pos)))
 	{
-		g_current.pos = down(g_current.pos);
+		mino->pos = down(mino->pos);
 		return true;
 	}
 	return false;
 }
 
-bool try_move_left()
+bool try_move_left(t_game *game, t_mino *mino)
 {
-	if (can_place_in_field(g_current, left(g_current.pos)))
+	if (can_place_in_field(game->field, &mino->mino_shape, left(mino->pos)))
 	{
-		g_current.pos = left(g_current.pos);
+		mino->pos = left(mino->pos);
 		return true;
 	}
 	return false;
 }
 
-bool try_move_right()
+bool try_move_right(t_game *game, t_mino *mino)
 {
-	if (can_place_in_field(g_current, right(g_current.pos)))
+	if (can_place_in_field(game->field, &mino->mino_shape, right(mino->pos)))
 	{
-		g_current.pos = right(g_current.pos);
+		mino->pos = right(mino->pos);
 		return true;
 	}
 	return false;
 }
 
-bool try_move_rotate()
+bool try_move_rotate(t_game *game, t_mino *mino)
 {
-	t_mino temp = copy_mino(g_current);
-	rotate_right(temp);
-	if (can_place_in_field(temp, temp.pos))
+	t_mino temp = copy_mino(mino);
+	rotate_right(&temp.mino_shape);
+	if (can_place_in_field(game->field, &temp.mino_shape, temp.pos))
 	{
-		rotate_right(g_current);
+		rotate_right(&mino->mino_shape);
 		free_mino(temp);
 		return true;
 	}

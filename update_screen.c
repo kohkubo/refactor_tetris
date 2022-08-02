@@ -2,7 +2,7 @@
 
 #include <ncurses.h>
 
-extern t_field g_field;
+extern t_field_ptr g_field;
 extern int g_score;
 
 static void print_header()
@@ -12,30 +12,30 @@ static void print_header()
 	printw("42 Tetris\n");
 }
 
-static void print_body()
+static void print_body(t_game *game, t_mino *mino)
 {
-	t_field current_field = {};
+	t_field_ptr current_field = {};
 
-	update_field(current_field);
+	update_field(current_field, mino);
 	for (size_t i = 0; i < ROW; i++)
 	{
 		for (size_t j = 0; j < COL; j++)
 		{
-			printw("%c ", g_field[i][j] || current_field[i][j] ? '#' : '.');
+			printw("%c ", game->field[i][j] || current_field[i][j] ? '#' : '.');
 		}
 		printw("\n");
 	}
 }
 
-void print_score()
+void print_score(int score)
 {
-	printw("\nScore: %d\n", g_score);
+	printw("\nScore: %d\n", score);
 }
 
-void update_screen()
+void update_screen(t_game *game, t_mino *mino)
 {
 	clear();
 	print_header();
-	print_body();
-	print_score();
+	print_body(game, mino);
+	print_score(game->score);
 }
