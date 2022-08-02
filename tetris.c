@@ -70,22 +70,21 @@ void handle_key_input(t_game *game, t_mino *mino)
 
 static void run_tetris(t_game *game)
 {
-	t_mino *mino = generate_random_mino();
+	t_mino mino = generate_random_mino();
 	while (game->game_on)
 	{
-		handle_key_input(game, mino);
+		handle_key_input(game, &mino);
 		if (is_update_time(game->turn_time_nanosec))
 		{
-			bool is_reached_ground = try_move_down(game, mino) == false;
+			bool is_reached_ground = try_move_down(game, &mino) == false;
 			if (is_reached_ground)
 			{
-				update_field(game->field_ptr, mino);
+				update_field(game->field_ptr, &mino);
 
 				size_t count = erase_filled_lines(game->field_ptr);
 
 				game->score += 100 * count;
 				game->turn_time_nanosec -= turn_time_decrease(count);
-				free_mino(&mino);
 				mino = generate_random_mino();
 				game->game_on = can_place_in_field(game->field_ptr, &mino->mino_type, mino->pos);
 			}
