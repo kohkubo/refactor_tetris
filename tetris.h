@@ -5,8 +5,11 @@
 #define FIELD_COL 15
 #define SHAPE_HEIGHT_MAX 4
 #define SHAPE_WIDTH_MAX 4
-#define INIT_DECRESE_TIME 1000000
-#define INIT_TURN_TIME 400000000
+#define INIT_DECREASE_TIME 1000000
+#define INIT_INTERVAL_TIME 400000000
+#define DECREASE_UNIT_TIME 1000
+#define INTERVAL_TIME_MIN 1000
+#define SCORE_UNIT 100
 
 #include <stdbool.h>
 #include <stdint.h>
@@ -38,32 +41,39 @@ typedef struct
 
 typedef struct
 {
+  long interval;
+  struct timespec prev_fall_time;
+  long decrease_time;
+} t_tetris_time;
+
+typedef struct
+{
   t_field_ptr field_ptr;
   int score;
   bool game_on;
-  long interval_nanosec;
-} t_game;
+  t_tetris_time time;
+} t_tetris;
 
-typedef bool (*t_keyhook_func)(t_game *, t_mino *);
+typedef bool (*t_keyhook_func)(t_tetris *, t_mino *);
 
 void free_mino(t_mino **mino);
 
 void place_mino_on_field(t_field_ptr current_field, t_mino *mino);
 
-void update_screen(t_game *game, t_mino *mino);
+void update_screen(t_tetris *tetris, t_mino *mino);
 bool can_place_in_field(t_field_ptr field_ptr, const t_mino_type *mino_type, const t_point dest);
 void print_score(int score);
-void handle_key_input(t_game *game, t_mino *mino);
+void handle_key_input(t_tetris *tetris, t_mino *mino);
 size_t erase_filled_lines(t_field_ptr field_ptr);
 
-bool try_move_down(t_game *game, t_mino *mino);
-bool try_move_left(t_game *game, t_mino *mino);
-bool try_move_right(t_game *game, t_mino *mino);
-bool try_move_rotate(t_game *game, t_mino *mino);
+bool try_move_down(t_tetris *tetris, t_mino *mino);
+bool try_move_left(t_tetris *tetris, t_mino *mino);
+bool try_move_right(t_tetris *tetris, t_mino *mino);
+bool try_move_rotate(t_tetris *tetris, t_mino *mino);
 
-long turn_time_decrease(size_t count);
-bool is_time_to_fall(long interval_nanosec);
+void update_fall_speed(t_tetris_time *time, size_t count);
 t_mino generate_random_mino();
+bool is_time_to_fall(t_tetris_time *time);
 
 void rotate_right(t_mino_type *mino_type);
 

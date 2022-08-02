@@ -12,7 +12,7 @@ static void print_header()
 	printw("42 Tetris\n");
 }
 
-static void print_body(t_game *game, t_mino *mino)
+static void print_body(t_tetris *tetris, t_mino *mino)
 {
 	t_field_ptr current_field = {};
 
@@ -21,7 +21,7 @@ static void print_body(t_game *game, t_mino *mino)
 	{
 		for (size_t j = 0; j < FIELD_COL; j++)
 		{
-			printw("%c ", game->field_ptr[i][j] || current_field[i][j] ? '#' : '.');
+			printw("%c ", tetris->field_ptr[i][j] || current_field[i][j] ? '#' : '.');
 		}
 		printw("\n");
 	}
@@ -32,10 +32,10 @@ void print_score(int score)
 	printw("\nScore: %d\n", score);
 }
 
-void update_screen(t_game *game, t_mino *mino)
+void update_screen(t_tetris *tetris, t_mino *mino)
 {
 	clear();
 	print_header();
-	print_body(game, mino);
-	print_score(game->score);
+	print_body(tetris, mino);
+	print_score(tetris->score);
 }
