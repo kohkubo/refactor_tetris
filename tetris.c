@@ -344,7 +344,7 @@ int main()
 				update_field(g_field);
 				handle_filled_lines();
 				free_mino(g_current);
-				g_current = new_shape;
+				g_current = generate_random_mino();
 				if (!can_place_in_field(g_current, g_current.pos))
 				{
 					g_game_on = false;
