@@ -1,15 +1,6 @@
 #include "tetris.h"
 
-#include <stdio.h>
-#include <stdlib.h>
-
 #include <ncurses.h>
-#include <stdint.h>
-#include <time.h>
-#include <sys/time.h>
-#include <limits.h>
-#include <assert.h>
-#include <string.h>
 
 t_keyhook_func g_keyhooks[UCHAR_MAX] = {};
 
