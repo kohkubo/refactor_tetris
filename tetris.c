@@ -297,6 +297,29 @@ void init_game()
 	g_keyhooks['w'] = key_action_rotate;
 }
 
+void handle_filled_lines()
+{
+	size_t count = 0;
+	for (size_t n = 0; n < ROW; n++)
+	{
+		size_t sum = 0;
+		for (size_t m = 0; m < COL; m++)
+		{
+			sum += g_field[n][m];
+		}
+		if (sum == COL)
+		{
+			count++;
+			for (size_t k = n; k > 0; k--)	{
+				memcpy(g_field[k], g_field[k - 1], COL);
+			}
+			memset(g_field[0], 0, COL);
+			g_timer -= g_decrease--;
+		}
+	}
+	g_score += 100 * count;
+}
+
 int main()
 {
 	init_game();
@@ -319,34 +342,7 @@ int main()
 			else
 			{
 				update_field(g_field);
-				size_t sum, count = 0;
-				for (size_t n = 0; n < ROW; n++)
-				{
-					sum = 0;
-					for (size_t m = 0; m < COL; m++)
-					{
-						sum += g_field[n][m];
-					}
-					if (sum == COL)
-					{
-						count++;
-						size_t k;
-						for (k = n; k >= 1; k--)
-						{
-							for (size_t l = 0; l < COL; l++)
-							{
-								g_field[k][l] = g_field[k - 1][l];
-							}
-						}
-						for (size_t l = 0; l < COL; l++)
-						{
-							g_field[k][l] = 0;
-						}
-						g_timer -= g_decrease--;
-					}
-				}
-				g_score += 100 * count;
-				t_mino new_shape = generate_random_mino();
+				handle_filled_lines();
 				free_mino(g_current);
 				g_current = new_shape;
 				if (!can_place_in_field(g_current, g_current.pos))
