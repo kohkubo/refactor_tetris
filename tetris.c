@@ -182,12 +182,11 @@ static void print_header()
 	printw("42 Tetris\n");
 }
 
-void print_field()
+static void print_body()
 {
 	t_field current_field = {};
+
 	update_field(current_field);
-	clear();
-	print_header();
 	for (size_t i = 0; i < ROW; i++)
 	{
 		for (size_t j = 0; j < COL; j++)
@@ -196,6 +195,13 @@ void print_field()
 		}
 		printw("\n");
 	}
+}
+
+void update_screen()
+{
+	clear();
+	print_header();
+	print_body();
 	printw("\nScore: %d\n", g_score);
 }
 
@@ -294,14 +300,14 @@ void init_game()
 int main()
 {
 	init_game();
-	print_field();
+	update_screen();
 	while (g_game_on)
 	{
 		int c = getch();
 		if (c != ERR && g_keyhooks[c])
 		{
 			g_keyhooks[c](&g_current);
-			print_field();
+			update_screen();
 		}
 		gettimeofday(&g_now, NULL);
 		if (hasToUpdate())
@@ -348,7 +354,7 @@ int main()
 					g_game_on = false;
 				}
 			}
-			print_field();
+			update_screen();
 			gettimeofday(&g_before_now, NULL);
 		}
 	}
