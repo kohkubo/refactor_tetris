@@ -11,6 +11,17 @@
 #define INTERVAL_TIME_MIN 1000
 #define SCORE_UNIT 100
 
+#define BLOCK_TEXTURE '#'
+#define EMPTY_TEXTURE '.'
+
+#define DOWN_KEY 's'
+#define LEFT_KEY 'a'
+#define RIGHT_KEY 'd'
+#define ROTATE_KEY 'w'
+
+#define GAME_TITLE "42 Tetris\n"
+#define GAME_OVER "\nGame over!"
+
 #include <limits.h>
 #include <stdbool.h>
 #include <stdint.h>

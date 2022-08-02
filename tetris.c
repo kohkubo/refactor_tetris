@@ -10,20 +10,20 @@ static void end_tetris(const t_tetris *tetris)
 	{
 		for (size_t j = 0; j < FIELD_COL; j++)
 		{
-			printf("%c ", tetris->field_ptr[i][j] ? '#' : '.');
+			printf("%c ", tetris->field_ptr[i][j] ? BLOCK_TEXTURE : EMPTY_TEXTURE);
 		}
 		putchar('\n');
 	}
-	puts("\nGame over!");
+	puts(GAME_OVER);
 	print_score(tetris->score);
 }
 
 static void assign_keyhook_funcp()
 {
-	g_keyhooks['s'] = try_move_down;
-	g_keyhooks['a'] = try_move_left;
-	g_keyhooks['d'] = try_move_right;
-	g_keyhooks['w'] = try_move_rotate;
+	g_keyhooks[DOWN_KEY] = try_move_down;
+	g_keyhooks[LEFT_KEY] = try_move_left;
+	g_keyhooks[RIGHT_KEY] = try_move_right;
+	g_keyhooks[ROTATE_KEY] = try_move_rotate;
 }
 
 static t_tetris create_tetris()

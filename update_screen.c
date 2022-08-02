@@ -9,7 +9,7 @@ static void print_header()
 {
 	for (size_t i = 0; i < FIELD_COL / 2; i++)
 		printw(" ");
-	printw("42 Tetris\n");
+	printw(GAME_TITLE);
 }
 
 static void print_body(const t_tetris *tetris, t_mino *mino)
@@ -21,7 +21,8 @@ static void print_body(const t_tetris *tetris, t_mino *mino)
 	{
 		for (size_t j = 0; j < FIELD_COL; j++)
 		{
-			printw("%c ", tetris->field_ptr[i][j] || current_field[i][j] ? '#' : '.');
+			char texture = tetris->field_ptr[i][j] || current_field[i][j] ? BLOCK_TEXTURE : EMPTY_TEXTURE;
+			printw("%c ", texture);
 		}
 		printw("\n");
 	}
