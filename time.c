@@ -11,7 +11,7 @@ static int64_t get_nsec(const struct timespec *ts)
 	return ts->tv_sec * 1000000000 + ts->tv_nsec;
 }
 
-bool is_update_time(long interval_nanosec)
+bool is_time_to_fall_free(long interval_nanosec)
 {
 	struct timespec now;
 	clock_gettime(CLOCK_MONOTONIC, &now);

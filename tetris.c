@@ -75,7 +75,7 @@ static void run_tetris(t_game *game)
 	while (game->game_on)
 	{
 		handle_key_input(game, &mino);
-		if (is_update_time(game->interval_nanosec))
+		if (is_time_to_fall_free(game->interval_nanosec))
 		{
 			bool is_reached_ground = try_move_down(game, &mino) == false;
 			if (is_reached_ground)
