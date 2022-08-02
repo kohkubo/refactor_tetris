@@ -77,7 +77,6 @@ static void run_tetris(t_game *game)
 		if (is_update_time(game->turn_time_nanosec))
 		{
 			bool is_reached_ground = try_move_down(game, mino) == false;
-			update_screen(game, mino);
 			if (is_reached_ground)
 			{
 				update_field(game->field_ptr, mino);
@@ -89,8 +88,8 @@ static void run_tetris(t_game *game)
 				free_mino(&mino);
 				mino = generate_random_mino();
 				game->game_on = can_place_in_field(game->field_ptr, &mino->mino_type, mino->pos);
-				update_screen(game, mino);
 			}
+			update_screen(game, mino);
 			clock_gettime(CLOCK_MONOTONIC, &g_time_spec);
 		}
 	}
