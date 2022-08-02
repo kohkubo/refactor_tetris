@@ -40,7 +40,7 @@ static t_tetris create_tetris()
 	t_tetris tetris = {
 		.field_ptr = {},
 		.score = 0,
-		.game_on = true,
+		.is_alive = true,
 	};
 	tetris.time.interval = INIT_INTERVAL_TIME,
 	clock_gettime(CLOCK_MONOTONIC, &tetris.time.prev_fall_time);
@@ -52,7 +52,7 @@ static void start_tetris(t_tetris *tetris)
 {
 	t_mino mino = generate_random_mino();
 
-	while (tetris->game_on)
+	while (tetris->is_alive)
 	{
 		handle_key_input(tetris, &mino);
 		if (is_time_to_fall(&tetris->time))
@@ -64,7 +64,7 @@ static void start_tetris(t_tetris *tetris)
 				size_t num_of_erased = erase_filled_lines(tetris->field_ptr);
 				update_fall_speed(&tetris->time, num_of_erased);
 				mino = generate_random_mino();
-				tetris->game_on = can_place_in_field(tetris->field_ptr, &mino.mino_type, mino.pos);
+				tetris->is_alive = can_place_in_field(tetris->field_ptr, &mino.mino_type, mino.pos);
 				tetris->score += SCORE_UNIT * num_of_erased;
 			}
 			update_screen(tetris, &mino);
@@ -73,7 +73,7 @@ static void start_tetris(t_tetris *tetris)
 	}
 }
 
-void init_tetris()
+static void init_tetris()
 {
 	assign_keyhook_funcp();
 	timeout(1);

@@ -7,7 +7,7 @@ static bool is_in_field(const t_point *dest, int row, int col)
 	return (dest->col + col >= 0 && dest->col + col < FIELD_COL && dest->row + row < FIELD_ROW);
 }
 
-bool can_place_in_field(t_field_ptr field_ptr, const t_mino_type *mino_type, const t_point dest)
+bool can_place_in_field(const t_field_ptr field_ptr, const t_mino_type *mino_type, const t_point dest)
 {
 	for (int i = 0; i < (int)mino_type->width; i++)
 	{

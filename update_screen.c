@@ -12,7 +12,7 @@ static void print_header()
 	printw("42 Tetris\n");
 }
 
-static void print_body(t_tetris *tetris, t_mino *mino)
+static void print_body(const t_tetris *tetris, t_mino *mino)
 {
 	t_field_ptr current_field = {};
 
@@ -32,7 +32,7 @@ void print_score(int score)
 	printw("\nScore: %d\n", score);
 }
 
-void update_screen(t_tetris *tetris, t_mino *mino)
+void update_screen(const t_tetris *tetris, t_mino *mino)
 {
 	clear();
 	print_header();

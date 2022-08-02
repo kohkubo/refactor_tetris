@@ -20,7 +20,7 @@ static t_point right(t_point pos)
 	return (t_point){pos.row, pos.col + 1};
 }
 
-bool try_move_down(t_tetris *tetris, t_mino *mino)
+bool try_move_down(const t_tetris *tetris, t_mino *mino)
 {
 	if (can_place_in_field(tetris->field_ptr, &mino->mino_type, down(mino->pos)))
 	{
@@ -30,7 +30,7 @@ bool try_move_down(t_tetris *tetris, t_mino *mino)
 	return false;
 }
 
-bool try_move_left(t_tetris *tetris, t_mino *mino)
+bool try_move_left(const t_tetris *tetris, t_mino *mino)
 {
 	if (can_place_in_field(tetris->field_ptr, &mino->mino_type, left(mino->pos)))
 	{
@@ -40,7 +40,7 @@ bool try_move_left(t_tetris *tetris, t_mino *mino)
 	return false;
 }
 
-bool try_move_right(t_tetris *tetris, t_mino *mino)
+bool try_move_right(const t_tetris *tetris, t_mino *mino)
 {
 	if (can_place_in_field(tetris->field_ptr, &mino->mino_type, right(mino->pos)))
 	{
@@ -50,7 +50,7 @@ bool try_move_right(t_tetris *tetris, t_mino *mino)
 	return false;
 }
 
-bool try_move_rotate(t_tetris *tetris, t_mino *mino)
+bool try_move_rotate(const t_tetris *tetris, t_mino *mino)
 {
 	t_mino temp = *mino;
 	rotate_right(&temp.mino_type);
@@ -62,7 +62,7 @@ bool try_move_rotate(t_tetris *tetris, t_mino *mino)
 	return false;
 }
 
-void handle_key_input(t_tetris *tetris, t_mino *mino)
+void handle_key_input(const t_tetris *tetris, t_mino *mino)
 {
 	int c = getch();
 	if (c != ERR && g_keyhooks[c])
