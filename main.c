@@ -36,7 +36,7 @@ static void assign_keyhook_funcp()
 	g_keyhooks[DOWN_KEY] = try_move_down;
 	g_keyhooks[LEFT_KEY] = try_move_left;
 	g_keyhooks[RIGHT_KEY] = try_move_right;
-	g_keyhooks[ROTATE_KEY] = try_move_rotate;
+	g_keyhooks[ROTATE_KEY] = try_spin;
 }
 
 static t_tetris create_tetris()

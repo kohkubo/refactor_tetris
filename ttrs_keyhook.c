@@ -52,10 +52,10 @@ bool try_move_right(const t_tetris *tetris, t_mino *mino)
 	return false;
 }
 
-bool try_move_rotate(const t_tetris *tetris, t_mino *mino)
+bool try_spin(const t_tetris *tetris, t_mino *mino)
 {
 	t_mino rotated = *mino;
-	rotate_right(&rotated.mino_type);
+	spin_right(&rotated.mino_type);
 	if (can_place_in_field(tetris->field, &rotated.mino_type, rotated.pos)) {
 		mino->mino_type = rotated.mino_type;
 		return true;

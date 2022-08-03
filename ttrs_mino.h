@@ -27,6 +27,6 @@ typedef struct
 } t_mino;
 
 t_mino generate_random_mino();
-void rotate_right(t_mino_type *mino_type);
+void spin_right(t_mino_type *mino_type);
 
 #endif /* TTRS_MINO_HPP */
