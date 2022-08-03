@@ -5,69 +5,45 @@
 
 #include "tetris.h"
 #include "ttrs_field.h"
+#include "ttrs_keyhook.h"
 #include "ttrs_mino.h"
 #include "ttrs_print.h"
 
 extern t_keyhook_func g_keyhooks[UCHAR_MAX];
 
-static t_point down(t_point pos)
+t_mino move_down(const t_mino *mino)
 {
-	return (t_point){pos.row + 1, pos.col};
+	return (t_mino){
+		.mino_type = mino->mino_type,
+		.pos = {mino->pos.row + 1, mino->pos.col}};
 }
 
-static t_point left(t_point pos)
+t_mino move_left(const t_mino *mino)
 {
-	return (t_point){pos.row, pos.col - 1};
+	return (t_mino){
+		.mino_type = mino->mino_type,
+		.pos = {mino->pos.row, mino->pos.col - 1}};
 }
 
-static t_point right(t_point pos)
+t_mino move_right(const t_mino *mino)
 {
-	return (t_point){pos.row, pos.col + 1};
-}
+	return (t_mino){
+		.mino_type = mino->mino_type,
+		.pos = {mino->pos.row, mino->pos.col + 1}};
+};
 
-bool try_move_down(const t_tetris *tetris, t_mino *mino)
-{
-	if (can_place_in_field(tetris->field, &mino->mino_type, down(mino->pos))) {
-		mino->pos = down(mino->pos);
-		return true;
-	}
-	return false;
-}
-
-bool try_move_left(const t_tetris *tetris, t_mino *mino)
-{
-	if (can_place_in_field(tetris->field, &mino->mino_type, left(mino->pos))) {
-		mino->pos = left(mino->pos);
-		return true;
-	}
-	return false;
-}
-
-bool try_move_right(const t_tetris *tetris, t_mino *mino)
-{
-	if (can_place_in_field(tetris->field, &mino->mino_type, right(mino->pos))) {
-		mino->pos = right(mino->pos);
-		return true;
-	}
-	return false;
-}
-
-bool try_spin(const t_tetris *tetris, t_mino *mino)
+t_mino move_spin(const t_mino *mino)
 {
 	t_mino spined = *mino;
 	spin_right(&spined.mino_type);
-	if (can_place_in_field(tetris->field, &spined.mino_type, spined.pos)) {
-		mino->mino_type = spined.mino_type;
-		return true;
-	}
-	return false;
+	return spined;
 }
 
-void handle_key_input(const t_tetris *tetris, t_mino *mino)
+t_mino handle_key_input(const t_mino *mino)
 {
 	int c = getch();
 	if (c != ERR && g_keyhooks[c]) {
-		g_keyhooks[c](tetris, mino);
-		update_screen(tetris, mino);
+		return g_keyhooks[c](mino);
 	}
+	return *mino;
 }

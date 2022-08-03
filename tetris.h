@@ -21,6 +21,4 @@ typedef struct {
 	t_tetris_time time;
 } t_tetris;
 
-typedef bool (*t_keyhook_func)(const t_tetris *, t_mino *);
-
 #endif /* TETRIS_HPP */

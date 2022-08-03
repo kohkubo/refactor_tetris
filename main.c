@@ -33,10 +33,10 @@ static void end_tetris(const t_tetris *tetris)
 
 static void assign_keyhook_funcp()
 {
-	g_keyhooks[DOWN_KEY] = try_move_down;
-	g_keyhooks[LEFT_KEY] = try_move_left;
-	g_keyhooks[RIGHT_KEY] = try_move_right;
-	g_keyhooks[ROTATE_KEY] = try_spin;
+	g_keyhooks[DOWN_KEY] = move_down;
+	g_keyhooks[LEFT_KEY] = move_left;
+	g_keyhooks[RIGHT_KEY] = move_right;
+	g_keyhooks[ROTATE_KEY] = move_spin;
 }
 
 static t_tetris create_tetris()
@@ -73,10 +73,16 @@ static void start_tetris(t_tetris *tetris)
 	t_mino mino = generate_random_mino();
 
 	while (tetris->is_alive) {
-		handle_key_input(tetris, &mino);
+		t_mino moved_mino = handle_key_input(&mino);
+		if (can_place_in_field(tetris->field, &moved_mino.mino_type, moved_mino.pos)) {
+			mino = moved_mino;
+		}
+		update_screen(tetris, &mino);
 		if (is_time_to_fall(&tetris->time)) {
-			bool is_reached_ground = !try_move_down(tetris, &mino);
-			if (is_reached_ground) {
+			moved_mino = move_down(&mino);
+			if (can_place_in_field(tetris->field, &moved_mino.mino_type, moved_mino.pos)) {
+				mino = moved_mino;
+			} else {
 				place_mino_on_field(tetris->field, &mino);
 				int num_of_erased = erase_filled_lines(tetris->field);
 				mino = generate_random_mino();
