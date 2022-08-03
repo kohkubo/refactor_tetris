@@ -4,7 +4,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include <unistd.h>
 
 #include "tetris.h"
 #include "ttrs_field.h"
@@ -46,10 +45,8 @@ static t_tetris create_tetris()
 		.field = {},
 		.score = 0,
 		.is_alive = true,
-		.mino = generate_random_mino(),
-		.lock = PTHREAD_MUTEX_INITIALIZER,
 	};
-	tetris.time.interval = INIT_INTERVAL_TIME;
+	tetris.time.interval = INIT_INTERVAL_TIME,
 	tetris.time.decrease_time = INIT_DECREASE_TIME;
 	return tetris;
 }
@@ -71,66 +68,24 @@ static void update_game_status(t_tetris *tetris, const t_mino *mino, int num_of_
 	update_score(tetris, num_of_erased);
 }
 
-// static void start_tetris(t_tetris *tetris)
-// {
-// 	while (tetris->is_alive) {
-// 		handle_key_input(tetris, &tetris->mino);
-// 		if (is_time_to_fall(&tetris->time)) {
-// 			bool is_reached_ground = !try_move_down(tetris, &tetris->mino);
-// 			if (is_reached_ground) {
-// 				place_mino_on_field(tetris->field, &tetris->mino);
-// 				int num_of_erased = erase_filled_lines(tetris->field);
-// 				tetris->mino = generate_random_mino();
-// 				update_game_status(tetris, &tetris->mino, num_of_erased);
-// 			}
-// 			update_screen(tetris, &tetris->mino);
-// 			set_next_fall_time(&tetris->time);
-// 		}
-// 	}
-// }
-
-void *start_tetris(void *arg)
+static void start_tetris(t_tetris *tetris)
 {
-	t_tetris *tetris = arg;
+	t_mino mino = generate_random_mino();
 
 	while (tetris->is_alive) {
-		Pthread_mutex_lock(&tetris->lock);
-		bool is_reached_ground = !try_move_down(tetris, &tetris->mino);
-		if (is_reached_ground) {
-			place_mino_on_field(tetris->field, &tetris->mino);
-			int num_of_erased = erase_filled_lines(tetris->field);
-			tetris->mino = generate_random_mino();
-			update_game_status(tetris, &tetris->mino, num_of_erased);
+		handle_key_input(tetris, &mino);
+		if (is_time_to_fall(&tetris->time)) {
+			bool is_reached_ground = !try_move_down(tetris, &mino);
+			if (is_reached_ground) {
+				place_mino_on_field(tetris->field, &mino);
+				int num_of_erased = erase_filled_lines(tetris->field);
+				mino = generate_random_mino();
+				update_game_status(tetris, &mino, num_of_erased);
+			}
+			update_screen(tetris, &mino);
+			set_next_fall_time(&tetris->time);
 		}
-		update_screen(tetris, &tetris->mino);
-		Pthread_mutex_unlock(&tetris->lock);
-		usleep(500000);
 	}
-	return NULL;
-}
-
-void *handle_key_input(void *arg)
-{
-	t_tetris *tetris = arg;
-
-	while (true) {
-		int c = getch();
-		Pthread_mutex_lock(&tetris->lock);
-		if (tetris->is_alive && c != ERR && g_keyhooks[c]) {
-			g_keyhooks[c](tetris, &tetris->mino);
-			update_screen(tetris, &tetris->mino);
-		}
-		Pthread_mutex_unlock(&tetris->lock);
-	}
-	return NULL;
-}
-
-void run_key_hooks(t_tetris *tetris)
-{
-	pthread_t th;
-
-	Pthread_create(&th, NULL, handle_key_input, tetris);
-	Pthread_detach(th);
 }
 
 static void init_tetris()
@@ -143,7 +98,6 @@ static void run_tetris(t_tetris *tetris)
 {
 	Initscr();
 	timeout(1);
-	run_key_hooks(tetris);
 	start_tetris(tetris);
 	Endwin();
 }

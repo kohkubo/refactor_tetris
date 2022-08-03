@@ -1,6 +1,6 @@
 NAME := tetris
 
-CC := clang
+CC := gcc
 CFLAGS := -Wall -Werror -Wextra -MMD -MP -O2 -pthread
 
 SRCDIR := .
@@ -28,7 +28,7 @@ fclean: clean
 
 re: fclean all
 
-debug: CFLAGS +=  -g -fsanitize=undefined -fsanitize=thread
+debug: CFLAGS +=  -g -fsanitize=address -fsanitize=undefined
 debug: re
 
 .PHONY: FORCE

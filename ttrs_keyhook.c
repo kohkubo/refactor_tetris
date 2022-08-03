@@ -63,11 +63,11 @@ bool try_spin(const t_tetris *tetris, t_mino *mino)
 	return false;
 }
 
-// void handle_key_input(const t_tetris *tetris, t_mino *mino)
-// {
-// 	int c = getch();
-// 	if (c != ERR && g_keyhooks[c]) {
-// 		g_keyhooks[c](tetris, mino);
-// 		update_screen(tetris, mino);
-// 	}
-// }
+void handle_key_input(const t_tetris *tetris, t_mino *mino)
+{
+	int c = getch();
+	if (c != ERR && g_keyhooks[c]) {
+		g_keyhooks[c](tetris, mino);
+		update_screen(tetris, mino);
+	}
+}

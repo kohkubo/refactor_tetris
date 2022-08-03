@@ -1,7 +1,6 @@
 #ifndef TETRIS_HPP
 #define TETRIS_HPP
 
-#include <pthread.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <sys/time.h>
@@ -17,11 +16,9 @@ typedef uint8_t t_field_line[FIELD_ROW];
 
 typedef struct {
 	t_field field;
-	t_mino mino;
 	int64_t score;
 	bool is_alive;
 	t_tetris_time time;
-	pthread_mutex_t lock;
 } t_tetris;
 
 typedef bool (*t_keyhook_func)(const t_tetris *, t_mino *);
