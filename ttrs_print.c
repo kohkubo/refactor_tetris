@@ -10,6 +10,8 @@
 #define EMPTY_TEXTURE '.'
 #define GAME_TITLE "42 Tetris\n"
 
+// #define printw printf
+
 static void print_header()
 {
 	for (int i = 0; i < FIELD_COL / 2; i++) {
