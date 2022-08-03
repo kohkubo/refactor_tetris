@@ -39,11 +39,15 @@ t_mino move_spin(const t_mino *mino)
 	return spined;
 }
 
-t_mino handle_key_input(const t_mino *mino)
+bool handle_key_input(const t_mino *mino)
 {
 	int c = getch();
 	if (c != ERR && g_keyhooks[c]) {
-		return g_keyhooks[c](mino);
+		t_mino moved_mino = g_keyhooks[c](mino);
+		if (can_place_in_field(tetris->field, &moved_mino.mino_type, moved_mino.pos)) {
+			mino = moved_mino;
+			return c == 's';
+		}
 	}
-	return *mino;
+	return false;
 }

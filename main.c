@@ -77,7 +77,7 @@ static void start_tetris(t_tetris *tetris)
 		if (can_place_in_field(tetris->field, &moved_mino.mino_type, moved_mino.pos)) {
 			mino = moved_mino;
 		}
-		update_screen(tetris, &mino);
+
 		if (is_time_to_fall(&tetris->time)) {
 			moved_mino = move_down(&mino);
 			if (can_place_in_field(tetris->field, &moved_mino.mino_type, moved_mino.pos)) {
@@ -88,9 +88,9 @@ static void start_tetris(t_tetris *tetris)
 				mino = generate_random_mino();
 				update_game_status(tetris, &mino, num_of_erased);
 			}
-			update_screen(tetris, &mino);
 			set_next_fall_time(&tetris->time);
 		}
+		update_screen(tetris, &mino);
 	}
 }
 
