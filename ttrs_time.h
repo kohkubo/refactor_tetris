@@ -1,5 +1,5 @@
-#ifndef TTRS_TIME_HPP
-#define TTRS_TIME_HPP
+#ifndef TTRS_TIME_H
+#define TTRS_TIME_H
 
 #include <stdbool.h>
 #include <sys/time.h>
@@ -15,7 +15,6 @@ typedef struct
 {
 	long interval;
 	long next_fall_time;
-	// struct timespec prev_fall_time;
 	long decrease_time;
 } t_tetris_time;
 
@@ -23,4 +22,4 @@ bool is_time_to_fall(t_tetris_time *time);
 void update_fall_speed(t_tetris_time *time, int count);
 void set_next_fall_time(t_tetris_time *time);
 
-#endif /* TTRS_TIME_HPP */
+#endif

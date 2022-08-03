@@ -1,5 +1,6 @@
 #include <limits.h>
 #include <ncurses.h>
+#include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -10,8 +11,7 @@
 #include "ttrs_mino.h"
 #include "ttrs_print.h"
 #include "ttrs_time.h"
-
-#include "ttrs_print.h"
+#include "wrapper.h"
 
 #define SCORE_UNIT 100
 
@@ -27,7 +27,7 @@ t_keyhook_func g_keyhooks[UCHAR_MAX] = {};
 static void end_tetris(const t_tetris *tetris)
 {
 	print_field(tetris->field, printf);
-	puts(GAME_OVER);
+	Puts(GAME_OVER);
 	print_score(tetris->score, printf);
 }
 
@@ -47,7 +47,6 @@ static t_tetris create_tetris()
 		.is_alive = true,
 	};
 	tetris.time.interval = INIT_INTERVAL_TIME,
-	clock_gettime(CLOCK_MONOTONIC, &tetris.time.prev_fall_time);
 	tetris.time.decrease_time = INIT_DECREASE_TIME;
 	return tetris;
 }
@@ -97,10 +96,10 @@ static void init_tetris()
 
 static void run_tetris(t_tetris *tetris)
 {
-	initscr();
+	Initscr();
 	timeout(1);
 	start_tetris(tetris);
-	endwin();
+	Endwin();
 }
 
 int main()

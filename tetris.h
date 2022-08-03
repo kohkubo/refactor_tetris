@@ -1,5 +1,5 @@
-#ifndef TETRIS_H
-#define TETRIS_H
+#ifndef TETRIS_HPP
+#define TETRIS_HPP
 
 #include <stdbool.h>
 #include <stdint.h>
@@ -23,4 +23,4 @@ typedef struct {
 
 typedef bool (*t_keyhook_func)(const t_tetris *, t_mino *);
 
-#endif
+#endif /* TETRIS_HPP */

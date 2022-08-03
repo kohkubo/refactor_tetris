@@ -1,7 +1,7 @@
 NAME := tetris
 
 CC := gcc
-CFLAGS := -Wall -Werror -Wextra -MMD -MP -O2
+CFLAGS := -Wall -Werror -Wextra -MMD -MP -O2 -pthread
 
 SRCDIR := .
 OBJDIR := ./obj
