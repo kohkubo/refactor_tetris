@@ -14,11 +14,13 @@
 typedef struct
 {
 	long interval;
-	struct timespec prev_fall_time;
+	long next_fall_time;
+	// struct timespec prev_fall_time;
 	long decrease_time;
 } t_tetris_time;
 
 bool is_time_to_fall(t_tetris_time *time);
 void update_fall_speed(t_tetris_time *time, int count);
+void set_next_fall_time(t_tetris_time *time);
 
 #endif /* TTRS_TIME_HPP */

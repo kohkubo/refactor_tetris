@@ -84,7 +84,7 @@ static void start_tetris(t_tetris *tetris)
 				update_game_status(tetris, &mino, num_of_erased);
 			}
 			update_screen(tetris, &mino);
-			clock_gettime(CLOCK_MONOTONIC, &tetris->time.prev_fall_time);
+			set_next_fall_time(&tetris->time);
 		}
 	}
 }
