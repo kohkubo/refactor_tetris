@@ -9,7 +9,6 @@
 #include "ttrs_keyhook.h"
 #include "ttrs_mino.h"
 #include "ttrs_print.h"
-#include "ttrs_texture.h"
 #include "ttrs_time.h"
 
 #include "ttrs_print.h"

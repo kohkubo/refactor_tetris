@@ -3,8 +3,9 @@
 
 #include "ttrs_field.h"
 #include "ttrs_print.h"
-#include "ttrs_texture.h"
 
+#define BLOCK_TEXTURE '#'
+#define EMPTY_TEXTURE '.'
 #define GAME_TITLE "42 Tetris\n"
 
 static void print_header()
