@@ -22,9 +22,9 @@ typedef enum e_status {
 
 typedef struct {
 	t_matrix matrix;
-	int64_t score;
+	size_t clear_line_count;
 	t_tetris_time time;
-	bool is_moved;
+	bool has_to_refresh_screen;
 } t_tetris;
 
 #endif /* TETRIS */

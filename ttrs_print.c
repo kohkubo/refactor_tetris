@@ -9,6 +9,7 @@
 #define BLOCK_TEXTURE '#'
 #define EMPTY_TEXTURE '.'
 #define GAME_TITLE "42 Tetris\n"
+#define SCORE_UNIT 100
 
 static void print_header()
 {
@@ -46,9 +47,9 @@ static void print_body(const t_matrix matrix, t_mino *mino)
 	print_matrix(current_matrix, printw);
 }
 
-void print_score(int score, t_print_func print_func)
+void print_score(size_t clear_line_count, t_print_func print_func)
 {
-	if (print_func("\nScore: %d\n", score) == ERR) {
+	if (print_func("\nScore: %zu\n", clear_line_count * SCORE_UNIT) == ERR) {
 		exit_fatal_err(EXIT_FAILURE);
 	}
 }
@@ -58,5 +59,5 @@ void refresh_screen(const t_tetris *tetris, t_mino *mino)
 	clear();
 	print_header();
 	print_body(tetris->matrix, mino);
-	print_score(tetris->score, printw);
+	print_score(tetris->clear_line_count, printw);
 }

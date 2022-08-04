@@ -16,7 +16,7 @@ t_status try_left(t_tetris *tetris, t_mino *mino);
 t_status try_right(t_tetris *tetris, t_mino *mino);
 t_status try_spin(t_tetris *tetris, t_mino *mino);
 t_status hard_drop(t_tetris *tetris, t_mino *mino);
-t_status create_new_mino(t_matrix matrix, t_mino *mino);
+t_status try_create_new_mino(t_matrix matrix, t_mino *mino);
 void init_keyhook_funcp();
 
 typedef t_status (*t_keyhook_func)(t_tetris *tetris, t_mino *);

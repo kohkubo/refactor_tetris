@@ -13,8 +13,6 @@
 #include "ttrs_time.h"
 #include "wrapper.h"
 
-#define SCORE_UNIT 100
-
 #define GAME_OVER "\nGame over!"
 
 extern t_keyhook_func g_keyhooks[UCHAR_MAX];
@@ -23,38 +21,27 @@ static void end_tetris(const t_tetris *tetris)
 {
 	print_matrix(tetris->matrix, printf);
 	Puts(GAME_OVER);
-	print_score(tetris->score, printf);
+	print_score(tetris->clear_line_count, printf);
 }
 
 static t_tetris create_tetris()
 {
 	t_tetris tetris = {
 		.matrix = {},
-		.score = 0,
-		.is_moved = false,
+		.has_to_refresh_screen = false,
 	};
 	tetris.time.interval = INIT_INTERVAL_TIME,
 	tetris.time.decrease_time = INIT_DECREASE_TIME;
 	return tetris;
 }
 
-static void update_score(t_tetris *tetris, int clear_line_count)
-{
-	tetris->score += SCORE_UNIT * clear_line_count;
-}
-
-static t_status update_game(t_tetris *tetris, t_mino *mino, int clear_line_count)
-{
-	update_drop_speed(&tetris->time, clear_line_count);
-	update_score(tetris, clear_line_count);
-	return create_new_mino(tetris->matrix, mino);
-}
-
 static t_status handle_locked_down(t_tetris *tetris, t_mino *mino)
 {
 	update_matrix_with_mino(tetris->matrix, mino);
 	int clear_line_count = clear_filled_lines(tetris->matrix);
-	return update_game(tetris, mino, clear_line_count);
+	update_drop_speed(&tetris->time, clear_line_count);
+	tetris->clear_line_count += clear_line_count;
+	return try_create_new_mino(tetris->matrix, mino);
 }
 
 static t_status drop_mino_auto(t_tetris *tetris, t_mino *mino)
@@ -76,9 +63,9 @@ static void run_tetris(t_tetris *tetris)
 		if (status == TETRIS_PLAY) {
 			status = drop_mino_auto(tetris, &mino);
 		}
-		if (tetris->is_moved) {
+		if (tetris->has_to_refresh_screen) {
 			refresh_screen(tetris, &mino);
-			tetris->is_moved = false;
+			tetris->has_to_refresh_screen = false;
 		}
 		if (status == TETRIS_LOCK_DOWN) {
 			status = handle_locked_down(tetris, &mino);
