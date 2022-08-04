@@ -8,7 +8,7 @@
 #define LEFT_KEY 'a'
 #define RIGHT_KEY 'd'
 #define SPIN_KEY 'w'
-#define SPACE_KEY ' '
+#define HARD_DROP_KEY ' '
 
 t_status handle_key_input(t_tetris *tetris, t_mino *mino);
 t_status try_drop(t_tetris *tetris, t_mino *mino);
