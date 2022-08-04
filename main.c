@@ -68,6 +68,14 @@ static void update_game_status(t_tetris *tetris, const t_mino *mino, int num_of_
 	update_score(tetris, num_of_erased);
 }
 
+static void reached_bottom(t_tetris *tetris, t_mino *mino)
+{
+	place_mino_on_field(tetris->field, mino);
+	int num_of_erased = erase_filled_lines(tetris->field);
+	*mino = generate_random_mino();
+	update_game_status(tetris, mino, num_of_erased);
+}
+
 static void start_tetris(t_tetris *tetris)
 {
 	t_mino mino = generate_random_mino();
@@ -83,10 +91,7 @@ static void start_tetris(t_tetris *tetris)
 			if (can_place_in_field(tetris->field, &moved_mino.mino_type, moved_mino.pos)) {
 				mino = moved_mino;
 			} else {
-				place_mino_on_field(tetris->field, &mino);
-				int num_of_erased = erase_filled_lines(tetris->field);
-				mino = generate_random_mino();
-				update_game_status(tetris, &mino, num_of_erased);
+				reached_bottom(tetris, &mino);
 			}
 			set_next_fall_time(&tetris->time);
 		}
