@@ -23,8 +23,6 @@ typedef enum e_status {
 typedef struct {
 	t_field field;
 	int64_t score;
-	t_status status;
-	bool is_alive;
 	t_tetris_time time;
 } t_tetris;
 

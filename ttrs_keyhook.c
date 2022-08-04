@@ -46,8 +46,10 @@ t_status handle_key_input(t_tetris *tetris, t_mino *mino)
 		t_mino moved_mino = g_keyhooks[c](mino);
 		if (can_place_in_field(tetris->field, &moved_mino.mino_type, moved_mino.pos)) {
 			*mino = moved_mino;
-		} else if (c == DOWN_KEY) {
-			return TETRIS_BOTTOM;
+		} else {
+			if (c == DOWN_KEY) {
+				return TETRIS_BOTTOM;
+			}
 		}
 	}
 	return TETRIS_FALL;
