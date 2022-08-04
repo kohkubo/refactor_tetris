@@ -15,11 +15,11 @@ static void print_header()
 {
 	for (int i = 0; i < MATRIX_COL / 2; i++) {
 		if (printw(" ") == ERR) {
-			exit_fatal_err(EXIT_FAILURE, __FILE__, __LINE__);
+			exit_fatal_err(EXIT_FAILURE);
 		}
 	}
 	if (printw(GAME_TITLE) == ERR) {
-		exit_fatal_err(EXIT_FAILURE, __FILE__, __LINE__);
+		exit_fatal_err(EXIT_FAILURE);
 	}
 }
 
@@ -29,11 +29,11 @@ void print_matrix(const t_matrix matrix, t_print_func print_func)
 		for (int j = 0; j < MATRIX_COL; j++) {
 			char texture = matrix[i][j] ? BLOCK_TEXTURE : EMPTY_TEXTURE;
 			if (print_func("%c ", texture) == ERR) {
-				exit_fatal_err(EXIT_FAILURE, __FILE__, __LINE__);
+				exit_fatal_err(EXIT_FAILURE);
 			}
 		}
 		if (print_func("\n") == ERR) {
-			exit_fatal_err(EXIT_FAILURE, __FILE__, __LINE__);
+			exit_fatal_err(EXIT_FAILURE);
 		}
 	}
 }
@@ -50,7 +50,7 @@ static void print_body(const t_matrix matrix, t_mino *mino)
 void print_score(size_t clear_line_count, t_print_func print_func)
 {
 	if (print_func("\nScore: %zu\n", clear_line_count * SCORE_UNIT) == ERR) {
-		exit_fatal_err(EXIT_FAILURE, __FILE__, __LINE__);
+		exit_fatal_err(EXIT_FAILURE);
 	}
 }
 
