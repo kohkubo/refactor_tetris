@@ -80,7 +80,6 @@ static void run_tetris(t_tetris *tetris)
 		if (status == TETRIS_GAME_OVER) {
 			return;
 		}
-		refresh_screen(tetris, &mino);
 	}
 }
 

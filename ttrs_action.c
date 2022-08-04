@@ -30,6 +30,7 @@ t_status try_down(t_tetris *tetris, t_mino *mino)
 	(void)tetris;
 	if (can_place_in_field(tetris->field, &mino->mino_type, DOWN(mino->pos))) {
 		mino->pos.row += 1;
+		refresh_screen(tetris, mino);
 	} else {
 		return TETRIS_BOTTOM;
 	}
@@ -41,6 +42,7 @@ t_status try_left(t_tetris *tetris, t_mino *mino)
 	(void)tetris;
 	if (can_place_in_field(tetris->field, &mino->mino_type, LEFT(mino->pos))) {
 		mino->pos.col -= 1;
+		refresh_screen(tetris, mino);
 	}
 	return TETRIS_FALL;
 }
@@ -50,6 +52,7 @@ t_status try_right(t_tetris *tetris, t_mino *mino)
 	(void)tetris;
 	if (can_place_in_field(tetris->field, &mino->mino_type, RIGHT(mino->pos))) {
 		mino->pos.col += 1;
+		refresh_screen(tetris, mino);
 	}
 	return TETRIS_FALL;
 }
@@ -60,6 +63,7 @@ t_status try_spin(t_tetris *tetris, t_mino *mino)
 	spin_right(&spined.mino_type);
 	if (can_place_in_field(tetris->field, &spined.mino_type, POS(spined.pos))) {
 		*mino = spined;
+		refresh_screen(tetris, mino);
 	}
 	return TETRIS_FALL;
 }
@@ -69,6 +73,7 @@ t_status down_direction(t_tetris *tetris, t_mino *mino)
 	while (can_place_in_field(tetris->field, &mino->mino_type, DOWN(mino->pos))) {
 		mino->pos.row += 1;
 	}
+	refresh_screen(tetris, mino);
 	return TETRIS_BOTTOM;
 }
 
@@ -84,7 +89,11 @@ t_status create_new_mino(t_field field, t_mino *mino)
 t_status handle_key_input(t_tetris *tetris, t_mino *mino)
 {
 	int c = getch();
-	if (c != ERR && g_keyhooks[c]) {
+	if (c == ERR) {
+		return TETRIS_FALL;
+	}
+	refresh_screen(tetris, mino);
+	if (g_keyhooks[c]) {
 		return g_keyhooks[c](tetris, mino);
 	}
 	return TETRIS_FALL;

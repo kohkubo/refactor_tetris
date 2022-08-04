@@ -1,6 +1,7 @@
 #include <string.h>
 
 #include "ttrs_field.h"
+#include "ttrs_print.h"
 
 static bool is_in_field(int moved_row, int moved_col, int row, int col)
 {
