@@ -55,13 +55,13 @@ static bool is_filled_line(t_field_line line)
 
 int erase_filled_lines(t_field field)
 {
-	int count = 0;
+	int erased_count = 0;
 
 	for (int i = 0; i < FIELD_ROW; i++) {
 		if (is_filled_line(field[i])) {
-			count++;
+			erased_count++;
 			erase_filled_line(field, i);
 		}
 	}
-	return count;
+	return erased_count;
 }

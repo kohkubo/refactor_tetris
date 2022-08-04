@@ -46,23 +46,23 @@ static t_tetris create_tetris()
 	return tetris;
 }
 
-static void update_score(t_tetris *tetris, int num_of_erased)
+static void update_score(t_tetris *tetris, int erased_count)
 {
-	tetris->score += SCORE_UNIT * num_of_erased;
+	tetris->score += SCORE_UNIT * erased_count;
 }
 
-static t_status update_game(t_tetris *tetris, t_mino *mino, int num_of_erased)
+static t_status update_game(t_tetris *tetris, t_mino *mino, int erased_count)
 {
-	update_fall_speed(&tetris->time, num_of_erased);
-	update_score(tetris, num_of_erased);
+	update_fall_speed(&tetris->time, erased_count);
+	update_score(tetris, erased_count);
 	return create_new_mino(tetris->field, mino);
 }
 
 static t_status reached_bottom(t_tetris *tetris, t_mino *mino)
 {
 	place_mino_on_field(tetris->field, mino);
-	int num_of_erased = erase_filled_lines(tetris->field);
-	return update_game(tetris, mino, num_of_erased);
+	int erased_count = erase_filled_lines(tetris->field);
+	return update_game(tetris, mino, erased_count);
 }
 
 static t_status fall(t_tetris *tetris, t_mino *mino)
