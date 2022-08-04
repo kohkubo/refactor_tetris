@@ -39,7 +39,7 @@ static t_tetris create_tetris()
 	t_tetris tetris = {
 		.field = {},
 		.score = 0,
-		.is_alive = true
+		.is_alive = true,
 	};
 	tetris.time.interval = INIT_INTERVAL_TIME,
 	tetris.time.decrease_time = INIT_DECREASE_TIME;
