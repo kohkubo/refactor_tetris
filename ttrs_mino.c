@@ -69,14 +69,16 @@ void spin_right(t_mino_type *mino_type)
 	}
 }
 
-#define ARRAY_SIZE(X) (sizeof(X) / sizeof(X[0]))
+#define ARRAY_SIZE(array) (sizeof(array) / sizeof(array[0]))
 
 t_mino generate_random_mino()
 {
 	t_mino mino;
 
-	mino.mino_type = g_mino_types[rand() % ARRAY_SIZE(g_mino_types)];
-	mino.pos.col = rand() % (MATRIX_COL - mino.mino_type.width + 1);
+	int randon_index = rand() % ARRAY_SIZE(g_mino_types);
+	mino.mino_type = g_mino_types[randon_index];
+	int random_position = rand() % (MATRIX_COL - mino.mino_type.width + 1);
+	mino.pos.col = random_position;
 	mino.pos.row = 0;
 	return mino;
 }

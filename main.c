@@ -36,7 +36,7 @@ static t_tetris create_tetris()
 
 static t_status handle_locked_down(t_tetris *tetris, t_mino *mino)
 {
-	set_matrix_with_mino(tetris->matrix, mino);
+	place_matrix_with_mino(tetris->matrix, mino);
 	int clear_line_count = clear_filled_lines(tetris->matrix);
 	update_drop_speed(&tetris->time, clear_line_count);
 	tetris->clear_line_count += clear_line_count;
@@ -64,6 +64,7 @@ static void run_tetris(t_tetris *tetris)
 		}
 		if (tetris->has_to_refresh_screen) {
 			refresh_screen(tetris, &mino);
+			tetris->has_to_refresh_screen = false;
 		}
 		if (status == TETRIS_LOCK_DOWN) {
 			status = handle_locked_down(tetris, &mino);
