@@ -59,12 +59,12 @@ const t_mino_type g_mino_types[] = {
 
 void spin_right(t_mino_type *mino_type)
 {
-	t_shape original_shape;
+	t_shape saved_shape;
 
-	memcpy(original_shape, mino_type->shape, sizeof(t_shape));
+	memcpy(saved_shape, mino_type->shape, sizeof(t_shape));
 	for (int row = 0; row < mino_type->width; row++) {
 		for (int col = 0, back_col = mino_type->width - 1; col < mino_type->width; col++, back_col--) {
-			mino_type->shape[row][col] = original_shape[back_col][row];
+			mino_type->shape[row][col] = saved_shape[back_col][row];
 		}
 	}
 }

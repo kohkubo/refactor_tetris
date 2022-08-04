@@ -1,41 +1,59 @@
 #include <ncurses.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <sys/errno.h>
 #include <time.h>
 
 #include "wrapper.h"
 
 void exit_fatal_err(int code)
 {
-	endwin();
+	Endwin();
 	perror("fatal");
 	exit(code);
 }
 
-void Clock_gettime(clockid_t clk_id, struct timespec *tp)
+int Clock_gettime(clockid_t clk_id, struct timespec *tp)
 {
-	if (clock_gettime(clk_id, tp) == -1) {
+	int ret = clock_gettime(clk_id, tp);
+	if (ret == -1) {
 		exit_fatal_err(EXIT_FAILURE);
 	}
+	return ret;
 }
 
-void Puts(const char *str)
+int Puts(const char *str)
 {
-	if (puts(str) == EOF) {
+	int ret = puts(str);
+	if (ret == EOF) {
 		exit_fatal_err(EXIT_FAILURE);
 	}
+	return ret;
 }
 
-void Endwin(void)
+int Endwin(void)
 {
-	if (endwin() == ERR) {
-		exit_fatal_err(EXIT_FAILURE);
+	int ret = endwin();
+	if (ret == ERR) {
+		exit(EXIT_FAILURE);
 	}
+	return ret;
 }
 
-void Initscr(void)
+WINDOW *Initscr(void)
 {
-	if (initscr() == NULL) {
+	WINDOW *ret = initscr();
+	if (ret == NULL) {
 		exit_fatal_err(EXIT_FAILURE);
 	}
+	return ret;
+}
+
+int Clear(void)
+{
+	int ret = clear();
+	if (ret == ERR) {
+		exit_fatal_err(EXIT_FAILURE);
+	}
+	return ret;
 }

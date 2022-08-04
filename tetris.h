@@ -27,4 +27,4 @@ typedef struct {
 	bool has_to_refresh_screen;
 } t_tetris;
 
-#endif /* TETRIS */
+#endif

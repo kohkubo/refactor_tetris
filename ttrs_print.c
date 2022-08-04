@@ -43,7 +43,7 @@ static void print_body(const t_matrix matrix, t_mino *mino)
 	t_matrix current_matrix;
 
 	memcpy(current_matrix, matrix, sizeof(t_matrix));
-	update_matrix_with_mino(current_matrix, mino);
+	set_matrix_with_mino(current_matrix, mino);
 	print_matrix(current_matrix, printw);
 }
 
@@ -54,10 +54,11 @@ void print_score(size_t clear_line_count, t_print_func print_func)
 	}
 }
 
-void refresh_screen(const t_tetris *tetris, t_mino *mino)
+void refresh_screen(t_tetris *tetris, t_mino *mino)
 {
 	clear();
 	print_header();
 	print_body(tetris->matrix, mino);
 	print_score(tetris->clear_line_count, printw);
+	tetris->has_to_refresh_screen = false;
 }

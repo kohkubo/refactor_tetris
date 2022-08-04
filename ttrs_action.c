@@ -16,7 +16,7 @@ t_keyhook_func g_keyhooks[UCHAR_MAX] = {};
 #define MINO_RIGHT(pos) pos.row, pos.col + 1
 #define MINO_POS(pos) pos.row, pos.col
 
-void init_keyhook_funcp()
+void init_keyhook_func_ptr_array()
 {
 	g_keyhooks[DROP_KEY] = try_drop;
 	g_keyhooks[LEFT_KEY] = try_left;
@@ -27,19 +27,16 @@ void init_keyhook_funcp()
 
 t_status try_drop(t_tetris *tetris, t_mino *mino)
 {
-	(void)tetris;
 	if (can_place_on_matrix(tetris->matrix, &mino->mino_type, MINO_DOWN(mino->pos))) {
 		mino->pos.row += 1;
 		tetris->has_to_refresh_screen = true;
-	} else {
-		return TETRIS_LOCK_DOWN;
+		return TETRIS_PLAY;
 	}
-	return TETRIS_PLAY;
+	return TETRIS_LOCK_DOWN;
 }
 
 t_status try_left(t_tetris *tetris, t_mino *mino)
 {
-	(void)tetris;
 	if (can_place_on_matrix(tetris->matrix, &mino->mino_type, MINO_LEFT(mino->pos))) {
 		mino->pos.col -= 1;
 		tetris->has_to_refresh_screen = true;
@@ -49,7 +46,6 @@ t_status try_left(t_tetris *tetris, t_mino *mino)
 
 t_status try_right(t_tetris *tetris, t_mino *mino)
 {
-	(void)tetris;
 	if (can_place_on_matrix(tetris->matrix, &mino->mino_type, MINO_RIGHT(mino->pos))) {
 		mino->pos.col += 1;
 		tetris->has_to_refresh_screen = true;
@@ -78,7 +74,7 @@ t_status hard_drop(t_tetris *tetris, t_mino *mino)
 	return TETRIS_LOCK_DOWN;
 }
 
-t_status try_create_new_mino(t_matrix matrix, t_mino *mino)
+t_status try_create_mino(t_matrix matrix, t_mino *mino)
 {
 	*mino = generate_random_mino();
 	if (!can_place_on_matrix(matrix, &mino->mino_type, MINO_POS(mino->pos))) {
@@ -95,11 +91,7 @@ static bool is_valid_key(int key)
 t_status handle_key_input(t_tetris *tetris, t_mino *mino)
 {
 	int key = getch();
-	if (key == ERR) {
-		return TETRIS_PLAY;
-	}
-	refresh_screen(tetris, mino);
-	if (is_valid_key(key)) {
+	if (key != ERR && is_valid_key(key)) {
 		return g_keyhooks[key](tetris, mino);
 	}
 	return TETRIS_PLAY;
