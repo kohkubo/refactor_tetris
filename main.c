@@ -15,11 +15,6 @@
 
 #define SCORE_UNIT 100
 
-#define DOWN_KEY 's'
-#define LEFT_KEY 'a'
-#define RIGHT_KEY 'd'
-#define ROTATE_KEY 'w'
-
 #define GAME_OVER "\nGame over!"
 
 t_keyhook_func g_keyhooks[UCHAR_MAX] = {};
@@ -56,16 +51,14 @@ static void update_score(t_tetris *tetris, int num_of_erased)
 	tetris->score += SCORE_UNIT * num_of_erased;
 }
 
-static void update_is_alive(t_tetris *tetris, const t_mino *mino)
+static t_status update_game_status(t_tetris *tetris, const t_mino *mino, int num_of_erased)
 {
-	tetris->is_alive = can_place_in_field(tetris->field, &mino->mino_type, mino->pos);
-}
-
-static void update_game_status(t_tetris *tetris, const t_mino *mino, int num_of_erased)
-{
-	update_is_alive(tetris, mino);
 	update_fall_speed(&tetris->time, num_of_erased);
 	update_score(tetris, num_of_erased);
+	if (!can_place_in_field(tetris->field, &mino->mino_type, mino->pos)) {
+		return TETRIS_GAME_OVER;
+	}
+	return TETRIS_FALL;
 }
 
 static void reached_bottom(t_tetris *tetris, t_mino *mino)
@@ -80,20 +73,27 @@ static void loop_tetris(t_tetris *tetris)
 {
 	t_mino mino = generate_random_mino();
 
-	while (tetris->is_alive) {
-		t_mino moved_mino = handle_key_input(&mino);
-		if (can_place_in_field(tetris->field, &moved_mino.mino_type, moved_mino.pos)) {
-			mino = moved_mino;
-		}
-
-		if (is_time_to_fall(&tetris->time)) {
-			moved_mino = move_down(&mino);
-			if (can_place_in_field(tetris->field, &moved_mino.mino_type, moved_mino.pos)) {
-				mino = moved_mino;
-			} else {
-				reached_bottom(tetris, &mino);
+	while (true) {
+		t_mino moved_mino;
+		tetris->status = handle_key_input(tetris, &mino);
+		if (tetris->status == TETRIS_FALL) {
+			if (is_time_to_fall(&tetris->time)) {
+				moved_mino = move_down(&mino);
+				if (can_place_in_field(tetris->field, &moved_mino.mino_type, moved_mino.pos)) {
+					mino = moved_mino;
+					tetris->status = TETRIS_FALL;
+				} else {
+					tetris->status = TETRIS_BOTTOM;
+				}
+				set_next_fall_time(&tetris->time);
 			}
-			set_next_fall_time(&tetris->time);
+		}
+		if (tetris->status == TETRIS_BOTTOM) {
+			reached_bottom(tetris, &mino);
+		}
+		if (tetris->status == TETRIS_GAME_OVER) {
+			end_tetris(tetris);
+			break;
 		}
 		update_screen(tetris, &mino);
 	}
@@ -118,5 +118,4 @@ int main()
 	t_tetris tetris = create_tetris();
 	init_tetris();
 	run_tetris(&tetris);
-	end_tetris(&tetris);
 }
