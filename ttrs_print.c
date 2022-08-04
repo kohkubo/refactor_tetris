@@ -53,7 +53,7 @@ void print_score(int score, t_print_func print_func)
 	}
 }
 
-void update_screen(const t_tetris *tetris, t_mino *mino)
+void refresh_screen(const t_tetris *tetris, t_mino *mino)
 {
 	clear();
 	print_header();
