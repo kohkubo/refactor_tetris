@@ -52,7 +52,7 @@ static t_status update_game(t_tetris *tetris, t_mino *mino, int clear_line_count
 
 static t_status handle_locked_down(t_tetris *tetris, t_mino *mino)
 {
-	place_mino_on_matrix(tetris->matrix, mino);
+	update_matrix_with_mino(tetris->matrix, mino);
 	int clear_line_count = clear_filled_lines(tetris->matrix);
 	return update_game(tetris, mino, clear_line_count);
 }

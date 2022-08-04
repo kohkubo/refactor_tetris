@@ -3,9 +3,9 @@
 #include "ttrs_matrix.h"
 #include "ttrs_print.h"
 
-static bool is_in_matrix(int moved_row, int moved_col, int row, int col)
+static bool is_in_matrix(int row, int col, int offset_row, int offset_col)
 {
-	return (moved_col + col >= 0 && moved_col + col < MATRIX_COL && moved_row + row < MATRIX_ROW);
+	return (col + offset_col >= 0 && col + offset_col < MATRIX_COL && row + offset_row < MATRIX_ROW);
 }
 
 bool can_place_on_matrix(const t_matrix matrix, const t_mino_type *mino_type, int row, int col)
@@ -23,7 +23,7 @@ bool can_place_on_matrix(const t_matrix matrix, const t_mino_type *mino_type, in
 	return true;
 }
 
-void place_mino_on_matrix(t_matrix matrix, t_mino *mino)
+void update_matrix_with_mino(t_matrix matrix, t_mino *mino)
 {
 	t_point pos = mino->pos;
 
