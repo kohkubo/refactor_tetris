@@ -9,7 +9,7 @@
 #include "ttrs_mino.h"
 #include "ttrs_print.h"
 
-t_keyhook_func g_keyhooks[UCHAR_MAX] = {};
+t_keyhook_func g_keyhooks[UCHAR_MAX + 1] = {};
 
 #define MINO_DOWN(pos) pos.row + 1, pos.col
 #define MINO_LEFT(pos) pos.row, pos.col - 1
