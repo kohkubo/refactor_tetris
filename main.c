@@ -76,7 +76,7 @@ static void reached_bottom(t_tetris *tetris, t_mino *mino)
 	update_game_status(tetris, mino, num_of_erased);
 }
 
-static void start_tetris(t_tetris *tetris)
+static void loop_tetris(t_tetris *tetris)
 {
 	t_mino mino = generate_random_mino();
 
@@ -109,7 +109,7 @@ static void run_tetris(t_tetris *tetris)
 {
 	Initscr();
 	timeout(1);
-	start_tetris(tetris);
+	loop_tetris(tetris);
 	Endwin();
 }
 
