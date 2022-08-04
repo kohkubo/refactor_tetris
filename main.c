@@ -65,7 +65,7 @@ static t_status fall(t_tetris *tetris, t_mino *mino)
 	return TETRIS_FALL;
 }
 
-static void loop_tetris(t_tetris *tetris)
+static void run_tetris(t_tetris *tetris)
 {
 	t_status status = TETRIS_FALL;
 	t_mino mino = generate_random_mino();
@@ -84,24 +84,19 @@ static void loop_tetris(t_tetris *tetris)
 	}
 }
 
-static void init_tetris()
+static void init_game()
 {
+	Initscr();
+	timeout(1);
 	srand(time(NULL));
 	assign_keyhook_funcp();
 }
 
-static void run_tetris(t_tetris *tetris)
-{
-	Initscr();
-	timeout(1);
-	loop_tetris(tetris);
-	Endwin();
-}
-
 int main()
 {
+	init_game();
 	t_tetris tetris = create_tetris();
-	init_tetris();
 	run_tetris(&tetris);
+	Endwin();
 	end_tetris(&tetris);
 }
