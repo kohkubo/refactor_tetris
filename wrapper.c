@@ -8,7 +8,7 @@
 
 void exit_fatal_err(int code)
 {
-	endwin();
+	Endwin();
 	perror("fatal");
 	exit(code);
 }
@@ -35,7 +35,7 @@ int Endwin(void)
 {
 	int ret = endwin();
 	if (ret == ERR) {
-		exit_fatal_err(EXIT_FAILURE);
+		exit(EXIT_FAILURE);
 	}
 	return ret;
 }
