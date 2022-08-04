@@ -23,7 +23,7 @@ bool can_place_on_matrix(const t_matrix matrix, const t_mino_type *mino_type, in
 	return true;
 }
 
-void update_matrix_with_mino(t_matrix matrix, t_mino *mino)
+void set_matrix_with_mino(t_matrix matrix, t_mino *mino)
 {
 	t_point pos = mino->pos;
 

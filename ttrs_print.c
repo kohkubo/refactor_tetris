@@ -43,7 +43,7 @@ static void print_body(const t_matrix matrix, t_mino *mino)
 	t_matrix current_matrix;
 
 	memcpy(current_matrix, matrix, sizeof(t_matrix));
-	update_matrix_with_mino(current_matrix, mino);
+	set_matrix_with_mino(current_matrix, mino);
 	print_matrix(current_matrix, printw);
 }
 
