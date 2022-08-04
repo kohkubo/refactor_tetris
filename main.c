@@ -68,6 +68,7 @@ static void run_tetris(t_tetris *tetris)
 		}
 		if (status == TETRIS_LOCK_DOWN) {
 			status = handle_locked_down(tetris, &mino);
+			refresh_screen(tetris, &mino);
 		}
 	}
 }
