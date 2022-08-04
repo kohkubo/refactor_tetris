@@ -36,7 +36,7 @@ void place_mino_on_matrix(t_matrix matrix, t_mino *mino)
 	}
 }
 
-static void erase_filled_line(t_matrix matrix, int row)
+static void clear_filled_line(t_matrix matrix, int row)
 {
 	for (int i = row; i > 0; i--) {
 		memcpy(matrix[i], matrix[i - 1], MATRIX_COL);
@@ -61,7 +61,7 @@ int clear_filled_lines(t_matrix matrix)
 	for (int i = 0; i < MATRIX_ROW; i++) {
 		if (is_filled_line(matrix[i])) {
 			clear_line_count++;
-			erase_filled_line(matrix, i);
+			clear_filled_line(matrix, i);
 		}
 	}
 	return clear_line_count;

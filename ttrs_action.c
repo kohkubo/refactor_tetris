@@ -16,7 +16,7 @@ t_keyhook_func g_keyhooks[UCHAR_MAX] = {};
 #define MINO_RIGHT(pos) pos.row, pos.col + 1
 #define MINO_POS(pos) pos.row, pos.col
 
-void assign_keyhook_funcp()
+void init_keyhook_funcp()
 {
 	g_keyhooks[MINO_DOWN_KEY] = try_drop;
 	g_keyhooks[LEFT_KEY] = try_left;
@@ -60,6 +60,7 @@ t_status try_right(t_tetris *tetris, t_mino *mino)
 t_status try_spin(t_tetris *tetris, t_mino *mino)
 {
 	t_mino spined = *mino;
+
 	spin_right(&spined.mino_type);
 	if (can_place_on_matrix(tetris->matrix, &spined.mino_type, MINO_POS(spined.pos))) {
 		*mino = spined;
@@ -86,15 +87,20 @@ t_status create_new_mino(t_matrix matrix, t_mino *mino)
 	return TETRIS_PLAY;
 }
 
+static bool is_valid_key(int key)
+{
+	return g_keyhooks[key] != NULL;
+}
+
 t_status handle_key_input(t_tetris *tetris, t_mino *mino)
 {
-	int c = getch();
-	if (c == ERR) {
+	int key = getch();
+	if (key == ERR) {
 		return TETRIS_PLAY;
 	}
 	refresh_screen(tetris, mino);
-	if (g_keyhooks[c]) {
-		return g_keyhooks[c](tetris, mino);
+	if (is_valid_key(key)) {
+		return g_keyhooks[key](tetris, mino);
 	}
 	return TETRIS_PLAY;
 }

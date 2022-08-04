@@ -31,6 +31,7 @@ static t_tetris create_tetris()
 	t_tetris tetris = {
 		.matrix = {},
 		.score = 0,
+		.is_moved = false,
 	};
 	tetris.time.interval = INIT_INTERVAL_TIME,
 	tetris.time.decrease_time = INIT_DECREASE_TIME;
@@ -69,6 +70,7 @@ static void run_tetris(t_tetris *tetris)
 {
 	t_status status = TETRIS_PLAY;
 	t_mino mino = generate_random_mino();
+
 	while (status != TETRIS_GAME_OVER) {
 		status = handle_key_input(tetris, &mino);
 		if (status == TETRIS_PLAY) {
@@ -76,6 +78,7 @@ static void run_tetris(t_tetris *tetris)
 		}
 		if (tetris->is_moved) {
 			refresh_screen(tetris, &mino);
+			tetris->is_moved = false;
 		}
 		if (status == TETRIS_LOCK_DOWN) {
 			status = handle_locked_down(tetris, &mino);
@@ -83,19 +86,25 @@ static void run_tetris(t_tetris *tetris)
 	}
 }
 
-static void init_game()
+static void init_ncurses()
 {
 	Initscr();
 	timeout(1);
-	srand(time(NULL));
-	assign_keyhook_funcp();
+}
+
+static void end_ncurses()
+{
+	Endwin();
 }
 
 int main()
 {
-	init_game();
 	t_tetris tetris = create_tetris();
+
+	srand(time(NULL));
+	init_keyhook_funcp();
+	init_ncurses();
 	run_tetris(&tetris);
-	Endwin();
+	end_ncurses();
 	end_tetris(&tetris);
 }
