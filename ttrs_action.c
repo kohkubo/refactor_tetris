@@ -27,19 +27,16 @@ void init_keyhook_func_ptr_array()
 
 t_status try_drop(t_tetris *tetris, t_mino *mino)
 {
-	(void)tetris;
 	if (can_place_on_matrix(tetris->matrix, &mino->mino_type, MINO_DOWN(mino->pos))) {
 		mino->pos.row += 1;
 		tetris->has_to_refresh_screen = true;
-	} else {
-		return TETRIS_LOCK_DOWN;
+		return TETRIS_PLAY;
 	}
-	return TETRIS_PLAY;
+	return TETRIS_LOCK_DOWN;
 }
 
 t_status try_left(t_tetris *tetris, t_mino *mino)
 {
-	(void)tetris;
 	if (can_place_on_matrix(tetris->matrix, &mino->mino_type, MINO_LEFT(mino->pos))) {
 		mino->pos.col -= 1;
 		tetris->has_to_refresh_screen = true;
@@ -49,7 +46,6 @@ t_status try_left(t_tetris *tetris, t_mino *mino)
 
 t_status try_right(t_tetris *tetris, t_mino *mino)
 {
-	(void)tetris;
 	if (can_place_on_matrix(tetris->matrix, &mino->mino_type, MINO_RIGHT(mino->pos))) {
 		mino->pos.col += 1;
 		tetris->has_to_refresh_screen = true;
