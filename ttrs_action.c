@@ -16,7 +16,7 @@ t_keyhook_func g_keyhooks[UCHAR_MAX] = {};
 #define MINO_RIGHT(pos) pos.row, pos.col + 1
 #define MINO_POS(pos) pos.row, pos.col
 
-void init_keyhook_funcp()
+void init_keyhook_func_ptr()
 {
 	g_keyhooks[DROP_KEY] = try_drop;
 	g_keyhooks[LEFT_KEY] = try_left;
@@ -78,7 +78,7 @@ t_status hard_drop(t_tetris *tetris, t_mino *mino)
 	return TETRIS_LOCK_DOWN;
 }
 
-t_status try_create_new_mino(t_matrix matrix, t_mino *mino)
+t_status try_create_mino(t_matrix matrix, t_mino *mino)
 {
 	*mino = generate_random_mino();
 	if (!can_place_on_matrix(matrix, &mino->mino_type, MINO_POS(mino->pos))) {

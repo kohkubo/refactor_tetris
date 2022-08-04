@@ -54,10 +54,11 @@ void print_score(size_t clear_line_count, t_print_func print_func)
 	}
 }
 
-void refresh_screen(const t_tetris *tetris, t_mino *mino)
+void refresh_screen(t_tetris *tetris, t_mino *mino)
 {
 	clear();
 	print_header();
 	print_body(tetris->matrix, mino);
 	print_score(tetris->clear_line_count, printw);
+	tetris->has_to_refresh_screen = false;
 }
