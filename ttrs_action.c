@@ -22,7 +22,7 @@ void init_keyhook_funcp()
 	g_keyhooks[LEFT_KEY] = try_left;
 	g_keyhooks[RIGHT_KEY] = try_right;
 	g_keyhooks[SPIN_KEY] = try_spin;
-	g_keyhooks[SPACE_KEY] = hard_drop;
+	// g_keyhooks[SPACE_KEY] = hard_drop;
 }
 
 t_status try_drop(t_tetris *tetris, t_mino *mino)
