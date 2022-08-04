@@ -1,5 +1,5 @@
-#ifndef TTRS_MINO_HPP
-#define TTRS_MINO_HPP
+#ifndef TTRS_MINO_H
+#define TTRS_MINO_H
 
 #define SHAPE_HEIGHT_MAX 4
 #define SHAPE_WIDTH_MAX 4
@@ -29,4 +29,4 @@ typedef struct
 t_mino generate_random_mino();
 void spin_right(t_mino_type *mino_type);
 
-#endif /* TTRS_MINO_HPP */
+#endif

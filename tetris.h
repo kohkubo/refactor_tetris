@@ -1,5 +1,5 @@
-#ifndef TETRIS_HPP
-#define TETRIS_HPP
+#ifndef TETRIS_H
+#define TETRIS_H
 
 #include <stdbool.h>
 #include <stdint.h>
@@ -24,6 +24,7 @@ typedef struct {
 	t_field field;
 	int64_t score;
 	t_tetris_time time;
+	bool is_moved;
 } t_tetris;
 
-#endif /* TETRIS_HPP */
+#endif

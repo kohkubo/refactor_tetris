@@ -30,7 +30,7 @@ t_status try_down(t_tetris *tetris, t_mino *mino)
 	(void)tetris;
 	if (can_place_in_field(tetris->field, &mino->mino_type, DOWN(mino->pos))) {
 		mino->pos.row += 1;
-		refresh_screen(tetris, mino);
+		tetris->is_moved = true;
 	} else {
 		return TETRIS_BOTTOM;
 	}
@@ -42,7 +42,7 @@ t_status try_left(t_tetris *tetris, t_mino *mino)
 	(void)tetris;
 	if (can_place_in_field(tetris->field, &mino->mino_type, LEFT(mino->pos))) {
 		mino->pos.col -= 1;
-		refresh_screen(tetris, mino);
+		tetris->is_moved = true;
 	}
 	return TETRIS_FLOATING;
 }
@@ -52,7 +52,7 @@ t_status try_right(t_tetris *tetris, t_mino *mino)
 	(void)tetris;
 	if (can_place_in_field(tetris->field, &mino->mino_type, RIGHT(mino->pos))) {
 		mino->pos.col += 1;
-		refresh_screen(tetris, mino);
+		tetris->is_moved = true;
 	}
 	return TETRIS_FLOATING;
 }
@@ -63,7 +63,7 @@ t_status try_spin(t_tetris *tetris, t_mino *mino)
 	spin_right(&spined.mino_type);
 	if (can_place_in_field(tetris->field, &spined.mino_type, POS(spined.pos))) {
 		*mino = spined;
-		refresh_screen(tetris, mino);
+		tetris->is_moved = true;
 	}
 	return TETRIS_FLOATING;
 }
@@ -73,7 +73,7 @@ t_status down_direction(t_tetris *tetris, t_mino *mino)
 	while (can_place_in_field(tetris->field, &mino->mino_type, DOWN(mino->pos))) {
 		mino->pos.row += 1;
 	}
-	refresh_screen(tetris, mino);
+	tetris->is_moved = true;
 	return TETRIS_BOTTOM;
 }
 

@@ -1,5 +1,5 @@
-#ifndef TTRS_FIELD_HPP
-#define TTRS_FIELD_HPP
+#ifndef TTRS_FIELD_H
+#define TTRS_FIELD_H
 
 #include "tetris.h"
 
@@ -7,4 +7,4 @@ bool can_place_in_field(const t_field field, const t_mino_type *mino_type, int r
 void place_mino_on_field(t_field field, t_mino *mino);
 int erase_filled_lines(t_field field);
 
-#endif /* TTRS_FIELD_HPP */
+#endif

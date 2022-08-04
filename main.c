@@ -74,6 +74,9 @@ static void run_tetris(t_tetris *tetris)
 		if (status == TETRIS_FLOATING) {
 			status = fall(tetris, &mino);
 		}
+		if (tetris->is_moved) {
+			refresh_screen(tetris, &mino);
+		}
 		if (status == TETRIS_BOTTOM) {
 			status = reached_bottom(tetris, &mino);
 		}
