@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "ttrs_field.h"
+#include "ttrs_matrix.h"
 #include "ttrs_print.h"
 #include "wrapper.h"
 
@@ -12,7 +12,7 @@
 
 static void print_header()
 {
-	for (int i = 0; i < FIELD_COL / 2; i++) {
+	for (int i = 0; i < MATRIX_COL / 2; i++) {
 		if (printw(" ") == ERR) {
 			exit_fatal_err(EXIT_FAILURE);
 		}
@@ -22,11 +22,11 @@ static void print_header()
 	}
 }
 
-void print_field(const t_field field, t_print_func print_func)
+void print_matrix(const t_matrix matrix, t_print_func print_func)
 {
-	for (int i = 0; i < FIELD_ROW; i++) {
-		for (int j = 0; j < FIELD_COL; j++) {
-			char texture = field[i][j] ? BLOCK_TEXTURE : EMPTY_TEXTURE;
+	for (int i = 0; i < MATRIX_ROW; i++) {
+		for (int j = 0; j < MATRIX_COL; j++) {
+			char texture = matrix[i][j] ? BLOCK_TEXTURE : EMPTY_TEXTURE;
 			if (print_func("%c ", texture) == ERR) {
 				exit_fatal_err(EXIT_FAILURE);
 			}
@@ -37,13 +37,13 @@ void print_field(const t_field field, t_print_func print_func)
 	}
 }
 
-static void print_body(const t_field field, t_mino *mino)
+static void print_body(const t_matrix matrix, t_mino *mino)
 {
-	t_field current_field;
+	t_matrix current_field;
 
-	memcpy(current_field, field, sizeof(t_field));
+	memcpy(current_field, matrix, sizeof(t_matrix));
 	place_mino_on_field(current_field, mino);
-	print_field(current_field, printw);
+	print_matrix(current_field, printw);
 }
 
 void print_score(int score, t_print_func print_func)
@@ -57,6 +57,6 @@ void refresh_screen(const t_tetris *tetris, t_mino *mino)
 {
 	clear();
 	print_header();
-	print_body(tetris->field, mino);
+	print_body(tetris->matrix, mino);
 	print_score(tetris->score, printw);
 }

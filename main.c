@@ -7,7 +7,7 @@
 
 #include "tetris.h"
 #include "ttrs_action.h"
-#include "ttrs_field.h"
+#include "ttrs_matrix.h"
 #include "ttrs_mino.h"
 #include "ttrs_print.h"
 #include "ttrs_time.h"
@@ -21,7 +21,7 @@ extern t_keyhook_func g_keyhooks[UCHAR_MAX];
 
 static void end_tetris(const t_tetris *tetris)
 {
-	print_field(tetris->field, printf);
+	print_matrix(tetris->matrix, printf);
 	Puts(GAME_OVER);
 	print_score(tetris->score, printf);
 }
@@ -29,7 +29,7 @@ static void end_tetris(const t_tetris *tetris)
 static t_tetris create_tetris()
 {
 	t_tetris tetris = {
-		.field = {},
+		.matrix = {},
 		.score = 0,
 	};
 	tetris.time.interval = INIT_INTERVAL_TIME,
@@ -44,40 +44,40 @@ static void update_score(t_tetris *tetris, int erased_count)
 
 static t_status update_game(t_tetris *tetris, t_mino *mino, int erased_count)
 {
-	update_fall_speed(&tetris->time, erased_count);
+	update_drop_speed(&tetris->time, erased_count);
 	update_score(tetris, erased_count);
-	return create_new_mino(tetris->field, mino);
+	return create_new_mino(tetris->matrix, mino);
 }
 
 static t_status reached_bottom(t_tetris *tetris, t_mino *mino)
 {
-	place_mino_on_field(tetris->field, mino);
-	int erased_count = erase_filled_lines(tetris->field);
+	place_mino_on_field(tetris->matrix, mino);
+	int erased_count = clear_filled_lines(tetris->matrix);
 	return update_game(tetris, mino, erased_count);
 }
 
-static t_status fall(t_tetris *tetris, t_mino *mino)
+static t_status drop(t_tetris *tetris, t_mino *mino)
 {
-	if (is_time_to_fall(&tetris->time)) {
-		update_next_fall_time(&tetris->time);
-		return try_down(tetris, mino);
+	if (is_time_to_drop(&tetris->time)) {
+		update_next_drop_time(&tetris->time);
+		return try_soft_drop(tetris, mino);
 	}
-	return TETRIS_FLOATING;
+	return TETRIS_PLAY;
 }
 
 static void run_tetris(t_tetris *tetris)
 {
-	t_status status = TETRIS_FLOATING;
+	t_status status = TETRIS_PLAY;
 	t_mino mino = generate_random_mino();
 	while (true) {
 		status = handle_key_input(tetris, &mino);
-		if (status == TETRIS_FLOATING) {
-			status = fall(tetris, &mino);
+		if (status == TETRIS_PLAY) {
+			status = drop(tetris, &mino);
 		}
 		if (tetris->is_moved) {
 			refresh_screen(tetris, &mino);
 		}
-		if (status == TETRIS_BOTTOM) {
+		if (status == TETRIS_LOCK_DOWN) {
 			status = reached_bottom(tetris, &mino);
 		}
 		if (status == TETRIS_GAME_OVER) {

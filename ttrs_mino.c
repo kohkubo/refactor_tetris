@@ -76,7 +76,7 @@ t_mino generate_random_mino()
 	t_mino mino;
 
 	mino.mino_type = g_mino_types[rand() % ARRAY_SIZE(g_mino_types)];
-	mino.pos.col = rand() % (FIELD_COL - mino.mino_type.width + 1);
+	mino.pos.col = rand() % (MATRIX_COL - mino.mino_type.width + 1);
 	mino.pos.row = 0;
 	return mino;
 }
