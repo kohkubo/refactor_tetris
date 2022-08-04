@@ -118,8 +118,7 @@ static void loop_tetris(t_tetris *tetris)
 	while (tetris->is_alive) {
 		bool is_moved = try_move_mino_by_key_input(tetris, &mino);
 		is_moved |= handle_auto_fall(tetris, &mino);
-		if (is_moved)
-			update_screen(tetris, &mino);
+		update_screen(tetris, &mino);
 		if (is_moved && is_reached_bottom(tetris, &mino)) {
 			handle_reached_bottom(tetris, &mino);
 			update_screen(tetris, &mino);
