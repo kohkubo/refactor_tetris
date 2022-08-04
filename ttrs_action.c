@@ -11,24 +11,24 @@
 
 t_keyhook_func g_keyhooks[UCHAR_MAX] = {};
 
-#define DOWN(pos) pos.row + 1, pos.col
-#define LEFT(pos) pos.row, pos.col - 1
-#define RIGHT(pos) pos.row, pos.col + 1
-#define POS(pos) pos.row, pos.col
+#define MINO_DOWN(pos) pos.row + 1, pos.col
+#define MINO_LEFT(pos) pos.row, pos.col - 1
+#define MINO_RIGHT(pos) pos.row, pos.col + 1
+#define MINO_POS(pos) pos.row, pos.col
 
 void assign_keyhook_funcp()
 {
-	g_keyhooks[DOWN_KEY] = try_soft_drop;
+	g_keyhooks[MINO_DOWN_KEY] = try_drop;
 	g_keyhooks[LEFT_KEY] = try_left;
 	g_keyhooks[RIGHT_KEY] = try_right;
-	g_keyhooks[ROTATE_KEY] = try_spin;
+	g_keyhooks[SPIN_KEY] = try_spin;
 	g_keyhooks[SPACE_KEY] = hard_drop;
 }
 
-t_status try_soft_drop(t_tetris *tetris, t_mino *mino)
+t_status try_drop(t_tetris *tetris, t_mino *mino)
 {
 	(void)tetris;
-	if (can_place_in_field(tetris->matrix, &mino->mino_type, DOWN(mino->pos))) {
+	if (can_place_on_matrix(tetris->matrix, &mino->mino_type, MINO_DOWN(mino->pos))) {
 		mino->pos.row += 1;
 		tetris->is_moved = true;
 	} else {
@@ -40,7 +40,7 @@ t_status try_soft_drop(t_tetris *tetris, t_mino *mino)
 t_status try_left(t_tetris *tetris, t_mino *mino)
 {
 	(void)tetris;
-	if (can_place_in_field(tetris->matrix, &mino->mino_type, LEFT(mino->pos))) {
+	if (can_place_on_matrix(tetris->matrix, &mino->mino_type, MINO_LEFT(mino->pos))) {
 		mino->pos.col -= 1;
 		tetris->is_moved = true;
 	}
@@ -50,7 +50,7 @@ t_status try_left(t_tetris *tetris, t_mino *mino)
 t_status try_right(t_tetris *tetris, t_mino *mino)
 {
 	(void)tetris;
-	if (can_place_in_field(tetris->matrix, &mino->mino_type, RIGHT(mino->pos))) {
+	if (can_place_on_matrix(tetris->matrix, &mino->mino_type, MINO_RIGHT(mino->pos))) {
 		mino->pos.col += 1;
 		tetris->is_moved = true;
 	}
@@ -61,7 +61,7 @@ t_status try_spin(t_tetris *tetris, t_mino *mino)
 {
 	t_mino spined = *mino;
 	spin_right(&spined.mino_type);
-	if (can_place_in_field(tetris->matrix, &spined.mino_type, POS(spined.pos))) {
+	if (can_place_on_matrix(tetris->matrix, &spined.mino_type, MINO_POS(spined.pos))) {
 		*mino = spined;
 		tetris->is_moved = true;
 	}
@@ -70,7 +70,7 @@ t_status try_spin(t_tetris *tetris, t_mino *mino)
 
 t_status hard_drop(t_tetris *tetris, t_mino *mino)
 {
-	while (can_place_in_field(tetris->matrix, &mino->mino_type, DOWN(mino->pos))) {
+	while (can_place_on_matrix(tetris->matrix, &mino->mino_type, MINO_DOWN(mino->pos))) {
 		mino->pos.row += 1;
 	}
 	tetris->is_moved = true;
@@ -80,7 +80,7 @@ t_status hard_drop(t_tetris *tetris, t_mino *mino)
 t_status create_new_mino(t_matrix matrix, t_mino *mino)
 {
 	*mino = generate_random_mino();
-	if (!can_place_in_field(matrix, &mino->mino_type, POS(mino->pos))) {
+	if (!can_place_on_matrix(matrix, &mino->mino_type, MINO_POS(mino->pos))) {
 		return TETRIS_GAME_OVER;
 	}
 	return TETRIS_PLAY;

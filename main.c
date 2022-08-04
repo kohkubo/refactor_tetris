@@ -37,30 +37,30 @@ static t_tetris create_tetris()
 	return tetris;
 }
 
-static void update_score(t_tetris *tetris, int erased_count)
+static void update_score(t_tetris *tetris, int clear_line_count)
 {
-	tetris->score += SCORE_UNIT * erased_count;
+	tetris->score += SCORE_UNIT * clear_line_count;
 }
 
-static t_status update_game(t_tetris *tetris, t_mino *mino, int erased_count)
+static t_status update_game(t_tetris *tetris, t_mino *mino, int clear_line_count)
 {
-	update_drop_speed(&tetris->time, erased_count);
-	update_score(tetris, erased_count);
+	update_drop_speed(&tetris->time, clear_line_count);
+	update_score(tetris, clear_line_count);
 	return create_new_mino(tetris->matrix, mino);
 }
 
-static t_status reached_bottom(t_tetris *tetris, t_mino *mino)
+static t_status handle_locked_down(t_tetris *tetris, t_mino *mino)
 {
-	place_mino_on_field(tetris->matrix, mino);
-	int erased_count = clear_filled_lines(tetris->matrix);
-	return update_game(tetris, mino, erased_count);
+	place_mino_on_matrix(tetris->matrix, mino);
+	int clear_line_count = clear_filled_lines(tetris->matrix);
+	return update_game(tetris, mino, clear_line_count);
 }
 
-static t_status drop(t_tetris *tetris, t_mino *mino)
+static t_status drop_mino_auto(t_tetris *tetris, t_mino *mino)
 {
 	if (is_time_to_drop(&tetris->time)) {
 		update_next_drop_time(&tetris->time);
-		return try_soft_drop(tetris, mino);
+		return try_drop(tetris, mino);
 	}
 	return TETRIS_PLAY;
 }
@@ -69,19 +69,16 @@ static void run_tetris(t_tetris *tetris)
 {
 	t_status status = TETRIS_PLAY;
 	t_mino mino = generate_random_mino();
-	while (true) {
+	while (status != TETRIS_GAME_OVER) {
 		status = handle_key_input(tetris, &mino);
 		if (status == TETRIS_PLAY) {
-			status = drop(tetris, &mino);
+			status = drop_mino_auto(tetris, &mino);
 		}
 		if (tetris->is_moved) {
 			refresh_screen(tetris, &mino);
 		}
 		if (status == TETRIS_LOCK_DOWN) {
-			status = reached_bottom(tetris, &mino);
-		}
-		if (status == TETRIS_GAME_OVER) {
-			return;
+			status = handle_locked_down(tetris, &mino);
 		}
 	}
 }

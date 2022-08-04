@@ -1,5 +1,5 @@
-#ifndef TETRIS_H
-#define TETRIS_H
+#ifndef TETRIS
+#define TETRIS
 
 #include <stdbool.h>
 #include <stdint.h>
@@ -12,7 +12,7 @@
 #define MATRIX_COL 15
 
 typedef uint8_t t_matrix[MATRIX_ROW][MATRIX_COL];
-typedef uint8_t t_field_line[MATRIX_ROW];
+typedef uint8_t t_line[MATRIX_ROW];
 
 typedef enum e_status {
 	TETRIS_PLAY,
@@ -27,4 +27,4 @@ typedef struct {
 	bool is_moved;
 } t_tetris;
 
-#endif
+#endif /* TETRIS */

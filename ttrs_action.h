@@ -1,17 +1,17 @@
-#ifndef TTRS_KEYHOOK_H
-#define TTRS_KEYHOOK_H
+#ifndef TTRS_ACTION_H
+#define TTRS_ACTION_H
 
 #include "tetris.h"
 #include "ttrs_mino.h"
 
-#define DOWN_KEY 's'
+#define MINO_DOWN_KEY 's'
 #define LEFT_KEY 'a'
 #define RIGHT_KEY 'd'
-#define ROTATE_KEY 'w'
+#define SPIN_KEY 'w'
 #define SPACE_KEY ' '
 
 t_status handle_key_input(t_tetris *tetris, t_mino *mino);
-t_status try_soft_drop(t_tetris *tetris, t_mino *mino);
+t_status try_drop(t_tetris *tetris, t_mino *mino);
 t_status try_left(t_tetris *tetris, t_mino *mino);
 t_status try_right(t_tetris *tetris, t_mino *mino);
 t_status try_spin(t_tetris *tetris, t_mino *mino);

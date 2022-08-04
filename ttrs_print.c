@@ -39,11 +39,11 @@ void print_matrix(const t_matrix matrix, t_print_func print_func)
 
 static void print_body(const t_matrix matrix, t_mino *mino)
 {
-	t_matrix current_field;
+	t_matrix current_matrix;
 
-	memcpy(current_field, matrix, sizeof(t_matrix));
-	place_mino_on_field(current_field, mino);
-	print_matrix(current_field, printw);
+	memcpy(current_matrix, matrix, sizeof(t_matrix));
+	place_mino_on_matrix(current_matrix, mino);
+	print_matrix(current_matrix, printw);
 }
 
 void print_score(int score, t_print_func print_func)
