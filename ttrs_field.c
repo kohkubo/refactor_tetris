@@ -2,19 +2,19 @@
 
 #include "ttrs_field.h"
 
-static bool is_in_field(const t_point *dest, int row, int col)
+static bool is_in_field(int moved_row, int moved_col, int row, int col)
 {
-	return (dest->col + col >= 0 && dest->col + col < FIELD_COL && dest->row + row < FIELD_ROW);
+	return (moved_col + col >= 0 && moved_col + col < FIELD_COL && moved_row + row < FIELD_ROW);
 }
 
-bool can_place_in_field(const t_field field, const t_mino_type *mino_type, const t_point dest)
+bool can_place_in_field(const t_field field, const t_mino_type *mino_type, int row, int col)
 {
 	for (int i = 0; i < (int)mino_type->width; i++) {
 		for (int j = 0; j < (int)mino_type->width; j++) {
 			if (!mino_type->shape[i][j]) {
 				continue;
 			}
-			if (!is_in_field(&dest, i, j) || field[dest.row + i][dest.col + j]) {
+			if (!is_in_field(row, col, i, j) || field[row + i][col + j]) {
 				return false;
 			}
 		}

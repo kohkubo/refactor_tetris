@@ -6,8 +6,8 @@
 #include <time.h>
 
 #include "tetris.h"
+#include "ttrs_action.h"
 #include "ttrs_field.h"
-#include "ttrs_keyhook.h"
 #include "ttrs_mino.h"
 #include "ttrs_print.h"
 #include "ttrs_time.h"
@@ -28,10 +28,11 @@ static void end_tetris(const t_tetris *tetris)
 
 static void assign_keyhook_funcp()
 {
-	g_keyhooks[DOWN_KEY] = move_down;
-	g_keyhooks[LEFT_KEY] = move_left;
-	g_keyhooks[RIGHT_KEY] = move_right;
-	g_keyhooks[ROTATE_KEY] = move_spin;
+	g_keyhooks[DOWN_KEY] = try_down;
+	g_keyhooks[LEFT_KEY] = try_left;
+	g_keyhooks[RIGHT_KEY] = try_right;
+	g_keyhooks[ROTATE_KEY] = try_spin;
+	g_keyhooks[SPACE_KEY] = down_direction;
 }
 
 static t_tetris create_tetris()
@@ -50,34 +51,25 @@ static void update_score(t_tetris *tetris, int num_of_erased)
 	tetris->score += SCORE_UNIT * num_of_erased;
 }
 
-static t_status update_game(t_tetris *tetris, const t_mino *mino, int num_of_erased)
+static t_status update_game(t_tetris *tetris, t_mino *mino, int num_of_erased)
 {
 	update_fall_speed(&tetris->time, num_of_erased);
 	update_score(tetris, num_of_erased);
-	if (!can_place_in_field(tetris->field, &mino->mino_type, mino->pos)) {
-		return TETRIS_GAME_OVER;
-	}
-	return TETRIS_FALL;
+	return create_new_mino(tetris->field, mino);
 }
 
 static t_status reached_bottom(t_tetris *tetris, t_mino *mino)
 {
 	place_mino_on_field(tetris->field, mino);
 	int num_of_erased = erase_filled_lines(tetris->field);
-	*mino = generate_random_mino();
 	return update_game(tetris, mino, num_of_erased);
 }
 
 static t_status fall(t_tetris *tetris, t_mino *mino)
 {
 	if (is_time_to_fall(&tetris->time)) {
-		t_mino moved_mino = move_down(mino);
-		if (can_place_in_field(tetris->field, &moved_mino.mino_type, moved_mino.pos)) {
-			*mino = moved_mino;
-		} else {
-			return TETRIS_BOTTOM;
-		}
 		set_next_fall_time(&tetris->time);
+		return try_down(tetris, mino);
 	}
 	return TETRIS_FALL;
 }
