@@ -76,6 +76,8 @@ static void init_ncurses()
 {
 	Initscr();
 	timeout(1);
+	noecho();
+	curs_set(0);
 }
 
 static void end_ncurses()

@@ -95,11 +95,7 @@ static bool is_valid_key(int key)
 t_status handle_key_input(t_tetris *tetris, t_mino *mino)
 {
 	int key = getch();
-	if (key == ERR) {
-		return TETRIS_PLAY;
-	}
-	refresh_screen(tetris, mino);
-	if (is_valid_key(key)) {
+	if (key != ERR && is_valid_key(key)) {
 		return g_keyhooks[key](tetris, mino);
 	}
 	return TETRIS_PLAY;
