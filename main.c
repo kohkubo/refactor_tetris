@@ -88,7 +88,7 @@ int main()
 	t_tetris tetris = create_tetris();
 
 	srand(time(NULL));
-	init_keyhook_func_ptr();
+	init_keyhook_func_ptr_array();
 	init_ncurses();
 	run_tetris(&tetris);
 	end_ncurses();

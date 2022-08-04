@@ -16,7 +16,7 @@ t_keyhook_func g_keyhooks[UCHAR_MAX] = {};
 #define MINO_RIGHT(pos) pos.row, pos.col + 1
 #define MINO_POS(pos) pos.row, pos.col
 
-void init_keyhook_func_ptr()
+void init_keyhook_func_ptr_array()
 {
 	g_keyhooks[DROP_KEY] = try_drop;
 	g_keyhooks[LEFT_KEY] = try_left;
