@@ -9,12 +9,21 @@
 #include "ttrs_mino.h"
 #include "ttrs_print.h"
 
-extern t_keyhook_func g_keyhooks[UCHAR_MAX];
+t_keyhook_func g_keyhooks[UCHAR_MAX] = {};
 
 #define DOWN(pos) pos.row + 1, pos.col
 #define LEFT(pos) pos.row, pos.col - 1
 #define RIGHT(pos) pos.row, pos.col + 1
 #define POS(pos) pos.row, pos.col
+
+void assign_keyhook_funcp()
+{
+	g_keyhooks[DOWN_KEY] = try_down;
+	g_keyhooks[LEFT_KEY] = try_left;
+	g_keyhooks[RIGHT_KEY] = try_right;
+	g_keyhooks[ROTATE_KEY] = try_spin;
+	g_keyhooks[SPACE_KEY] = down_direction;
+}
 
 t_status try_down(t_tetris *tetris, t_mino *mino)
 {

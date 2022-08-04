@@ -20,6 +20,6 @@ typedef struct
 
 bool is_time_to_fall(t_tetris_time *time);
 void update_fall_speed(t_tetris_time *time, int count);
-void set_next_fall_time(t_tetris_time *time);
+void update_next_fall_time(t_tetris_time *time);
 
 #endif

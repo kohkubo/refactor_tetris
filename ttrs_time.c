@@ -14,11 +14,11 @@ bool is_time_to_fall(t_tetris_time *time)
 	struct timespec now;
 
 	Clock_gettime(CLOCK_MONOTONIC, &now);
-	 long now_nsec = get_nsec(&now);
+	long now_nsec = get_nsec(&now);
 	return now_nsec >= time->next_fall_time;
 }
 
-void set_next_fall_time(t_tetris_time *time)
+void update_next_fall_time(t_tetris_time *time)
 {
 	struct timespec now;
 

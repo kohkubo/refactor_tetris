@@ -17,6 +17,7 @@ t_status try_right(t_tetris *tetris, t_mino *mino);
 t_status try_spin(t_tetris *tetris, t_mino *mino);
 t_status down_direction(t_tetris *tetris, t_mino *mino);
 t_status create_new_mino(t_field field, t_mino *mino);
+void assign_keyhook_funcp();
 
 typedef t_status (*t_keyhook_func)(t_tetris *tetris, t_mino *);
 

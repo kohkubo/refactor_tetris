@@ -17,22 +17,13 @@
 
 #define GAME_OVER "\nGame over!"
 
-t_keyhook_func g_keyhooks[UCHAR_MAX] = {};
+extern t_keyhook_func g_keyhooks[UCHAR_MAX];
 
 static void end_tetris(const t_tetris *tetris)
 {
 	print_field(tetris->field, printf);
 	Puts(GAME_OVER);
 	print_score(tetris->score, printf);
-}
-
-static void assign_keyhook_funcp()
-{
-	g_keyhooks[DOWN_KEY] = try_down;
-	g_keyhooks[LEFT_KEY] = try_left;
-	g_keyhooks[RIGHT_KEY] = try_right;
-	g_keyhooks[ROTATE_KEY] = try_spin;
-	g_keyhooks[SPACE_KEY] = down_direction;
 }
 
 static t_tetris create_tetris()
@@ -68,7 +59,7 @@ static t_status reached_bottom(t_tetris *tetris, t_mino *mino)
 static t_status fall(t_tetris *tetris, t_mino *mino)
 {
 	if (is_time_to_fall(&tetris->time)) {
-		set_next_fall_time(&tetris->time);
+		update_next_fall_time(&tetris->time);
 		return try_down(tetris, mino);
 	}
 	return TETRIS_FALL;
