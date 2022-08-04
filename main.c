@@ -62,16 +62,16 @@ static t_status fall(t_tetris *tetris, t_mino *mino)
 		update_next_fall_time(&tetris->time);
 		return try_down(tetris, mino);
 	}
-	return TETRIS_FALL;
+	return TETRIS_FLOATING;
 }
 
 static void run_tetris(t_tetris *tetris)
 {
-	t_status status = TETRIS_FALL;
+	t_status status = TETRIS_FLOATING;
 	t_mino mino = generate_random_mino();
 	while (true) {
 		status = handle_key_input(tetris, &mino);
-		if (status == TETRIS_FALL) {
+		if (status == TETRIS_FLOATING) {
 			status = fall(tetris, &mino);
 		}
 		if (status == TETRIS_BOTTOM) {

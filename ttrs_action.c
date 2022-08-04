@@ -34,7 +34,7 @@ t_status try_down(t_tetris *tetris, t_mino *mino)
 	} else {
 		return TETRIS_BOTTOM;
 	}
-	return TETRIS_FALL;
+	return TETRIS_FLOATING;
 }
 
 t_status try_left(t_tetris *tetris, t_mino *mino)
@@ -44,7 +44,7 @@ t_status try_left(t_tetris *tetris, t_mino *mino)
 		mino->pos.col -= 1;
 		refresh_screen(tetris, mino);
 	}
-	return TETRIS_FALL;
+	return TETRIS_FLOATING;
 }
 
 t_status try_right(t_tetris *tetris, t_mino *mino)
@@ -54,7 +54,7 @@ t_status try_right(t_tetris *tetris, t_mino *mino)
 		mino->pos.col += 1;
 		refresh_screen(tetris, mino);
 	}
-	return TETRIS_FALL;
+	return TETRIS_FLOATING;
 }
 
 t_status try_spin(t_tetris *tetris, t_mino *mino)
@@ -65,7 +65,7 @@ t_status try_spin(t_tetris *tetris, t_mino *mino)
 		*mino = spined;
 		refresh_screen(tetris, mino);
 	}
-	return TETRIS_FALL;
+	return TETRIS_FLOATING;
 }
 
 t_status down_direction(t_tetris *tetris, t_mino *mino)
@@ -83,18 +83,18 @@ t_status create_new_mino(t_field field, t_mino *mino)
 	if (!can_place_in_field(field, &mino->mino_type, POS(mino->pos))) {
 		return TETRIS_GAME_OVER;
 	}
-	return TETRIS_FALL;
+	return TETRIS_FLOATING;
 }
 
 t_status handle_key_input(t_tetris *tetris, t_mino *mino)
 {
 	int c = getch();
 	if (c == ERR) {
-		return TETRIS_FALL;
+		return TETRIS_FLOATING;
 	}
 	refresh_screen(tetris, mino);
 	if (g_keyhooks[c]) {
 		return g_keyhooks[c](tetris, mino);
 	}
-	return TETRIS_FALL;
+	return TETRIS_FLOATING;
 }

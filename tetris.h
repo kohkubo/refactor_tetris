@@ -15,7 +15,7 @@ typedef uint8_t t_field[FIELD_ROW][FIELD_COL];
 typedef uint8_t t_field_line[FIELD_ROW];
 
 typedef enum e_status {
-	TETRIS_FALL,
+	TETRIS_FLOATING,
 	TETRIS_BOTTOM,
 	TETRIS_GAME_OVER,
 } t_status;
