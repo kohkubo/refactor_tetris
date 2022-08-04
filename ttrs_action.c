@@ -18,7 +18,7 @@ t_keyhook_func g_keyhooks[UCHAR_MAX] = {};
 
 void init_keyhook_funcp()
 {
-	g_keyhooks[DOWN_KEY] = try_drop;
+	g_keyhooks[DROP_KEY] = try_drop;
 	g_keyhooks[LEFT_KEY] = try_left;
 	g_keyhooks[RIGHT_KEY] = try_right;
 	g_keyhooks[SPIN_KEY] = try_spin;

@@ -4,7 +4,7 @@
 #include "tetris.h"
 #include "ttrs_mino.h"
 
-#define DOWN_KEY 's'
+#define DROP_KEY 's'
 #define LEFT_KEY 'a'
 #define RIGHT_KEY 'd'
 #define SPIN_KEY 'w'
