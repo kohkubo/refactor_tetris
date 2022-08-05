@@ -10,6 +10,12 @@
 #define SPIN_KEY 'w'
 #define HARD_DROP_KEY ' '
 
+typedef enum e_status {
+	TETRIS_PLAY,
+	TETRIS_LOCK_DOWN,
+	TETRIS_GAME_OVER,
+} t_status;
+
 t_status handle_key_input(t_tetris *tetris, t_mino *mino);
 t_status try_drop(t_tetris *tetris, t_mino *mino);
 t_status try_left(t_tetris *tetris, t_mino *mino);
