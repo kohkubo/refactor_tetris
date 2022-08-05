@@ -1,7 +1,7 @@
 #include <string.h>
 
+#include "ttrs_display.h"
 #include "ttrs_matrix.h"
-#include "ttrs_print.h"
 
 static bool is_in_matrix(int row, int col, int offset_row, int offset_col)
 {

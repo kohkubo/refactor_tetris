@@ -2,14 +2,10 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "tetris.h"
+#include "ttrs_display.h"
 #include "ttrs_matrix.h"
-#include "ttrs_print.h"
 #include "wrapper.h"
-
-#define BLOCK_TEXTURE '#'
-#define EMPTY_TEXTURE '.'
-#define GAME_TITLE "42 Tetris\n"
-#define SCORE_UNIT 100
 
 static void print_header()
 {
@@ -47,9 +43,9 @@ static void print_body(const t_matrix matrix, t_mino *mino)
 	print_matrix(current_matrix, printw);
 }
 
-void print_score(size_t clear_line_count, t_print_func print_func)
+void print_score(int score, t_print_func print_func)
 {
-	if (print_func("\nScore: %zu\n", clear_line_count * SCORE_UNIT) == ERR) {
+	if (print_func("\n%s%d\n", SCORE_TEXT, score) == ERR) {
 		exit_fatal_err(EXIT_FAILURE);
 	}
 }
@@ -59,5 +55,18 @@ void refresh_screen(t_tetris *tetris, t_mino *mino)
 	clear();
 	print_header();
 	print_body(tetris->matrix, mino);
-	print_score(tetris->clear_line_count, printw);
+	print_score(tetris->clear_line_count * SCORE_UNIT, printw);
+}
+
+void init_ncurses()
+{
+	Initscr();
+	timeout(1);
+	noecho();
+	curs_set(0);
+}
+
+void end_ncurses()
+{
+	Endwin();
 }

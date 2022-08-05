@@ -5,9 +5,9 @@
 
 #include "tetris.h"
 #include "ttrs_action.h"
+#include "ttrs_display.h"
 #include "ttrs_matrix.h"
 #include "ttrs_mino.h"
-#include "ttrs_print.h"
 
 t_keyhook_func g_keyhooks[UCHAR_MAX + 1] = {};
 

@@ -1,5 +1,5 @@
-#ifndef TETRIS
-#define TETRIS
+#ifndef TETRIS_H
+#define TETRIS_H
 
 #include <stdbool.h>
 #include <stdint.h>
@@ -11,6 +11,8 @@
 #define MATRIX_ROW 20
 #define MATRIX_COL 15
 
+#define SCORE_UNIT 100
+
 typedef uint8_t t_matrix[MATRIX_ROW][MATRIX_COL];
 typedef uint8_t t_line[MATRIX_ROW];
 
@@ -21,4 +23,4 @@ typedef struct {
 	bool has_to_refresh_screen;
 } t_tetris;
 
-#endif
+#endif /* TETRIS_H */

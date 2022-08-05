@@ -14,7 +14,7 @@ bool is_time_to_drop(t_tetris_time *time)
 	struct timespec now;
 
 	Clock_gettime(CLOCK_MONOTONIC, &now);
-	long now_nsec = get_nsec(&now);
+	t_unix_time_nsec now_nsec = get_nsec(&now);
 	return now_nsec >= time->next_drop_time;
 }
 

@@ -6,21 +6,19 @@
 
 #include "tetris.h"
 #include "ttrs_action.h"
+#include "ttrs_display.h"
 #include "ttrs_matrix.h"
 #include "ttrs_mino.h"
-#include "ttrs_print.h"
 #include "ttrs_time.h"
 #include "wrapper.h"
-
-#define GAME_OVER "\nGame over!"
 
 extern t_keyhook_func g_keyhooks[UCHAR_MAX];
 
 static void end_tetris(const t_tetris *tetris)
 {
 	print_matrix(tetris->matrix, printf);
-	Puts(GAME_OVER);
-	print_score(tetris->clear_line_count, printf);
+	Puts(GAME_OVER_TEXT);
+	print_score(tetris->clear_line_count * SCORE_UNIT, printf);
 }
 
 static t_tetris create_tetris()
@@ -71,19 +69,6 @@ static void run_tetris(t_tetris *tetris)
 			refresh_screen(tetris, &mino);
 		}
 	}
-}
-
-static void init_ncurses()
-{
-	Initscr();
-	timeout(1);
-	noecho();
-	curs_set(0);
-}
-
-static void end_ncurses()
-{
-	Endwin();
 }
 
 int main()
