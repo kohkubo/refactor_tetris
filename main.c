@@ -12,7 +12,7 @@
 #include "ttrs_time.h"
 #include "wrapper.h"
 
-extern t_keyhook_func g_keyhooks[UCHAR_MAX];
+extern t_keyhook_func g_keyhooks;
 
 static void end_tetris(const t_tetris *tetris)
 {
