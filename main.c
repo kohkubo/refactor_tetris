@@ -52,8 +52,10 @@ static void wait_next_frame(long start)
 {
 	static const long fps = 30;
 	long past = get_current_usec() - start;
+	long sleep_time = 1000 * 1000 / fps - past;
 
-	usleep(1000 * 1000 / fps - past);
+	if (sleep_time > 0)
+		usleep(sleep_time);
 }
 
 static void run_tetris(t_tetris *tetris)
