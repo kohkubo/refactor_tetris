@@ -37,3 +37,16 @@ void update_drop_speed(t_tetris_time *time, int count)
 			time->decrease_time -= DECREASE_UNIT_TIME;
 	}
 }
+
+long get_current_nsec()
+{
+	struct timespec now;
+
+	Clock_gettime(CLOCK_MONOTONIC, &now);
+	return get_nsec(&now);
+}
+
+long get_current_usec()
+{
+	return get_current_nsec() / 1000;
+}

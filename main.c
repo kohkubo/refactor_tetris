@@ -49,6 +49,15 @@ static t_status drop_mino_auto(t_tetris *tetris, t_mino *mino)
 	}
 	return TETRIS_PLAY;
 }
+#include <unistd.h>
+
+static void wait_next_frame(long start)
+{
+	static const long fps = 30;
+	long past = get_current_usec() - start;
+
+	usleep(1000 * 1000 / fps - past);
+}
 
 static void run_tetris(t_tetris *tetris)
 {
@@ -56,18 +65,14 @@ static void run_tetris(t_tetris *tetris)
 	t_mino mino = generate_random_mino();
 
 	while (status != TETRIS_GAME_OVER) {
+		refresh_screen(tetris, &mino);
+		long start = get_current_usec();
 		status = handle_key_input(tetris, &mino);
-		if (status == TETRIS_PLAY) {
-			status = drop_mino_auto(tetris, &mino);
-		}
-		if (tetris->has_to_refresh_screen) {
-			refresh_screen(tetris, &mino);
-			tetris->has_to_refresh_screen = false;
-		}
+		status = drop_mino_auto(tetris, &mino);
 		if (status == TETRIS_LOCK_DOWN) {
 			status = handle_locked_down(tetris, &mino);
-			refresh_screen(tetris, &mino);
 		}
+		wait_next_frame(start);
 	}
 }
 
