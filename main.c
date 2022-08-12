@@ -65,8 +65,8 @@ static void run_tetris(t_tetris *tetris)
 	t_mino mino = generate_random_mino();
 
 	while (status != TETRIS_GAME_OVER) {
-		refresh_screen(tetris, &mino);
 		long start = get_current_usec();
+		refresh_screen(tetris, &mino);
 		status = handle_key_input(tetris, &mino);
 		status = drop_mino_auto(tetris, &mino);
 		if (status == TETRIS_LOCK_DOWN) {
