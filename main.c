@@ -1,3 +1,4 @@
+#include <unistd.h>
 #include <limits.h>
 #include <ncurses.h>
 #include <stdio.h>
@@ -46,7 +47,6 @@ static t_status drop_mino_auto(t_tetris *tetris, t_mino *mino, t_status st)
 	}
 	return st;
 }
-#include <unistd.h>
 
 static void wait_next_frame(long start)
 {
