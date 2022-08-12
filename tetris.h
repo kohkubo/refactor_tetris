@@ -20,7 +20,6 @@ typedef struct {
 	t_matrix matrix;
 	size_t clear_line_count;
 	t_tetris_time time;
-	bool has_to_refresh_screen;
 } t_tetris;
 
 #endif /* TETRIS_H */

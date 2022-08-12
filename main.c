@@ -23,10 +23,7 @@ static void end_tetris(const t_tetris *tetris)
 
 static t_tetris create_tetris()
 {
-	t_tetris tetris = {
-		.matrix = {},
-		.has_to_refresh_screen = false,
-	};
+	t_tetris tetris = {};
 	tetris.time.interval = INIT_INTERVAL_TIME,
 	tetris.time.decrease_time = INIT_DECREASE_TIME;
 	return tetris;

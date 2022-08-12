@@ -29,7 +29,6 @@ t_status try_drop(t_tetris *tetris, t_mino *mino)
 {
 	if (can_place_on_matrix(tetris->matrix, &mino->mino_type, MINO_DOWN(mino->pos))) {
 		mino->pos.row += 1;
-		tetris->has_to_refresh_screen = true;
 		return TETRIS_PLAY;
 	}
 	return TETRIS_LOCK_DOWN;
@@ -39,7 +38,6 @@ t_status try_left(t_tetris *tetris, t_mino *mino)
 {
 	if (can_place_on_matrix(tetris->matrix, &mino->mino_type, MINO_LEFT(mino->pos))) {
 		mino->pos.col -= 1;
-		tetris->has_to_refresh_screen = true;
 	}
 	return TETRIS_PLAY;
 }
@@ -48,7 +46,6 @@ t_status try_right(t_tetris *tetris, t_mino *mino)
 {
 	if (can_place_on_matrix(tetris->matrix, &mino->mino_type, MINO_RIGHT(mino->pos))) {
 		mino->pos.col += 1;
-		tetris->has_to_refresh_screen = true;
 	}
 	return TETRIS_PLAY;
 }
@@ -60,7 +57,6 @@ t_status try_spin(t_tetris *tetris, t_mino *mino)
 	spin_right(&spined.mino_type);
 	if (can_place_on_matrix(tetris->matrix, &spined.mino_type, MINO_POS(spined.pos))) {
 		*mino = spined;
-		tetris->has_to_refresh_screen = true;
 	}
 	return TETRIS_PLAY;
 }
@@ -70,7 +66,6 @@ t_status hard_drop(t_tetris *tetris, t_mino *mino)
 	while (can_place_on_matrix(tetris->matrix, &mino->mino_type, MINO_DOWN(mino->pos))) {
 		mino->pos.row += 1;
 	}
-	tetris->has_to_refresh_screen = true;
 	return TETRIS_LOCK_DOWN;
 }
 
