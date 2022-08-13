@@ -50,6 +50,7 @@ const t_mino_type g_mino_types[] = {
 	},
 	{
 		.shape = {
+			{0, 0, 0, 0},
 			{1, 1, 1, 1},
 		},
 		.width = 4
