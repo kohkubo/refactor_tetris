@@ -28,9 +28,9 @@ bool is_time_to_drop(t_unix_time_nsec next_drop_time)
 	return now_nsec >= next_drop_time;
 }
 
-void update_next_drop_time(t_tetris_time *time)
+t_unix_time_nsec get_next_drop_time(t_nsec interval)
 {
-	time->next_drop_time = get_current_nsec() + time->interval;
+	return get_current_nsec() + interval;
 }
 
 void update_drop_speed(t_tetris_time *time, int count)
