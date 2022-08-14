@@ -9,8 +9,10 @@
 #define INIT_INTERVAL_TIME 400000000
 #define DECREASE_UNIT_TIME 1000
 #define INTERVAL_TIME_MIN 1000
+
 #define SEC_TO_NSEC(sec) (sec * 1000000000)
 #define NSEC_TO_USEC(sec) (sec / 1000)
+#define SEC_TO_USEC(sec) (sec * 1000 * 1000)
 
 typedef long t_nsec;
 typedef long t_unix_time_nsec;
