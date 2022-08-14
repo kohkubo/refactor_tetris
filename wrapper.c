@@ -6,7 +6,7 @@
 
 #include "wrapper.h"
 
-void exit_fatal_err(int code)
+_Noreturn void exit_fatal_err(int code)
 {
 	Endwin();
 	perror("fatal");

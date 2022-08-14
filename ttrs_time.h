@@ -4,6 +4,7 @@
 #include <stdbool.h>
 #include <sys/time.h>
 #include <time.h>
+#include <unistd.h>
 
 #define INIT_DECREASE_TIME 1000000
 #define INIT_INTERVAL_TIME 400000000
@@ -17,7 +18,6 @@
 
 typedef long t_nsec;
 typedef long t_unix_time_nsec;
-typedef long t_unix_time_usec;
 
 typedef struct
 {
@@ -32,6 +32,6 @@ bool is_time_to_drop(t_unix_time_nsec next_drop_time);
 void update_drop_speed(t_tetris_time *time, int count);
 t_unix_time_nsec generate_next_drop_time(t_nsec interval);
 long get_current_nsec(void);
-long get_current_usec(void);
+useconds_t get_current_usec(void);
 
 #endif

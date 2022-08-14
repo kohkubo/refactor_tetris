@@ -9,7 +9,7 @@
 #include "ttrs_matrix.h"
 #include "ttrs_mino.h"
 
-t_keyhook_func g_keyhooks[UCHAR_MAX + 1] = {};
+static t_keyhook_func g_keyhooks[UCHAR_MAX + 1] = {0};
 
 // clang-format off
 #define MINO_DOWN(pos) (t_position){pos.row + 1, pos.col}

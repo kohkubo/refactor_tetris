@@ -5,7 +5,7 @@
 #include "ttrs_mino.h"
 
 // clang-format off
-const t_mino g_minos[] = {
+static const t_mino g_minos[] = {
 	{
 		.shape = {
 			{0, 1, 1},
@@ -79,18 +79,18 @@ void spin_right(t_mino *mino)
 
 #define ARRAY_SIZE(array) (sizeof(array) / sizeof(array[0]))
 
-t_mino get_random_mino()
+static t_mino get_random_mino(void)
 {
-	const int randon_index = rand() % ARRAY_SIZE(g_minos);
+	const int randon_index = rand() % (int)ARRAY_SIZE(g_minos);
 	return g_minos[randon_index];
 }
 
-int get_random_col(int mino_length)
+static int get_random_col(int mino_length)
 {
 	return rand() % (MATRIX_COL - mino_length + 1);
 }
 
-t_current_mino generate_random_mino()
+t_current_mino generate_random_mino(void)
 {
 	t_current_mino current_mino;
 
