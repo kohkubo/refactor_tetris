@@ -59,21 +59,21 @@ static bool is_filled_line(t_line line)
 
 static int clear_filled_lines(t_matrix matrix)
 {
-	int num_of_cleared_line = 0;
+	int num_of_cleared_lines = 0;
 
 	for (int i = 0; i < MATRIX_ROW; i++) {
 		if (is_filled_line(matrix[i])) {
-			num_of_cleared_line++;
+			num_of_cleared_lines++;
 			clear_filled_line(matrix, i);
 		}
 	}
-	return num_of_cleared_line;
+	return num_of_cleared_lines;
 }
 
 int lock_down_current_mino(t_tetris *tetris)
 {
 	place_mino_on_matrix(tetris->matrix, &tetris->current_mino);
-	const int num_of_cleared_line = clear_filled_lines(tetris->matrix);
-	update_drop_speed(&tetris->time, num_of_cleared_line);
-	return num_of_cleared_line;
+	const int num_of_cleared_lines = clear_filled_lines(tetris->matrix);
+	update_drop_speed(&tetris->time, num_of_cleared_lines);
+	return num_of_cleared_lines;
 }
