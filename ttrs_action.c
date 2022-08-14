@@ -94,3 +94,12 @@ t_status handle_key_input(t_tetris *tetris, t_current_mino *mino)
 	}
 	return TETRIS_PLAY;
 }
+
+t_status handle_auto_drop(t_tetris *tetris, t_current_mino *mino)
+{
+	if (is_time_to_drop(&tetris->time)) {
+		update_next_drop_time(&tetris->time);
+		return try_drop(tetris, mino);
+	}
+	return TETRIS_PLAY;
+}

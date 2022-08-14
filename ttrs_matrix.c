@@ -57,7 +57,7 @@ static bool is_filled_line(t_line line)
 	return filled_cell == MATRIX_COL;
 }
 
-int clear_filled_lines(t_matrix matrix)
+static int clear_filled_lines(t_matrix matrix)
 {
 	int clear_line_count = 0;
 
@@ -67,5 +67,14 @@ int clear_filled_lines(t_matrix matrix)
 			clear_filled_line(matrix, i);
 		}
 	}
+	return clear_line_count;
+}
+
+
+int locked_down_current_mino(t_tetris *tetris, t_current_mino *mino)
+{
+	place_matrix_with_mino(tetris->matrix, mino);
+	int clear_line_count = clear_filled_lines(tetris->matrix);
+	update_drop_speed(&tetris->time, clear_line_count);
 	return clear_line_count;
 }
