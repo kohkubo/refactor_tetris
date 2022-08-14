@@ -13,8 +13,8 @@ static bool is_in_matrix(int row, int col, int offset_row, int offset_col)
 
 bool can_place_on_matrix(const t_matrix matrix, const t_mino *mino, t_position pos)
 {
-	for (int i = 0; i < mino->width; i++) {
-		for (int j = 0; j < mino->width; j++) {
+	for (int i = 0; i < mino->len; i++) {
+		for (int j = 0; j < mino->len; j++) {
 			if (mino->shape[i][j] == EMPTY_CELL) {
 				continue;
 			}
@@ -30,8 +30,8 @@ void place_mino_on_matrix(t_matrix matrix, t_current_mino *current)
 {
 	t_position pos = current->pos;
 
-	for (int i = 0; i < current->mino.width; i++) {
-		for (int j = 0; j < current->mino.width; j++) {
+	for (int i = 0; i < current->mino.len; i++) {
+		for (int j = 0; j < current->mino.len; j++) {
 			if (current->mino.shape[i][j] == FILLED_CELL) {
 				matrix[pos.row + i][pos.col + j] = current->mino.shape[i][j];
 			}

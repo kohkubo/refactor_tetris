@@ -12,7 +12,7 @@ const t_mino g_minos[] = {
 			{1, 1, 0},
 			{0, 0, 0}
 		},
-		.width = 3,
+		.len = 3,
 	},
 	{
 		.shape = {
@@ -20,7 +20,7 @@ const t_mino g_minos[] = {
 			{0, 1, 1},
 			{0, 0, 0}
 		},
-		.width = 3
+		.len = 3
 	},
 	{
 		.shape = {
@@ -28,7 +28,7 @@ const t_mino g_minos[] = {
 			{1, 1, 1},
 			{0, 0, 0}
 		},
-		.width = 3
+		.len = 3
 	},
 	{
 		.shape = {
@@ -36,7 +36,7 @@ const t_mino g_minos[] = {
 			{1, 1, 1},
 			{0, 0, 0}
 		},
-		.width = 3
+		.len = 3
 	},
 	{
 		.shape = {
@@ -44,14 +44,14 @@ const t_mino g_minos[] = {
 			{1, 1, 1},
 			{0, 0, 0}
 		},
-	 	.width = 3
+	 	.len = 3
 	},
 	{
 		.shape = {
 			{1, 1},
 			{1, 1}
 		},
-		.width = 2
+		.len = 2
 	},
 	{
 		.shape = {
@@ -60,7 +60,7 @@ const t_mino g_minos[] = {
 			{0, 0, 0, 0},
 			{0, 0, 0, 0}
 		},
-		.width = 4
+		.len = 4
 	}
 };
 // clang-format on
@@ -70,8 +70,8 @@ void spin_right(t_mino *mino)
 	t_shape saved_shape;
 
 	memcpy(saved_shape, mino->shape, sizeof(t_shape));
-	for (int row = 0; row < mino->width; row++) {
-		for (int col = 0, back_col = mino->width - 1; col < mino->width; col++, back_col--) {
+	for (int row = 0; row < mino->len; row++) {
+		for (int col = 0, back_col = mino->len - 1; col < mino->len; col++, back_col--) {
 			mino->shape[row][col] = saved_shape[back_col][row];
 		}
 	}
@@ -95,7 +95,7 @@ t_current_mino generate_random_mino()
 	t_current_mino current_mino;
 
 	current_mino.mino = get_random_mino();
-	int random_col = get_random_col(current_mino.mino.width);
+	int random_col = get_random_col(current_mino.mino.len);
 	current_mino.pos = (t_position){.col = random_col};
 	return current_mino;
 }

@@ -18,7 +18,7 @@ typedef uint8_t t_shape[SHAPE_HEIGHT_MAX][SHAPE_WIDTH_MAX];
 typedef struct
 {
 	t_shape shape;
-	int width;
+	int len;
 } t_mino;
 
 typedef struct
