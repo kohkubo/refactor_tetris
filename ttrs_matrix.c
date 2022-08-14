@@ -73,7 +73,7 @@ static int clear_filled_lines(t_matrix matrix)
 int lock_down_current_mino(t_tetris *tetris)
 {
 	place_mino_on_matrix(tetris->matrix, &tetris->current_mino);
-	int cleared_line_count = clear_filled_lines(tetris->matrix);
+	const int cleared_line_count = clear_filled_lines(tetris->matrix);
 	update_drop_speed(&tetris->time, cleared_line_count);
 	return cleared_line_count;
 }
