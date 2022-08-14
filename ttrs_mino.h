@@ -5,6 +5,7 @@
 #define SHAPE_WIDTH_MAX 4
 
 #include <stddef.h>
+#include <stdint.h>
 
 typedef struct
 {
