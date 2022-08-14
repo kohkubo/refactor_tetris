@@ -9,7 +9,8 @@ const t_mino_type g_mino_types[] = {
 	{
 		.shape = {
 			{0, 1, 1},
-			{1, 1, 0}
+			{1, 1, 0},
+			{0, 0, 0}
 		},
 		.width = 3,
 	},
@@ -17,6 +18,7 @@ const t_mino_type g_mino_types[] = {
 		.shape = {
 			{1, 1, 0},
 			{0, 1, 1},
+			{0, 0, 0}
 		},
 		.width = 3
 	},
@@ -24,6 +26,7 @@ const t_mino_type g_mino_types[] = {
 		.shape = {
 			{0, 1, 0},
 			{1, 1, 1},
+			{0, 0, 0}
 		},
 		.width = 3
 	},
@@ -31,6 +34,7 @@ const t_mino_type g_mino_types[] = {
 		.shape = {
 			{0, 0, 1},
 			{1, 1, 1},
+			{0, 0, 0}
 		},
 		.width = 3
 	},
@@ -38,6 +42,7 @@ const t_mino_type g_mino_types[] = {
 		.shape = {
 			{1, 0, 0},
 			{1, 1, 1},
+			{0, 0, 0}
 		},
 	 	.width = 3
 	},
@@ -52,6 +57,8 @@ const t_mino_type g_mino_types[] = {
 		.shape = {
 			{0, 0, 0, 0},
 			{1, 1, 1, 1},
+			{0, 0, 0, 0},
+			{0, 0, 0, 0}
 		},
 		.width = 4
 	}
