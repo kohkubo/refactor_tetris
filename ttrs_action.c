@@ -54,11 +54,11 @@ t_status try_right(t_tetris *tetris, t_current_mino *mino)
 
 t_status try_spin(t_tetris *tetris, t_current_mino *mino)
 {
-	t_current_mino spined = *mino;
+	t_current_mino span_mino = *mino;
 
-	spin_right(&spined.mino_type);
-	if (can_place_on_matrix(tetris->matrix, &spined.mino_type, spined.pos)) {
-		*mino = spined;
+	spin_right(&span_mino.mino_type);
+	if (can_place_on_matrix(tetris->matrix, &span_mino.mino_type, span_mino.pos)) {
+		*mino = span_mino;
 	}
 	return TETRIS_PLAY;
 }
