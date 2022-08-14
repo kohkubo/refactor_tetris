@@ -15,12 +15,12 @@
 
 extern t_keyhook_func g_keyhooks;
 
-static void destruct_tetris(const t_tetris *tetris)
+static void end_tetris(const t_tetris *tetris)
 {
 	print_result(tetris);
 }
 
-static t_tetris construct_tetris()
+static t_tetris init_tetris()
 {
 	t_tetris tetris = {};
 	tetris.time.interval = INIT_INTERVAL_TIME;
@@ -82,12 +82,11 @@ static void run_tetris(t_tetris *tetris)
 
 int main()
 {
-	t_tetris tetris = construct_tetris();
-
 	srand(time(NULL));
 	init_keyhook_func_ptr_array();
 	init_ncurses();
+	t_tetris tetris = init_tetris();
 	run_tetris(&tetris);
 	end_ncurses();
-	destruct_tetris(&tetris);
+	end_tetris(&tetris);
 }
