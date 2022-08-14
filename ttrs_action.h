@@ -22,7 +22,7 @@ t_status try_left(t_tetris *tetris, t_current_mino *mino);
 t_status try_right(t_tetris *tetris, t_current_mino *mino);
 t_status try_spin(t_tetris *tetris, t_current_mino *mino);
 t_status hard_drop(t_tetris *tetris, t_current_mino *mino);
-t_status try_create_mino(t_matrix matrix, t_current_mino *mino);
+t_status try_generate_mino(t_matrix matrix, t_current_mino *mino);
 void init_keyhook_func_ptr_array(void);
 t_status handle_auto_drop(t_tetris *tetris, t_current_mino *mino);
 

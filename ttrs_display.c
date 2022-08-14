@@ -45,7 +45,7 @@ static void print_body(const t_matrix matrix, t_current_mino *mino)
 
 static void print_score(int score, t_print_func print_func)
 {
-	if (print_func("\n%s%d\n", SCORE_TEXT, score) == ERR) {
+	if (print_func("\n" SCORE_TEXT "%d\n", score) == ERR) {
 		exit_fatal_err(EXIT_FAILURE);
 	}
 }

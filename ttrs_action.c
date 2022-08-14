@@ -72,7 +72,7 @@ t_status hard_drop(t_tetris *tetris, t_current_mino *mino)
 	return TETRIS_LOCK_DOWN;
 }
 
-t_status try_create_mino(t_matrix matrix, t_current_mino *mino)
+t_status try_generate_mino(t_matrix matrix, t_current_mino *mino)
 {
 	*mino = generate_random_mino();
 	if (!can_place_on_matrix(matrix, &mino->mino_type, mino->pos)) {

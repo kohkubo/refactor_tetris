@@ -40,7 +40,7 @@ static t_is_gamover exec_one_frame(t_tetris *tetris)
 	if (status == TETRIS_LOCK_DOWN) {
 		const int num_of_cleared_lines = lock_down_current_mino(tetris);
 		tetris->score += calculate_score(num_of_cleared_lines);
-		status = try_create_mino(tetris->matrix, &tetris->current_mino);
+		status = try_generate_mino(tetris->matrix, &tetris->current_mino);
 	}
 	return status == TETRIS_GAME_OVER;
 }
