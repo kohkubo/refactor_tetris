@@ -17,7 +17,7 @@ t_keyhook_func g_keyhooks[UCHAR_MAX + 1] = {};
 #define MINO_RIGHT(pos) (t_position){pos.row, pos.col + 1}
 // clang-format on
 
-void init_keyhook_func_ptr_array()
+void init_keyhook_func_ptr_array(void)
 {
 	g_keyhooks[DROP_KEY] = try_drop;
 	g_keyhooks[LEFT_KEY] = try_left;
