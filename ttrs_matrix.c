@@ -49,12 +49,12 @@ static void clear_filled_line(t_matrix matrix, int row)
 
 static bool is_filled_line(t_line line)
 {
-	int filled_cell = 0;
-
 	for (int i = 0; i < MATRIX_COL; i++) {
-		filled_cell += line[i];
+		if (line[i] != FILLED_CELL) {
+			return false;
+		}
 	}
-	return filled_cell == MATRIX_COL;
+	return true;
 }
 
 static int clear_filled_lines(t_matrix matrix)
