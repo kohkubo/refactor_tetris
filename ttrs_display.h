@@ -12,9 +12,8 @@
 
 typedef int (*t_print_func)(const char *, ...);
 
-void print_matrix(const t_matrix matrix, t_print_func print_func);
 void refresh_screen(t_tetris *tetris, t_current_mino *mino);
-void print_score(int score, t_print_func print_func);
+void print_result(const t_tetris *tetris);
 void init_ncurses();
 void end_ncurses();
 

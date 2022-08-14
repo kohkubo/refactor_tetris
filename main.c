@@ -17,9 +17,7 @@ extern t_keyhook_func g_keyhooks;
 
 static void destruct_tetris(const t_tetris *tetris)
 {
-	print_matrix(tetris->matrix, printf);
-	Puts(GAME_OVER_TEXT);
-	print_score(tetris->score, printf);
+	print_result(tetris);
 }
 
 static t_tetris construct_tetris()
