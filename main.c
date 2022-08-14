@@ -52,11 +52,11 @@ static t_status drop_mino_auto(t_tetris *tetris, t_current_mino *mino)
 	return TETRIS_PLAY;
 }
 
-static void wait_next_frame(long start)
+static void wait_next_frame(t_unix_time_usec start)
 {
-	static const long one_frame_usec = SEC_TO_USEC(1) / TTRS_FPS;
-	long elapsed = get_current_usec() - start;
-	long sleep_time = one_frame_usec - elapsed;
+	static const t_unix_time_usec one_frame_usec = SEC_TO_USEC(1) / TTRS_FPS;
+	t_unix_time_usec elapsed = get_current_usec() - start;
+	t_unix_time_usec sleep_time = one_frame_usec - elapsed;
 
 	if (sleep_time > 0)
 		usleep(sleep_time);
@@ -67,7 +67,7 @@ static void run_tetris(t_tetris *tetris)
 	t_status status = TETRIS_PLAY;
 
 	while (status != TETRIS_GAME_OVER) {
-		long frame_start = get_current_usec();
+		t_unix_time_usec frame_start = get_current_usec();
 		refresh_screen(tetris);
 		status = handle_key_input(tetris, &tetris->current_mino);
 		if (status == TETRIS_PLAY) {

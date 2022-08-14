@@ -17,6 +17,7 @@
 
 typedef long t_nsec;
 typedef long t_unix_time_nsec;
+typedef long t_unix_time_usec;
 
 typedef struct
 {
