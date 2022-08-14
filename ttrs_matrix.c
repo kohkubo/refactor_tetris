@@ -26,7 +26,7 @@ bool can_place_on_matrix(const t_matrix matrix, const t_mino_type *mino_type, t_
 	return true;
 }
 
-void place_matrix_with_mino(t_matrix matrix, t_current_mino *mino)
+void place_mino_on_matrix(t_matrix matrix, t_current_mino *mino)
 {
 	t_position pos = mino->pos;
 
@@ -72,7 +72,7 @@ static int clear_filled_lines(t_matrix matrix)
 
 int lock_down_current_mino(t_tetris *tetris)
 {
-	place_matrix_with_mino(tetris->matrix, &tetris->current_mino);
+	place_mino_on_matrix(tetris->matrix, &tetris->current_mino);
 	int cleared_line_count = clear_filled_lines(tetris->matrix);
 	update_drop_speed(&tetris->time, cleared_line_count);
 	return cleared_line_count;

@@ -28,9 +28,9 @@ void init_keyhook_func_ptr_array()
 
 t_status try_drop(t_tetris *tetris, t_current_mino *mino)
 {
-	t_position moved = MINO_DOWN(mino->pos);
-	if (can_place_on_matrix(tetris->matrix, &mino->mino_type, moved)) {
-		mino->pos = moved;
+	t_position moved_pos = MINO_DOWN(mino->pos);
+	if (can_place_on_matrix(tetris->matrix, &mino->mino_type, moved_pos)) {
+		mino->pos = moved_pos;
 		return TETRIS_PLAY;
 	}
 	return TETRIS_LOCK_DOWN;
@@ -38,17 +38,17 @@ t_status try_drop(t_tetris *tetris, t_current_mino *mino)
 
 t_status try_left(t_tetris *tetris, t_current_mino *mino)
 {
-	t_position moved = MINO_LEFT(mino->pos);
-	if (can_place_on_matrix(tetris->matrix, &mino->mino_type, moved))
-		mino->pos = moved;
+	t_position moved_pos = MINO_LEFT(mino->pos);
+	if (can_place_on_matrix(tetris->matrix, &mino->mino_type, moved_pos))
+		mino->pos = moved_pos;
 	return TETRIS_PLAY;
 }
 
 t_status try_right(t_tetris *tetris, t_current_mino *mino)
 {
-	t_position moved = MINO_RIGHT(mino->pos);
-	if (can_place_on_matrix(tetris->matrix, &mino->mino_type, moved))
-		mino->pos = moved;
+	t_position moved_pos = MINO_RIGHT(mino->pos);
+	if (can_place_on_matrix(tetris->matrix, &mino->mino_type, moved_pos))
+		mino->pos = moved_pos;
 	return TETRIS_PLAY;
 }
 
