@@ -44,13 +44,13 @@ static t_status handle_locked_down(t_tetris *tetris, t_mino *mino)
 	return try_create_mino(tetris->matrix, mino);
 }
 
-static t_status drop_mino_auto(t_tetris *tetris, t_mino *mino, t_status st)
+static t_status drop_mino_auto(t_tetris *tetris, t_mino *mino)
 {
 	if (is_time_to_drop(&tetris->time)) {
 		update_next_drop_time(&tetris->time);
 		return try_drop(tetris, mino);
 	}
-	return st;
+	return TETRIS_PLAY;
 }
 
 static void wait_next_frame(long start)
@@ -72,7 +72,9 @@ static void run_tetris(t_tetris *tetris)
 		long start = get_current_usec();
 		refresh_screen(tetris, &mino);
 		status = handle_key_input(tetris, &mino);
-		status = drop_mino_auto(tetris, &mino, status);
+		if (status == TETRIS_PLAY) {
+			status = drop_mino_auto(tetris, &mino);
+		}
 		if (status == TETRIS_LOCK_DOWN) {
 			status = handle_locked_down(tetris, &mino);
 		}
