@@ -10,7 +10,7 @@ typedef struct
 {
 	int row;
 	int col;
-} t_point;
+} t_position;
 
 typedef char t_shape[SHAPE_HEIGHT_MAX][SHAPE_WIDTH_MAX];
 
@@ -23,7 +23,7 @@ typedef struct
 typedef struct
 {
 	t_mino_type mino_type;
-	t_point pos;
+	t_position pos;
 } t_current_mino;
 
 t_current_mino generate_random_mino();
