@@ -19,7 +19,7 @@ static void print_header()
 	}
 }
 
-void print_matrix(const t_matrix matrix, t_print_func print_func)
+static void print_matrix(const t_matrix matrix, t_print_func print_func)
 {
 	for (int i = 0; i < MATRIX_ROW; i++) {
 		for (int j = 0; j < MATRIX_COL; j++) {
@@ -34,7 +34,7 @@ void print_matrix(const t_matrix matrix, t_print_func print_func)
 	}
 }
 
-static void print_body(const t_matrix matrix, t_mino *mino)
+static void print_body(const t_matrix matrix, t_current_mino *mino)
 {
 	t_matrix current_matrix;
 
@@ -43,19 +43,26 @@ static void print_body(const t_matrix matrix, t_mino *mino)
 	print_matrix(current_matrix, printw);
 }
 
-void print_score(int score, t_print_func print_func)
+static void print_score(int score, t_print_func print_func)
 {
 	if (print_func("\n%s%d\n", SCORE_TEXT, score) == ERR) {
 		exit_fatal_err(EXIT_FAILURE);
 	}
 }
 
-void refresh_screen(t_tetris *tetris, t_mino *mino)
+void print_result(const t_tetris *tetris)
+{
+	print_matrix(tetris->matrix, printf);
+	Puts(GAME_OVER_TEXT);
+	print_score(tetris->score, printf);
+}
+
+void refresh_screen(t_tetris *tetris)
 {
 	clear();
 	print_header();
-	print_body(tetris->matrix, mino);
-	print_score(tetris->clear_line_count * SCORE_UNIT, printw);
+	print_body(tetris->matrix, &tetris->current_mino);
+	print_score(tetris->score, printw);
 }
 
 void init_ncurses()

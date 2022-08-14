@@ -9,7 +9,8 @@ const t_mino_type g_mino_types[] = {
 	{
 		.shape = {
 			{0, 1, 1},
-			{1, 1, 0}
+			{1, 1, 0},
+			{0, 0, 0}
 		},
 		.width = 3,
 	},
@@ -17,6 +18,7 @@ const t_mino_type g_mino_types[] = {
 		.shape = {
 			{1, 1, 0},
 			{0, 1, 1},
+			{0, 0, 0}
 		},
 		.width = 3
 	},
@@ -24,6 +26,7 @@ const t_mino_type g_mino_types[] = {
 		.shape = {
 			{0, 1, 0},
 			{1, 1, 1},
+			{0, 0, 0}
 		},
 		.width = 3
 	},
@@ -31,6 +34,7 @@ const t_mino_type g_mino_types[] = {
 		.shape = {
 			{0, 0, 1},
 			{1, 1, 1},
+			{0, 0, 0}
 		},
 		.width = 3
 	},
@@ -38,6 +42,7 @@ const t_mino_type g_mino_types[] = {
 		.shape = {
 			{1, 0, 0},
 			{1, 1, 1},
+			{0, 0, 0}
 		},
 	 	.width = 3
 	},
@@ -52,6 +57,8 @@ const t_mino_type g_mino_types[] = {
 		.shape = {
 			{0, 0, 0, 0},
 			{1, 1, 1, 1},
+			{0, 0, 0, 0},
+			{0, 0, 0, 0}
 		},
 		.width = 4
 	}
@@ -72,9 +79,9 @@ void spin_right(t_mino_type *mino_type)
 
 #define ARRAY_SIZE(array) (sizeof(array) / sizeof(array[0]))
 
-t_mino generate_random_mino()
+t_current_mino generate_random_mino()
 {
-	t_mino mino;
+	t_current_mino mino;
 
 	int randon_index = rand() % ARRAY_SIZE(g_mino_types);
 	mino.mino_type = g_mino_types[randon_index];
