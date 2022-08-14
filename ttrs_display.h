@@ -1,5 +1,5 @@
-#ifndef TTRS_PRINT_H
-#define TTRS_PRINT_H
+#ifndef TTRS_DISPLAY_H
+#define TTRS_DISPLAY_H
 
 #include "tetris.h"
 
