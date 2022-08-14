@@ -83,10 +83,10 @@ t_current_mino generate_random_mino()
 {
 	t_current_mino mino;
 
-	int randon_index = rand() % ARRAY_SIZE(g_mino_types);
+	const int randon_index = rand() % ARRAY_SIZE(g_mino_types);
 	mino.mino_type = g_mino_types[randon_index];
-	int random_position = rand() % (MATRIX_COL - mino.mino_type.width + 1);
-	mino.pos.col = random_position;
+	const int random_col = rand() % (MATRIX_COL - mino.mino_type.width + 1);
+	mino.pos.col = random_col;
 	mino.pos.row = 0;
 	return mino;
 }
