@@ -16,11 +16,6 @@
 extern t_keyhook_func g_keyhooks;
 typedef bool t_is_gamover;
 
-static void end_tetris(const t_tetris *tetris)
-{
-	print_result(tetris);
-}
-
 static t_tetris init_tetris()
 {
 	t_tetris tetris = {};
@@ -38,6 +33,7 @@ static int calculate_score(int clear_line_count)
 static t_is_gamover exec_one_frame(t_tetris *tetris)
 {
 	t_status status = handle_key_input(tetris, &tetris->current_mino);
+
 	if (status == TETRIS_PLAY) {
 		status = handle_auto_drop(tetris, &tetris->current_mino);
 	}
@@ -71,13 +67,20 @@ static void run_tetris_loop(t_tetris *tetris)
 	}
 }
 
-int main()
+static void init_game()
 {
 	srand(time(NULL));
 	init_keyhook_func_ptr_array();
-	init_ncurses();
+}
+
+int main()
+{
+	init_game();
 	t_tetris tetris = init_tetris();
+
+	init_ncurses();
 	run_tetris_loop(&tetris);
 	end_ncurses();
-	end_tetris(&tetris);
+
+	print_tetris_result(&tetris);
 }

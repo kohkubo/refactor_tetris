@@ -50,7 +50,7 @@ static void print_score(int score, t_print_func print_func)
 	}
 }
 
-void print_result(const t_tetris *tetris)
+void print_tetris_result(const t_tetris *tetris)
 {
 	print_matrix(tetris->matrix, printf);
 	Puts(GAME_OVER_TEXT);
