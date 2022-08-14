@@ -83,6 +83,8 @@ t_status try_create_mino(t_matrix matrix, t_current_mino *mino)
 
 static bool is_valid_key(int key)
 {
+	if (key < 0 || key > UCHAR_MAX)
+		return false;
 	return g_keyhooks[key] != NULL;
 }
 
