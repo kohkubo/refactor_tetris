@@ -95,7 +95,7 @@ t_current_mino generate_random_mino(void)
 	t_current_mino current_mino;
 
 	current_mino.mino = get_random_mino();
-	int random_col = get_random_col(current_mino.mino.len);
+	const int random_col = get_random_col(current_mino.mino.len);
 	current_mino.pos = (t_position){.col = random_col};
 	return current_mino;
 }
