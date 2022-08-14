@@ -25,6 +25,7 @@ static t_tetris construct_tetris()
 	t_tetris tetris = {};
 	tetris.time.interval = INIT_INTERVAL_TIME;
 	tetris.time.decrease_time = INIT_DECREASE_TIME;
+	tetris.current_mino = generate_random_mino();
 	return tetris;
 }
 
@@ -64,19 +65,18 @@ static void wait_next_frame(long start)
 static void run_tetris(t_tetris *tetris)
 {
 	t_status status = TETRIS_PLAY;
-	t_current_mino mino = generate_random_mino();
 
 	while (status != TETRIS_GAME_OVER) {
-		long start = get_current_usec();
-		refresh_screen(tetris, &mino);
-		status = handle_key_input(tetris, &mino);
+		long frame_start = get_current_usec();
+		refresh_screen(tetris);
+		status = handle_key_input(tetris, &tetris->current_mino);
 		if (status == TETRIS_PLAY) {
-			status = drop_mino_auto(tetris, &mino);
+			status = drop_mino_auto(tetris, &tetris->current_mino);
 		}
 		if (status == TETRIS_LOCK_DOWN) {
-			status = handle_locked_down(tetris, &mino);
+			status = handle_locked_down(tetris, &tetris->current_mino);
 		}
-		wait_next_frame(start);
+		wait_next_frame(frame_start);
 	}
 }
 

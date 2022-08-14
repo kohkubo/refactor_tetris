@@ -57,11 +57,11 @@ void print_result(const t_tetris *tetris)
 	print_score(tetris->score, printf);
 }
 
-void refresh_screen(t_tetris *tetris, t_current_mino *mino)
+void refresh_screen(t_tetris *tetris)
 {
 	clear();
 	print_header();
-	print_body(tetris->matrix, mino);
+	print_body(tetris->matrix, &tetris->current_mino);
 	print_score(tetris->score, printw);
 }
 

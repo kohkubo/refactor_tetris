@@ -19,6 +19,7 @@ typedef uint8_t t_line[MATRIX_ROW];
 typedef struct {
 	t_matrix matrix;
 	t_tetris_time time;
+	t_current_mino current_mino;
 	int	score;
 } t_tetris;
 

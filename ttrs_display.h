@@ -12,7 +12,7 @@
 
 typedef int (*t_print_func)(const char *, ...);
 
-void refresh_screen(t_tetris *tetris, t_current_mino *mino);
+void refresh_screen(t_tetris *tetris);
 void print_result(const t_tetris *tetris);
 void init_ncurses();
 void end_ncurses();
