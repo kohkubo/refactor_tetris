@@ -50,7 +50,7 @@ static t_status drop_mino_auto(t_tetris *tetris, t_mino *mino, t_status st)
 
 static void wait_next_frame(long start)
 {
-	static const long one_frame_usec = SEC_TO_USEC(1) / FPS;
+	static const long one_frame_usec = SEC_TO_USEC(1) / TTRS_FPS;
 	long elapsed = get_current_usec() - start;
 	long sleep_time = one_frame_usec - elapsed;
 
