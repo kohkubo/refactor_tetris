@@ -28,7 +28,7 @@ fclean: clean
 
 re: fclean all
 
-debug: CFLAGS +=  -g -fsanitize=address -fsanitize=undefined
+debug: CFLAGS +=  -g -fsanitize=address -fsanitize=undefined -Weverything -Wno-padded -Wno-poison-system-directories
 debug: re
 
 .PHONY: FORCE

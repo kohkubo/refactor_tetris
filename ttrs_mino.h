@@ -12,7 +12,7 @@ typedef struct
 	int col;
 } t_position;
 
-typedef char t_shape[SHAPE_HEIGHT_MAX][SHAPE_WIDTH_MAX];
+typedef uint8_t t_shape[SHAPE_HEIGHT_MAX][SHAPE_WIDTH_MAX];
 
 typedef struct
 {
@@ -26,7 +26,7 @@ typedef struct
 	t_position pos;
 } t_current_mino;
 
-t_current_mino generate_random_mino();
+t_current_mino generate_random_mino(void);
 void spin_right(t_mino_type *mino_type);
 
 #endif
