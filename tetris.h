@@ -20,8 +20,8 @@ typedef bool t_is_gamover;
 typedef struct {
 	t_matrix matrix;
 	t_tetris_time time;
-	t_current_mino current_mino;
-	int	score;
+	t_current_mino current;
+	int score;
 } t_tetris;
 
 #endif /* TETRIS_H */

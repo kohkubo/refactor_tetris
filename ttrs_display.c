@@ -34,12 +34,12 @@ static void print_matrix(const t_matrix matrix, t_print_func print_func)
 	}
 }
 
-static void print_body(const t_matrix matrix, t_current_mino *mino)
+static void print_body(const t_matrix matrix, t_current_mino *current)
 {
 	t_matrix current_matrix;
 
 	memcpy(current_matrix, matrix, sizeof(t_matrix));
-	place_mino_on_matrix(current_matrix, mino);
+	place_mino_on_matrix(current_matrix, current);
 	print_matrix(current_matrix, printw);
 }
 
@@ -61,7 +61,7 @@ void refresh_screen(t_tetris *tetris)
 {
 	clear();
 	print_header();
-	print_body(tetris->matrix, &tetris->current_mino);
+	print_body(tetris->matrix, &tetris->current);
 	print_score(tetris->score, printw);
 }
 

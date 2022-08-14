@@ -16,16 +16,16 @@ typedef enum e_status {
 	TETRIS_GAME_OVER,
 } t_status;
 
-t_status handle_key_input(t_tetris *tetris, t_current_mino *mino);
-t_status try_drop(t_tetris *tetris, t_current_mino *mino);
-t_status try_left(t_tetris *tetris, t_current_mino *mino);
-t_status try_right(t_tetris *tetris, t_current_mino *mino);
-t_status try_spin(t_tetris *tetris, t_current_mino *mino);
-t_status hard_drop(t_tetris *tetris, t_current_mino *mino);
-t_status try_generate_mino(t_matrix matrix, t_current_mino *mino);
+t_status handle_key_input(t_tetris *tetris, t_current_mino *current);
+t_status try_drop(t_tetris *tetris, t_current_mino *current);
+t_status try_left(t_tetris *tetris, t_current_mino *current);
+t_status try_right(t_tetris *tetris, t_current_mino *current);
+t_status try_spin(t_tetris *tetris, t_current_mino *current);
+t_status hard_drop(t_tetris *tetris, t_current_mino *current);
+t_status try_generate_mino(t_matrix matrix, t_current_mino *current);
 void init_keyhook_func_ptr_array(void);
-t_status handle_auto_drop(t_tetris *tetris, t_current_mino *mino);
+t_status handle_auto_drop(t_tetris *tetris, t_current_mino *current);
 
 typedef t_status (*t_keyhook_func)(t_tetris *tetris, t_current_mino *);
 
-#endif
+#endif /* TTRS_ACTION_H */

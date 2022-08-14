@@ -19,15 +19,15 @@ typedef struct
 {
 	t_shape shape;
 	int width;
-} t_mino_type;
+} t_mino;
 
 typedef struct
 {
-	t_mino_type mino_type;
+	t_mino mino;
 	t_position pos;
 } t_current_mino;
 
 t_current_mino generate_random_mino(void);
-void spin_right(t_mino_type *mino_type);
+void spin_right(t_mino *mino);
 
 #endif

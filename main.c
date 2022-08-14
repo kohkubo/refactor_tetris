@@ -20,7 +20,7 @@ static t_tetris init_tetris()
 	t_tetris tetris = {};
 	tetris.time.interval = INIT_INTERVAL_TIME;
 	tetris.time.decrease_time = INIT_DECREASE_TIME;
-	tetris.current_mino = generate_random_mino();
+	tetris.current = generate_random_mino();
 	return tetris;
 }
 
@@ -32,16 +32,16 @@ static int calculate_score(int num_of_cleared_lines)
 static t_is_gamover exec_one_frame(t_tetris *tetris)
 {
 	t_is_gamover is_gameover = false;
-	t_status status = handle_key_input(tetris, &tetris->current_mino);
+	t_status status = handle_key_input(tetris, &tetris->current);
 
 	if (status == TETRIS_PLAY) {
-		status = handle_auto_drop(tetris, &tetris->current_mino);
+		status = handle_auto_drop(tetris, &tetris->current);
 	}
 	if (status == TETRIS_LOCK_DOWN) {
 		const int num_of_cleared_lines = lock_down_current_mino(tetris);
 		tetris->score += calculate_score(num_of_cleared_lines);
-		tetris->current_mino = generate_random_mino();
-		is_gameover = !can_place_on_matrix(tetris->matrix, &tetris->current_mino.mino_type, tetris->current_mino.pos);
+		tetris->current = generate_random_mino();
+		is_gameover = !can_place_on_matrix(tetris->matrix, &tetris->current.mino, tetris->current.pos);
 	}
 	return is_gameover;
 }

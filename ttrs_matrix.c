@@ -11,11 +11,11 @@ static bool is_in_matrix(int row, int col, int offset_row, int offset_col)
 #define EMPTY_CELL 0
 #define FILLED_CELL 1
 
-bool can_place_on_matrix(const t_matrix matrix, const t_mino_type *mino_type, t_position pos)
+bool can_place_on_matrix(const t_matrix matrix, const t_mino *mino, t_position pos)
 {
-	for (int i = 0; i < mino_type->width; i++) {
-		for (int j = 0; j < mino_type->width; j++) {
-			if (mino_type->shape[i][j] == EMPTY_CELL) {
+	for (int i = 0; i < mino->width; i++) {
+		for (int j = 0; j < mino->width; j++) {
+			if (mino->shape[i][j] == EMPTY_CELL) {
 				continue;
 			}
 			if (!is_in_matrix(pos.row, pos.col, i, j) || matrix[pos.row + i][pos.col + j] == FILLED_CELL) {
@@ -26,14 +26,14 @@ bool can_place_on_matrix(const t_matrix matrix, const t_mino_type *mino_type, t_
 	return true;
 }
 
-void place_mino_on_matrix(t_matrix matrix, t_current_mino *mino)
+void place_mino_on_matrix(t_matrix matrix, t_current_mino *current)
 {
-	t_position pos = mino->pos;
+	t_position pos = current->pos;
 
-	for (int i = 0; i < mino->mino_type.width; i++) {
-		for (int j = 0; j < mino->mino_type.width; j++) {
-			if (mino->mino_type.shape[i][j] == FILLED_CELL) {
-				matrix[pos.row + i][pos.col + j] = mino->mino_type.shape[i][j];
+	for (int i = 0; i < current->mino.width; i++) {
+		for (int j = 0; j < current->mino.width; j++) {
+			if (current->mino.shape[i][j] == FILLED_CELL) {
+				matrix[pos.row + i][pos.col + j] = current->mino.shape[i][j];
 			}
 		}
 	}
@@ -72,7 +72,7 @@ static int clear_filled_lines(t_matrix matrix)
 
 int lock_down_current_mino(t_tetris *tetris)
 {
-	place_mino_on_matrix(tetris->matrix, &tetris->current_mino);
+	place_mino_on_matrix(tetris->matrix, &tetris->current);
 	const int num_of_cleared_lines = clear_filled_lines(tetris->matrix);
 	update_drop_speed(&tetris->time, num_of_cleared_lines);
 	return num_of_cleared_lines;
