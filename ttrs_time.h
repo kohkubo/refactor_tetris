@@ -30,7 +30,7 @@ struct timespec get_current_time(void);
 
 bool is_time_to_drop(t_unix_time_nsec next_drop_time);
 void update_drop_speed(t_tetris_time *time, int count);
-t_unix_time_nsec get_next_drop_time(t_nsec interval);
+t_unix_time_nsec generate_next_drop_time(t_nsec interval);
 long get_current_nsec(void);
 long get_current_usec(void);
 

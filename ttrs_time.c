@@ -28,7 +28,7 @@ bool is_time_to_drop(t_unix_time_nsec next_drop_time)
 	return now_nsec >= next_drop_time;
 }
 
-t_unix_time_nsec get_next_drop_time(t_nsec interval)
+t_unix_time_nsec generate_next_drop_time(t_nsec interval)
 {
 	return get_current_nsec() + interval;
 }
