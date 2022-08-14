@@ -28,7 +28,7 @@ typedef struct
 
 struct timespec get_current_time(void);
 
-bool is_time_to_drop(t_tetris_time *time);
+bool is_time_to_drop(t_unix_time_nsec next_drop_time);
 void update_drop_speed(t_tetris_time *time, int count);
 void update_next_drop_time(t_tetris_time *time);
 long get_current_nsec(void);

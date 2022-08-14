@@ -22,10 +22,10 @@ long get_current_usec()
 	return NSEC_TO_USEC(get_current_nsec());
 }
 
-bool is_time_to_drop(t_tetris_time *time)
+bool is_time_to_drop(t_unix_time_nsec next_drop_time)
 {
 	t_unix_time_nsec now_nsec = get_current_nsec();
-	return now_nsec >= time->next_drop_time;
+	return now_nsec >= next_drop_time;
 }
 
 void update_next_drop_time(t_tetris_time *time)
