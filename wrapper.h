@@ -3,6 +3,7 @@
 
 #include <curses.h>
 #include <time.h>
+#include <unistd.h>
 
 void exit_fatal_err(int code);
 int Clock_gettime(clockid_t clk_id, struct timespec *tp);
@@ -10,5 +11,6 @@ int Puts(const char *str);
 int Endwin(void);
 WINDOW *Initscr(void);
 int Clear(void);
+int Usleep(useconds_t usec);
 
 #endif

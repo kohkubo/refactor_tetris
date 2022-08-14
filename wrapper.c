@@ -57,3 +57,12 @@ int Clear(void)
 	}
 	return ret;
 }
+
+int Usleep(useconds_t usec)
+{
+	int ret = usleep(usec);
+	if (ret == -1) {
+		exit_fatal_err(EXIT_FAILURE);
+	}
+	return ret;
+}
