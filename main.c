@@ -25,9 +25,9 @@ static t_tetris init_tetris()
 	return tetris;
 }
 
-static int calculate_score(int cleared_line_count)
+static int calculate_score(int num_of_cleared_line)
 {
-	return SCORE_UNIT * cleared_line_count;
+	return SCORE_UNIT * num_of_cleared_line;
 }
 
 static t_is_gamover exec_one_frame(t_tetris *tetris)
@@ -38,8 +38,8 @@ static t_is_gamover exec_one_frame(t_tetris *tetris)
 		status = handle_auto_drop(tetris, &tetris->current_mino);
 	}
 	if (status == TETRIS_LOCK_DOWN) {
-		const int cleared_line_count = lock_down_current_mino(tetris);
-		tetris->score += calculate_score(cleared_line_count);
+		const int num_of_cleared_line = lock_down_current_mino(tetris);
+		tetris->score += calculate_score(num_of_cleared_line);
 		status = try_create_mino(tetris->matrix, &tetris->current_mino);
 	}
 	return status == TETRIS_GAME_OVER;
