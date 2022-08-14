@@ -70,7 +70,7 @@ static int clear_filled_lines(t_matrix matrix)
 	return clear_line_count;
 }
 
-int locked_down_current_mino(t_tetris *tetris, t_current_mino *mino)
+int lock_down_current_mino(t_tetris *tetris, t_current_mino *mino)
 {
 	place_matrix_with_mino(tetris->matrix, mino);
 	int clear_line_count = clear_filled_lines(tetris->matrix);
