@@ -18,8 +18,8 @@ typedef uint8_t t_line[MATRIX_ROW];
 
 typedef struct {
 	t_matrix matrix;
-	size_t clear_line_count;
 	t_tetris_time time;
+	int	score;
 } t_tetris;
 
 #endif /* TETRIS_H */

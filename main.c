@@ -19,7 +19,7 @@ static void end_tetris(const t_tetris *tetris)
 {
 	print_matrix(tetris->matrix, printf);
 	Puts(GAME_OVER_TEXT);
-	print_score(tetris->clear_line_count * SCORE_UNIT, printf);
+	print_score(tetris->score, printf);
 }
 
 static t_tetris create_tetris()
@@ -30,12 +30,17 @@ static t_tetris create_tetris()
 	return tetris;
 }
 
+static int calculate_score(int clear_line_count)
+{
+	return SCORE_UNIT * clear_line_count;
+}
+
 static t_status handle_locked_down(t_tetris *tetris, t_mino *mino)
 {
 	place_matrix_with_mino(tetris->matrix, mino);
 	int clear_line_count = clear_filled_lines(tetris->matrix);
 	update_drop_speed(&tetris->time, clear_line_count);
-	tetris->clear_line_count += clear_line_count;
+	tetris->score = calculate_score(clear_line_count);
 	return try_create_mino(tetris->matrix, mino);
 }
 

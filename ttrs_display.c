@@ -55,7 +55,7 @@ void refresh_screen(t_tetris *tetris, t_mino *mino)
 	clear();
 	print_header();
 	print_body(tetris->matrix, mino);
-	print_score(tetris->clear_line_count * SCORE_UNIT, printw);
+	print_score(tetris->score, printw);
 }
 
 void init_ncurses()
