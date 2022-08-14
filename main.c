@@ -14,7 +14,6 @@
 #include "wrapper.h"
 
 extern t_keyhook_func g_keyhooks;
-typedef bool t_is_gamover;
 
 static t_tetris init_tetris()
 {
@@ -32,6 +31,7 @@ static int calculate_score(int num_of_cleared_lines)
 
 static t_is_gamover exec_one_frame(t_tetris *tetris)
 {
+	t_is_gamover is_gameover = false;
 	t_status status = handle_key_input(tetris, &tetris->current_mino);
 
 	if (status == TETRIS_PLAY) {
@@ -40,9 +40,10 @@ static t_is_gamover exec_one_frame(t_tetris *tetris)
 	if (status == TETRIS_LOCK_DOWN) {
 		const int num_of_cleared_lines = lock_down_current_mino(tetris);
 		tetris->score += calculate_score(num_of_cleared_lines);
-		status = try_generate_mino(tetris->matrix, &tetris->current_mino);
+		tetris->current_mino = generate_random_mino();
+		is_gameover = !can_place_on_matrix(tetris->matrix, &tetris->current_mino.mino_type, tetris->current_mino.pos);
 	}
-	return status == TETRIS_GAME_OVER;
+	return is_gameover;
 }
 
 static void wait_next_frame(t_unix_time_usec start)

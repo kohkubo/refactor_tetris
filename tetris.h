@@ -15,6 +15,7 @@
 
 typedef uint8_t t_matrix[MATRIX_ROW][MATRIX_COL];
 typedef uint8_t t_line[MATRIX_ROW];
+typedef bool t_is_gamover;
 
 typedef struct {
 	t_matrix matrix;

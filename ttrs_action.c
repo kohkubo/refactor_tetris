@@ -65,20 +65,10 @@ t_status try_spin(t_tetris *tetris, t_current_mino *mino)
 
 t_status hard_drop(t_tetris *tetris, t_current_mino *mino)
 {
-
 	while (can_place_on_matrix(tetris->matrix, &mino->mino_type, MINO_DOWN(mino->pos))) {
 		mino->pos.row += 1;
 	}
 	return TETRIS_LOCK_DOWN;
-}
-
-t_status try_generate_mino(t_matrix matrix, t_current_mino *mino)
-{
-	*mino = generate_random_mino();
-	if (!can_place_on_matrix(matrix, &mino->mino_type, mino->pos)) {
-		return TETRIS_GAME_OVER;
-	}
-	return TETRIS_PLAY;
 }
 
 static bool is_valid_key(int key)
