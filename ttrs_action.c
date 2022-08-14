@@ -25,7 +25,7 @@ void init_keyhook_func_ptr_array()
 	// g_keyhooks[HARD_DROP_KEY] = hard_drop;
 }
 
-t_status try_drop(t_tetris *tetris, t_mino *mino)
+t_status try_drop(t_tetris *tetris, t_current_mino *mino)
 {
 	if (can_place_on_matrix(tetris->matrix, &mino->mino_type, MINO_DOWN(mino->pos))) {
 		mino->pos.row += 1;
@@ -34,7 +34,7 @@ t_status try_drop(t_tetris *tetris, t_mino *mino)
 	return TETRIS_LOCK_DOWN;
 }
 
-t_status try_left(t_tetris *tetris, t_mino *mino)
+t_status try_left(t_tetris *tetris, t_current_mino *mino)
 {
 	if (can_place_on_matrix(tetris->matrix, &mino->mino_type, MINO_LEFT(mino->pos))) {
 		mino->pos.col -= 1;
@@ -42,7 +42,7 @@ t_status try_left(t_tetris *tetris, t_mino *mino)
 	return TETRIS_PLAY;
 }
 
-t_status try_right(t_tetris *tetris, t_mino *mino)
+t_status try_right(t_tetris *tetris, t_current_mino *mino)
 {
 	if (can_place_on_matrix(tetris->matrix, &mino->mino_type, MINO_RIGHT(mino->pos))) {
 		mino->pos.col += 1;
@@ -50,9 +50,9 @@ t_status try_right(t_tetris *tetris, t_mino *mino)
 	return TETRIS_PLAY;
 }
 
-t_status try_spin(t_tetris *tetris, t_mino *mino)
+t_status try_spin(t_tetris *tetris, t_current_mino *mino)
 {
-	t_mino spined = *mino;
+	t_current_mino spined = *mino;
 
 	spin_right(&spined.mino_type);
 	if (can_place_on_matrix(tetris->matrix, &spined.mino_type, MINO_POS(spined.pos))) {
@@ -61,7 +61,7 @@ t_status try_spin(t_tetris *tetris, t_mino *mino)
 	return TETRIS_PLAY;
 }
 
-t_status hard_drop(t_tetris *tetris, t_mino *mino)
+t_status hard_drop(t_tetris *tetris, t_current_mino *mino)
 {
 	while (can_place_on_matrix(tetris->matrix, &mino->mino_type, MINO_DOWN(mino->pos))) {
 		mino->pos.row += 1;
@@ -69,7 +69,7 @@ t_status hard_drop(t_tetris *tetris, t_mino *mino)
 	return TETRIS_LOCK_DOWN;
 }
 
-t_status try_create_mino(t_matrix matrix, t_mino *mino)
+t_status try_create_mino(t_matrix matrix, t_current_mino *mino)
 {
 	*mino = generate_random_mino();
 	if (!can_place_on_matrix(matrix, &mino->mino_type, MINO_POS(mino->pos))) {
@@ -83,7 +83,7 @@ static bool is_valid_key(int key)
 	return g_keyhooks[key] != NULL;
 }
 
-t_status handle_key_input(t_tetris *tetris, t_mino *mino)
+t_status handle_key_input(t_tetris *tetris, t_current_mino *mino)
 {
 	int key = getch();
 	if (key != ERR && is_valid_key(key)) {

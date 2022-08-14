@@ -34,7 +34,7 @@ void print_matrix(const t_matrix matrix, t_print_func print_func)
 	}
 }
 
-static void print_body(const t_matrix matrix, t_mino *mino)
+static void print_body(const t_matrix matrix, t_current_mino *mino)
 {
 	t_matrix current_matrix;
 
@@ -50,7 +50,7 @@ void print_score(int score, t_print_func print_func)
 	}
 }
 
-void refresh_screen(t_tetris *tetris, t_mino *mino)
+void refresh_screen(t_tetris *tetris, t_current_mino *mino)
 {
 	clear();
 	print_header();

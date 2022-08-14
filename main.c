@@ -1,9 +1,9 @@
-#include <unistd.h>
 #include <limits.h>
 #include <ncurses.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <unistd.h>
 
 #include "tetris.h"
 #include "ttrs_action.h"
@@ -35,7 +35,7 @@ static int calculate_score(int clear_line_count)
 	return SCORE_UNIT * clear_line_count;
 }
 
-static t_status handle_locked_down(t_tetris *tetris, t_mino *mino)
+static t_status handle_locked_down(t_tetris *tetris, t_current_mino *mino)
 {
 	place_matrix_with_mino(tetris->matrix, mino);
 	int clear_line_count = clear_filled_lines(tetris->matrix);
@@ -44,7 +44,7 @@ static t_status handle_locked_down(t_tetris *tetris, t_mino *mino)
 	return try_create_mino(tetris->matrix, mino);
 }
 
-static t_status drop_mino_auto(t_tetris *tetris, t_mino *mino)
+static t_status drop_mino_auto(t_tetris *tetris, t_current_mino *mino)
 {
 	if (is_time_to_drop(&tetris->time)) {
 		update_next_drop_time(&tetris->time);
@@ -66,7 +66,7 @@ static void wait_next_frame(long start)
 static void run_tetris(t_tetris *tetris)
 {
 	t_status status = TETRIS_PLAY;
-	t_mino mino = generate_random_mino();
+	t_current_mino mino = generate_random_mino();
 
 	while (status != TETRIS_GAME_OVER) {
 		long start = get_current_usec();

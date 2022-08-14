@@ -24,9 +24,9 @@ typedef struct
 {
 	t_mino_type mino_type;
 	t_point pos;
-} t_mino;
+} t_current_mino;
 
-t_mino generate_random_mino();
+t_current_mino generate_random_mino();
 void spin_right(t_mino_type *mino_type);
 
 #endif
