@@ -14,6 +14,7 @@
 #include "wrapper.h"
 
 extern t_keyhook_func g_keyhooks;
+typedef bool t_is_gamover;
 
 static void end_tetris(const t_tetris *tetris)
 {
@@ -34,22 +35,34 @@ static int calculate_score(int clear_line_count)
 	return SCORE_UNIT * clear_line_count;
 }
 
-static t_status handle_locked_down(t_tetris *tetris, t_current_mino *mino)
+static void locked_down_current_mino(t_tetris *tetris, t_current_mino *mino)
 {
 	place_matrix_with_mino(tetris->matrix, mino);
 	int clear_line_count = clear_filled_lines(tetris->matrix);
 	update_drop_speed(&tetris->time, clear_line_count);
 	tetris->score = calculate_score(clear_line_count);
-	return try_create_mino(tetris->matrix, mino);
 }
 
-static t_status drop_mino_auto(t_tetris *tetris, t_current_mino *mino)
+static t_status handle_auto_drop(t_tetris *tetris, t_current_mino *mino)
 {
 	if (is_time_to_drop(&tetris->time)) {
 		update_next_drop_time(&tetris->time);
 		return try_drop(tetris, mino);
 	}
 	return TETRIS_PLAY;
+}
+
+static t_is_gamover update_tetris(t_tetris *tetris)
+{
+	t_status status = handle_key_input(tetris, &tetris->current_mino);
+	if (status == TETRIS_PLAY) {
+		status = handle_auto_drop(tetris, &tetris->current_mino);
+	}
+	if (status == TETRIS_LOCK_DOWN) {
+		locked_down_current_mino(tetris, &tetris->current_mino);
+		status = try_create_mino(tetris->matrix, &tetris->current_mino);
+	}
+	return status == TETRIS_GAME_OVER;
 }
 
 static void wait_next_frame(t_unix_time_usec start)
@@ -62,21 +75,15 @@ static void wait_next_frame(t_unix_time_usec start)
 		usleep(sleep_time);
 }
 
-static void run_tetris(t_tetris *tetris)
+static void run_game_loop(t_tetris *tetris)
 {
-	t_status status = TETRIS_PLAY;
+	t_is_gamover is_gameover = false;
 
-	while (status != TETRIS_GAME_OVER) {
-		t_unix_time_usec frame_start = get_current_usec();
+	while (!is_gameover) {
+		t_unix_time_usec start = get_current_usec();
 		refresh_screen(tetris);
-		status = handle_key_input(tetris, &tetris->current_mino);
-		if (status == TETRIS_PLAY) {
-			status = drop_mino_auto(tetris, &tetris->current_mino);
-		}
-		if (status == TETRIS_LOCK_DOWN) {
-			status = handle_locked_down(tetris, &tetris->current_mino);
-		}
-		wait_next_frame(frame_start);
+		is_gameover = update_tetris(tetris);
+		wait_next_frame(start);
 	}
 }
 
@@ -86,7 +93,7 @@ int main()
 	init_keyhook_func_ptr_array();
 	init_ncurses();
 	t_tetris tetris = init_tetris();
-	run_tetris(&tetris);
+	run_game_loop(&tetris);
 	end_ncurses();
 	end_tetris(&tetris);
 }
