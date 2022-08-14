@@ -67,9 +67,9 @@ static t_is_gamover update_tetris(t_tetris *tetris)
 
 static void wait_next_frame(t_unix_time_usec start)
 {
-	static const t_unix_time_usec one_frame_usec = SEC_TO_USEC(1) / TTRS_FPS;
+	static const t_unix_time_usec one_frame = SEC_TO_USEC(1) / TTRS_FPS;
 	t_unix_time_usec elapsed = get_current_usec() - start;
-	t_unix_time_usec sleep_time = one_frame_usec - elapsed;
+	t_unix_time_usec sleep_time = one_frame - elapsed;
 
 	if (sleep_time > 0)
 		usleep(sleep_time);
