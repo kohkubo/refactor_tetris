@@ -4,9 +4,9 @@
 #include "ttrs_time.h"
 #include "wrapper.h"
 
-static long get_nsec(const struct timespec *ts)
+static long get_nsec(const struct timespec ts)
 {
-	return SEC_TO_NSEC(ts->tv_sec) + ts->tv_nsec;
+	return SEC_TO_NSEC(ts.tv_sec) + ts.tv_nsec;
 }
 
 long get_current_nsec()
@@ -14,7 +14,7 @@ long get_current_nsec()
 	struct timespec now;
 
 	Clock_gettime(CLOCK_MONOTONIC, &now);
-	return get_nsec(&now);
+	return get_nsec(now);
 }
 
 useconds_t get_current_usec()
