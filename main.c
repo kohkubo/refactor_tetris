@@ -61,8 +61,8 @@ static void run_tetris_loop(t_tetris *tetris)
 
 	while (!is_gameover) {
 		t_unix_time_usec start = get_current_usec();
-		refresh_screen(tetris);
 		is_gameover = exec_one_frame(tetris);
+		refresh_screen(tetris);
 		wait_next_frame(start);
 	}
 }
