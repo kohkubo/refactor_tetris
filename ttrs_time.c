@@ -17,9 +17,9 @@ long get_current_nsec()
 	return get_nsec(now);
 }
 
-useconds_t get_current_usec()
+long get_current_usec()
 {
-	return (useconds_t)NSEC_TO_USEC(get_current_nsec());
+	return NSEC_TO_USEC(get_current_nsec());
 }
 
 bool is_time_to_drop(t_unix_time_nsec next_drop_time)

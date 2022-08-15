@@ -44,14 +44,14 @@ static t_is_gamover exec_one_frame(t_tetris *tetris)
 	return is_gameover;
 }
 
-static void wait_next_frame(useconds_t start)
+static void wait_next_frame(t_unix_time_usec start)
 {
-	static const useconds_t one_frame = SEC_TO_USEC(1) / TTRS_FPS;
-	useconds_t elapsed = get_current_usec() - start;
-	useconds_t sleep_time = one_frame - elapsed;
+	static const t_unix_time_usec one_frame = SEC_TO_USEC(1) / TTRS_FPS;
+	t_unix_time_usec elapsed = get_current_usec() - start;
+	t_unix_time_usec sleep_time = one_frame - elapsed;
 
 	if (sleep_time > 0)
-		Usleep(sleep_time);
+		Usleep((useconds_t)sleep_time);
 }
 
 static void run_tetris_loop(t_tetris *tetris)
@@ -59,7 +59,7 @@ static void run_tetris_loop(t_tetris *tetris)
 	t_is_gamover is_gameover = false;
 
 	while (!is_gameover) {
-		useconds_t start = get_current_usec();
+		t_unix_time_usec start = get_current_usec();
 		is_gameover = exec_one_frame(tetris);
 		refresh_screen(tetris);
 		wait_next_frame(start);
